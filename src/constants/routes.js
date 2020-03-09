@@ -1,0 +1,16 @@
+export const SIGN_UP = '/signup';
+export const SIGN_IN = '/signin';
+export const PASSWORD_FORGET = '/pw-forget';
+export const LANDING = '/';
+export const HOME = '/home';
+export const ACCOUNT = '/account';
+export const TRACKING = '/tracking';
+export const ACCOUNT_PROGRAM = '/account/:pid';
+export const ADMIN = '/admin';
+export const USERPROGRAM = '/program';
+export const ADMIN_DETAILS = '/admin/:id';
+export const WORKOUT_DETAILS = '/admin/:id/:wid';
+export const PROGRAM_DETAILS = '/admin/:id/:pid';
+export const CREATEPROGRAM = '/create-program';
+export const CREATETASK = '/create-exercise';
+export const CREATE_DETAILS = '/create-program/:pid';
