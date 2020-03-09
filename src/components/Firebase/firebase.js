@@ -13,16 +13,6 @@ const config = {
    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-// const config = {
-//    apiKey: "AIzaSyDL3ov_61hBbG4S7YxUd6GJ9ZjdSA2fByo",
-//    authDomain: "auth-practice-23bfe.firebaseapp.com",
-//    databaseURL: "https://auth-practice-23bfe.firebaseio.com",
-//    projectId: "auth-practice-23bfe",
-//    storageBucket: "auth-practice-23bfe.appspot.com",
-//    messagingSenderId: "85154681362",
-//    appId: "1:85154681362:web:14aa8a68c05d12ec"
-// };
-
 class Firebase {
    constructor() {
       // console.log(config);
