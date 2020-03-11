@@ -47,8 +47,6 @@
 ### New Day
 1. When Creating a "New Day" on a new program I'd like the default day to be in the set up of a normal day. Currently it is only like 4 exercises and the set up is goofed up which forces me to have to add a bunch of stuff everytime
 
-1. For the new day base program, if you could copy one of the days from the program I typed up in there (Back to school phase 3) that would be great
-
 ### Chat:
 
 ### Before Photos:
@@ -60,4 +58,4 @@ Name of Program: So when I give them a default program, I'd like to be able to m
 
 As for information to store, name and birthday and sign up date maybe? Not super important though as they sign up through paypal right now which gives all of that aswell.
 
-As for logos and stuff, I'm going to make you an edittor of our current website and in the file storage thing on the website it should have everything you'd need and let me know if you need anything else
+As for logos and stuff, I'm going to make you an editor of our current website and in the file storage thing on the website it should have everything you'd need and let me know if you need anything else

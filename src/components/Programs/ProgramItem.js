@@ -2,15 +2,17 @@ import React, { Component } from "react";
 
 import { withFirebase } from '../Firebase';
 
-// import Modal from '../Modal';
 import BreadCrumbs from '../BreadCrumbs';
+import Modal from '../Modal';
 import Alert from 'react-bootstrap/Alert';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 // import { withRouter } from 'react-router-dom';
 
 import ProgramTable from './ProgramTable';
 import * as ROUTES from '../../constants/routes';
-import { INITIALJSON } from '../../constants/defaultProgram';
+// import { INITIALJSON } from '../../constants/defaultProgram';
 
 // import Button from 'react-bootstrap/Button';
 // import Form from 'react-bootstrap/Form';
@@ -37,7 +39,9 @@ class ProgramItemBase extends Component {
             }
          ],
          show: false,
-         phaseTitle: "phase 3",
+         showTitle: false,
+         title: "",
+         // phaseTitle: "phase 3",
          error: null,
          ...props.location.state,
       };
@@ -61,6 +65,7 @@ class ProgramItemBase extends Component {
                this.setState({
                   program: programObject,
                   loading: false,
+                  title: programObject.title,
                   editable: true,
                });
             } else {
@@ -81,6 +86,7 @@ class ProgramItemBase extends Component {
 
                this.setState({
                   program: programObject,
+                  title: programObject.title,
                   loading: false,
                });
             } else {
@@ -115,56 +121,56 @@ class ProgramItemBase extends Component {
       this.setState({ [name]: value })
    }
 
-   handleAddPhase = (e) => {
+   // handleAddPhase = (e) => {
 
-      e.preventDefault();
-      const programUpdate = { ...this.state.program };
-      const instructionUpdate = { ...programUpdate.instruction };
+   //    e.preventDefault();
+   //    const programUpdate = { ...this.state.program };
+   //    const instructionUpdate = { ...programUpdate.instruction };
 
-      instructionUpdate[this.state.phaseTitle] = {
-         "completed": "false",
-         "day 1": INITIALJSON,
-         "day 2": INITIALJSON,
-      };
+   //    instructionUpdate[this.state.phaseTitle] = {
+   //       "completed": "false",
+   //       "day 1": INITIALJSON,
+   //       "day 2": INITIALJSON,
+   //    };
 
-      // Is this necessary?
+   //    // Is this necessary?
 
-      const instructionUpdateOrdered = {};
-      Object.keys(instructionUpdate).sort().forEach(function (key) {
-         instructionUpdateOrdered[key] = instructionUpdate[key];
-      });
+   //    const instructionUpdateOrdered = {};
+   //    Object.keys(instructionUpdate).sort().forEach(function (key) {
+   //       instructionUpdateOrdered[key] = instructionUpdate[key];
+   //    });
 
-      programUpdate["instruction"] = instructionUpdateOrdered;
+   //    programUpdate["instruction"] = instructionUpdateOrdered;
 
-      // console.log(programUpdate);
+   //    // console.log(programUpdate);
 
-      if (this.props.match.path === ROUTES.CREATE_DETAILS) {
-         this.props.firebase
-            .program(this.state.pid)
-            .update({
-               instruction: instructionUpdateOrdered,
-            })
-            .then(() => this.setState({ program: programUpdate }))
-            .catch(error => this.setState({ error }))
-         // console.log(this.state.pid, instructionUpdate);
-         // this.setState({ program: programUpdate });
-      }
+   //    if (this.props.match.path === ROUTES.CREATE_DETAILS) {
+   //       this.props.firebase
+   //          .program(this.state.pid)
+   //          .update({
+   //             instruction: instructionUpdateOrdered,
+   //          })
+   //          .then(() => this.setState({ program: programUpdate }))
+   //          .catch(error => this.setState({ error }))
+   //       // console.log(this.state.pid, instructionUpdate);
+   //       // this.setState({ program: programUpdate });
+   //    }
 
-      if (this.props.match.path === ROUTES.PROGRAM_DETAILS) {
-         this.props.firebase
-            .workouts(this.state.uid)
-            .child(this.state.pid)
-            .update({
-               instruction: instructionUpdateOrdered,
-            })
-            .then(() => this.setState({ program: programUpdate }))
-            .catch(error => this.setState({ error }))
-         // console.log(this.state.pid, this.state.uid, instructionUpdate);
-         // this.setState({ program: programUpdate });
-      }
+   //    if (this.props.match.path === ROUTES.PROGRAM_DETAILS) {
+   //       this.props.firebase
+   //          .workouts(this.state.uid)
+   //          .child(this.state.pid)
+   //          .update({
+   //             instruction: instructionUpdateOrdered,
+   //          })
+   //          .then(() => this.setState({ program: programUpdate }))
+   //          .catch(error => this.setState({ error }))
+   //       // console.log(this.state.pid, this.state.uid, instructionUpdate);
+   //       // this.setState({ program: programUpdate });
+   //    }
 
-      this.hideModal();
-   }
+   //    this.hideModal();
+   // }
 
    showModal = () => {
       this.setState({ show: true });
@@ -172,6 +178,30 @@ class ProgramItemBase extends Component {
 
    hideModal = () => {
       this.setState({ show: false });
+   }
+
+   showTitleModal = () => {
+      this.setState({ showTitle: true });
+   }
+
+   hideTitleModal = () => {
+      this.setState({ showTitle: false });
+   }
+
+   editTitle = (e) => {
+      e.preventDefault();
+      if (this.state.uid) {
+         this.props.firebase
+            .workouts(this.state.uid)
+            .child(this.state.pid)
+            .update({ "title": this.state.title })
+            .then(this.hideTitleModal);
+      } else {
+         this.props.firebase
+            .program(this.state.pid)
+            .update({ "title": this.state.title })
+            .then(this.hideTitleModal);
+      }
    }
 
    componentDidMount() {
@@ -187,27 +217,26 @@ class ProgramItemBase extends Component {
    }
 
    render() {
-      const { program, loading, pid, uid, tasks, error } = this.state;
+      const { program, loading, pid, uid, tasks, error, showTitle, title } = this.state;
       // console.log(pid, uid);
-      console.log(program);
+      // console.log(program);
 
       return (
-         <div>
-            {/* <Modal show={this.state.show} handleClose={this.hideModal} heading={"Add Phase"}>
-               <Form onSubmit={this.handleAddPhase}>
+         <>
+            <Modal handleClose={this.hideTitleModal} show={showTitle} heading={"Change Title?"} >
+               <Form onSubmit={this.editTitle}>
                   <Form.Group>
-                     <Form.Label>Phase Title</Form.Label>
+                     <Form.Label>Program Title</Form.Label>
                      <Form.Control
                         type="text"
-                        name="phaseTitle"
-                        value={this.state.phaseTitle}
                         onChange={this.handleChange}
+                        name="title"
+                        value={title}
                      />
                   </Form.Group>
-
-                  <Button type="submit">Add Phase</Button>
+                  <Button type="submit">Save Title Edit</Button>
                </Form>
-            </Modal> */}
+            </Modal>
 
             {loading && <div>Loading ...</div>}
             {error && <Alert>{error.message}</Alert>}
@@ -218,14 +247,13 @@ class ProgramItemBase extends Component {
                   {/* <BreadCrumbs history={this.props.history} /> */}
                   <span className="d-flex justify-content-between align-items-center">
                      <h3 className="color-white">{program.title}</h3>
-                     {/* <Button className="mr-2" onClick={this.handleGoBack}>Back To Programs</Button> */}
+                     <Button variant="outline-warning" onClick={this.showTitleModal}>Edit</Button>
                   </span>
 
-                  <ProgramTable showModal={this.showModal} tasks={tasks} program={program} pid={pid} uid={uid} path={this.props.match.path} />
+                  <ProgramTable showModal={this.showTitleModal} tasks={tasks} program={program} pid={pid} uid={uid} path={this.props.match.path} />
                </>
             )}
-            {/* <Button onClick={this.showModal}>Add Phase</Button> */}
-         </div>
+         </>
       );
    }
 }

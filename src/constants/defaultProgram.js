@@ -46,4 +46,4 @@ const PROGRAM = (timestamp) => {
    })
 }
 
-export { PROGRAM, INITIALJSON };
+export { PROGRAM, INITIALJSON, INITIALJSONRECOVERY };
