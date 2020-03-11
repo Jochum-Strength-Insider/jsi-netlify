@@ -195,12 +195,23 @@ class ProgramItemBase extends Component {
             .workouts(this.state.uid)
             .child(this.state.pid)
             .update({ "title": this.state.title })
-            .then(this.hideTitleModal);
+            .then(() => {
+               this.props.firebase
+                  .workoutId(this.state.uid, this.state.pid)
+                  .update({ title: this.state.title })
+                  .then(this.hideTitleModal);
+            });
+
       } else {
          this.props.firebase
             .program(this.state.pid)
             .update({ "title": this.state.title })
-            .then(this.hideTitleModal);
+            .then(() => {
+               this.props.firebase
+                  .programId(this.state.pid)
+                  .update({ "title": this.state.title })
+                  .then(this.hideTitleModal);
+            })
       }
    }
 
