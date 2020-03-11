@@ -1,38 +1,19 @@
-// const INITIAL_DATA = [
-//    { 'Number': '1A', "Description": "Monster Walks", "Link": "https://www.youtube.com/watch?v=f82AjZFtIns", 'Sets': 1, 'Reps': "30 Minutes", 'Rest': ":0" },
-//    { 'Number': '2A', "Description": "Tricep Push Down", "Link": "https://www.youtube.com/watch?v=MpVBmrLNhjc", 'Sets': 3,'Reps': 43, 'Rest': ":0" },
-//    { 'Number': '2C', "Description": "Side Plank with T Spine Rotations", "Link": "https://youtu.be/ci_v3iwDP-w", 'Sets': 3,'Reps': 10, 'Rest': ":0" },
-//    { 'Number': '3A', "Description": "Band Pull Aparts", "Link": "https://www.youtube.com/watch?v=781ImK2YCIM", 'Sets': 3, 'Reps': 20, 'Rest': ":0" },
-//    { 'Number': '3B', "Description": "Birdog Rows", "Link": "https://youtu.be/3hJLSyj0n5c", 'Sets': 1, 'Reps': "5 (3-3-0 Tempo)", 'Rest': "2:00" }
-// ];
-
-// Nested...
-// const INITIAL_DATA_With_Tracking = [
-//    { 'Number': '1A', "Description": "Monster Walks", "Link": "https://www.youtube.com/watch?v=f82AjZFtIns", 'Sets': 1, 'Reps': "30 Minutes", 'Rest': ":0", "tracking": { "week 1": "1", "week 2": "1", "week 3": "1" } },
-//    { 'Number': '2A', "Description": "Tricep Push Down", "Link": "https://www.youtube.com/watch?v=MpVBmrLNhjc", 'Sets': 3, 'Reps': 43, 'Rest': ":0", "tracking": { "week 1": "2", "week 2": "2", "week 3": "2" } },
-//    { 'Number': '2C', "Description": "Side Plank with T Spine Rotations", "Link": "https://youtu.be/ci_v3iwDP-w", 'Sets': 3, 'Reps': 10, 'Rest': ":0", "tracking": { "week 1": "3", "week 2": "3", "week 3": "3" } },
-//    { 'Number': '3A', "Description": "Band Pull Aparts", "Link": "https://www.youtube.com/watch?v=781ImK2YCIM", 'Sets': 3, 'Reps': 20, 'Rest': ":0", "tracking": { "week 1": "4", "week 2": "4", "week 3": "4" } },
-//    { 'Number': '3B', "Description": "Birdog Rows", "Link": "https://youtu.be/3hJLSyj0n5c", 'Sets': 1, 'Reps': "5 (3-3-0 Tempo)", 'Rest': "2:00", "tracking": { "week 1": "5", "week 2": "5", "week 3": "5" } }
-// ];
-
-const INITIAL_DATA_WITH_TEMPO = [
-   { 'Number': '1A', "Description": "Monster Walks", "Link": "https://www.youtube.com/watch?v=f82AjZFtIns", 'Sets': 1, 'Reps': "30 Minutes", "Tempo": "-", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
-   { 'Number': '2A', "Description": "Tricep Push Down", "Link": "https://www.youtube.com/watch?v=MpVBmrLNhjc", 'Sets': 3, 'Reps': 43, "Tempo": "-", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
-   { 'Number': '2C', "Description": "Side Plank with T Spine Rotations", "Link": "https://youtu.be/ci_v3iwDP-w", 'Sets': 3, 'Reps': 10, "Tempo": "-", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
-   { 'Number': '3A', "Description": "Band Pull Aparts", "Link": "https://www.youtube.com/watch?v=781ImK2YCIM", 'Sets': 3, 'Reps': 20, "Tempo": "-", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
-   { 'Number': '3B', "Description": "Birdog Rows", "Link": "https://youtu.be/3hJLSyj0n5c", 'Sets': 1, 'Reps': "5", "Tempo": "3-3-0", 'Rest': "2:00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } }
+const INITIAL_DATA = [
+   { 'Number': '1A', "Description": "Bear Crawl Push Ups", "Link": "oh15GpmbPsc", 'Sets': 3, 'Reps': "10", "Tempo": "3-3-0", 'Rest': ":30", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '1B', "Description": "Posterior Fly Renegade Row", "Link": "SIyCmNmQQQ8", 'Sets': 3, 'Reps': "5 Each", "Tempo": "3-3-0", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '1C', "Description": "Underhand Band Pull Aparts", "Link": "CPSry57YJKk", 'Sets': 3, 'Reps': 10, "Tempo": "3-3-0", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '2A', "Description": "Bear Crawl Rows", "Link": "lxni89la-VA", 'Sets': 3, 'Reps': 5, "Tempo": "3-3-0", 'Rest': "2:00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '2B', "Description": "Medball Squeeze Push Ups", "Link": "iBNI2UBEJek", 'Sets': 3, 'Reps': 7, "Tempo": "3-3-0", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '2C', "Description": "90 Degree Partial Range Bench", "Link": "8KP5XPr6qLM", 'Sets': 4, 'Reps': "4,3,2,1", "Tempo": "(3-3-0), (4-4-0), (5-5-0), (10-10,0)", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '3A', "Description": "Offset Incline Press", "Link": "rXG1QORHISc", 'Sets': 3, 'Reps': "5 Each", "Tempo": "3-3-0", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '3B', "Description": "Cable Machine Pull Overs", "Link": "jD0W3z83QZI", 'Sets': 3, 'Reps': 5, "Tempo": "3-3-0", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '3C', "Description": "Ninja Pull Up Holds", "Link": "s5rfcwLTMSQ", 'Sets': 3, 'Reps': "20 Seconds Each", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '4A', "Description": "Steering Wheels", "Link": "887kfH3BQkI", 'Sets': 3, 'Reps': "7 Each Way", "Tempo": "-", 'Rest': "1:00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '4B', "Description": "Tic Tocs", "Link": "wRPakIrhHkQ", 'Sets': 3, 'Reps': "7 Each", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '4C', "Description": "Uneven 90 Degree Bottoms Up Carry", "Link": "j_E5xxo-1kc", 'Sets': 3, 'Reps': "30 Seconds Each", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
 ];
 
-// const INITIAL_DATA_WITH_TEMPO= [
-//    { 'Number': '1A', "Description": "Monster Walks", "Link": "https://www.youtube.com/watch?v=f82AjZFtIns", 'Sets': 1, 'Reps': "30 Minutes", "Tempo": "5-3-3", 'Rest': ":0", "tracking": { "week 1": "1", "week 2": "1", "week 3": "1" } },
-//    { 'Number': '2A', "Description": "Tricep Push Down", "Link": "https://www.youtube.com/watch?v=MpVBmrLNhjc", 'Sets': 3, 'Reps': 43, "Tempo": "5-3-3", 'Rest': ":0", "tracking": { "week 1": "2", "week 2": "2", "week 3": "2" } },
-//    { 'Number': '2C', "Description": "Side Plank with T Spine Rotations", "Link": "https://youtu.be/ci_v3iwDP-w", 'Sets': 3, 'Reps': 10, "Tempo": "5-3-3", 'Rest': ":0", "tracking": { "week 1": "3", "week 2": "3", "week 3": "3" } },
-//    { 'Number': '3A', "Description": "Band Pull Aparts", "Link": "https://www.youtube.com/watch?v=781ImK2YCIM", 'Sets': 3, 'Reps': 20, "Tempo": "5-3-3", 'Rest': ":0", "tracking": { "week 1": "4", "week 2": "4", "week 3": "4" } },
-//    { 'Number': '3B', "Description": "Birdog Rows", "Link": "https://youtu.be/3hJLSyj0n5c", 'Sets': 1, 'Reps': "5", "Tempo": "3-3-0", 'Rest': "2:00", "tracking": { "week 1": "5", "week 2": "5", "week 3": "5" } }
-// ];
-
-const INITIALJSON = JSON.stringify(INITIAL_DATA_WITH_TEMPO);
-
+const INITIALJSON = JSON.stringify(INITIAL_DATA);
 const PROGRAM = (timestamp) => {
    return ({
       instruction: {
@@ -41,16 +22,9 @@ const PROGRAM = (timestamp) => {
             "day 2": { title: "Max Effort Lower", exercises: INITIALJSON },
             "day 3": { title: "Max Effort Middle", exercises: INITIALJSON },
             "day 4": { title: "Max Effort Under", exercises: INITIALJSON },
-            // "day 1": INITIALJSON,
-            // "day 2": INITIALJSON,
-            // "day 3": INITIALJSON,
-            // "day 4": INITIALJSON,
             "completed": "false",
          },
          "Recovery Days": {
-            // "day 1": INITIALJSON,
-            // "day 2": INITIALJSON,
-            // "day 3": INITIALJSON,
             "day 1": { title: "Recovery Day 1", exercises: INITIALJSON },
             "day 2": { title: "Recovery Day 2", exercises: INITIALJSON },
             "day 3": { title: "Recovery Day 3", exercises: INITIALJSON },

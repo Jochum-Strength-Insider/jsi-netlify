@@ -95,7 +95,7 @@ class TaskForm extends Component {
             </Form.Group>
 
             <Form.Group controlId="formLink">
-               <Form.Label>Link</Form.Label>
+               <Form.Label>Youtube Embed Link</Form.Label>
                <Form.Control
                   type="text"
                   placeholder="Url"

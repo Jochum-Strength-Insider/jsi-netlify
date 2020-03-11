@@ -189,8 +189,7 @@ class ProgramItemBase extends Component {
    render() {
       const { program, loading, pid, uid, tasks, error } = this.state;
       // console.log(pid, uid);
-
-      // console.log(program);
+      console.log(program);
 
       return (
          <div>

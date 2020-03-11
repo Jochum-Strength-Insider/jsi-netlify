@@ -132,7 +132,7 @@ class Tasks extends Component {
    }
 
    // Add all tasks to firebase
-   // import EXERCISES from '../../constants/exercises';
+   // import EXERCISES from '../../constants/exercisesEmbed';
    // EXERCISES.forEach(each => this.onCreateTask(each));
    // onCreateTask = (task) => {
    //    this.props.firebase
