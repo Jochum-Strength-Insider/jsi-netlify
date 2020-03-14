@@ -40,8 +40,10 @@ class ManageUserTablesBase extends Component {
 
       this.state = {
          workoutIndex: 0,
-         workoutids: [],
+         // workoutids: [],
          workoutsList: [],
+         program: null,
+         key: null,
          // allLoaded: false,
       }
    }
@@ -82,14 +84,14 @@ class ManageUserTablesBase extends Component {
    // }
 
    saveTracking = (authUser, workoutId) => (phase, day, row, item) => {
-      // console.log(phase, day, row, item);
+      // console.log(authUser, workoutId, phase, day, item);
 
       return this.props.firebase
          .workout(authUser, workoutId)
          .child("instruction")
          .child(phase)
          .update({ [day]: item })
-
+         .catch(error => this.setState({ error }));
    }
 
    componentDidMount() {
@@ -121,9 +123,32 @@ class ManageUserTablesBase extends Component {
                this.setState({ workoutids: workoutids })
             }
          });
+
+      this.props.firebase
+         .workoutIds(this.props.authUser.uid)
+         .orderByChild("active")
+         .equalTo(true)
+         .limitToLast(1)
+         .once("value", (snap) => {
+            const idObject = snap.val();
+            if (idObject) {
+               const key = Object.keys(idObject)[0];
+
+               this.props.firebase.workout(this.props.authUser.uid, key)
+
+                  .on("value", snapshot => {
+                     const workoutObject = snapshot.val();
+
+                     if (workoutObject) {
+                        this.setState({ program: workoutObject, key })
+                     }
+                  });
+            }
+         }).catch(error => this.setState({ error }));
    }
 
    componentWillUnmount() {
+      this.props.firebase.workout(this.props.authUser.uid, this.state.key);
       this.props.firebase.workouts(this.props.authUser.uid).off();
       this.props.firebase.workoutIds(this.props.authUser.uid).off();
    }
@@ -132,9 +157,10 @@ class ManageUserTablesBase extends Component {
       // Figure this out. It feels pretty hacky.
 
       const { authUser } = this.props;
+      const { program, key } = this.state;
       // const { workoutIndex, workoutids, workoutsList } = this.state;
-      const { workoutIndex, workoutsList } = this.state;
-      const program = workoutsList[workoutIndex] ? workoutsList[workoutIndex] : null;
+      // const { workoutIndex, workoutsList } = this.state;
+      // const program = workoutsList[workoutIndex] ? workoutsList[workoutIndex] : null;
       const date = program ? new Date(program.createdAt) : new Date();
       const dateString = date.toLocaleDateString("en-US");
       // const index = program ? workoutids.indexOf(program.workoutId) : 0;
@@ -142,7 +168,7 @@ class ManageUserTablesBase extends Component {
       // console.log(program);
       return (
          <div>
-            {program && (
+            {program ? (
                <>
                   <h1 className="color-white">Program: {program.title}</h1>
                   <h4 className="color-white">{dateString}</h4>
@@ -150,9 +176,11 @@ class ManageUserTablesBase extends Component {
                      <button onClick={this.previousWorkout} disabled={index === 0}>←</button>
                      <button onClick={this.nextWorkout} disabled={index === workoutids.length - 1}>→</button>
                   </div> */}
-                  <UserTable program={program} uid={authUser.uid} saveTracking={this.saveTracking(authUser.uid, program.workoutId)} />
+                  <UserTable program={program} uid={authUser.uid} saveTracking={this.saveTracking(authUser.uid, key)} />
                </>
-            )}
+            ) : (
+                  <h1>No programs</h1>
+               )}
          </div>
       )
    }

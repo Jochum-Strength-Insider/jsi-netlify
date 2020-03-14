@@ -70,8 +70,9 @@ class UserListBase extends Component {
                   {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
 
                   {users.map(user => {
-                     const date = new Date(user.programDate);
-                     const dateString = date.toLocaleDateString("en-US");
+
+                     const date = user.programDate ? new Date(user.programDate).toLocaleDateString("en-US") : "-";
+                     // const dateString = date.toLocaleDateString("en-US");
                      // const timeString = date.toLocaleTimeString("en-US");
 
                      return (
@@ -82,7 +83,7 @@ class UserListBase extends Component {
                               <Row className="text-center">
                                  <Col xs="12" sm="12" md="3" lg="3">{user.username}</Col>
                                  <Col xs="12" sm="12" md="3" lg="3">{user.email}</Col>
-                                 <Col xs="12" sm="12" md="3" lg="3">{dateString}</Col>
+                                 <Col xs="12" sm="12" md="3" lg="3">{date}</Col>
 
                                  <Col xs="12" sm="12" md="3" lg="3">
                                     <Link

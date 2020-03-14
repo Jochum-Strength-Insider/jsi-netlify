@@ -2,15 +2,15 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 
-const CustomToggle = ({ children, eventKey }) => {
-   const decoratedOnClick = useAccordionToggle(eventKey);
+const CustomToggle = ({ children, eventKey, variant, size }) => {
+   const handleClicked = useAccordionToggle(eventKey);
 
    return (
       <Button
-         variant="link"
+         variant={variant}
          type="button"
-         onClick={decoratedOnClick}
-         size="lg"
+         onClick={handleClicked}
+         size={size}
       >
          {children}
       </Button>

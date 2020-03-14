@@ -76,7 +76,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
             <Col className="xs-visible" xs={6}>Link</Col>
             {/* <Col xs={6} sm={1}><a href={Link}>Link</a></Col> */}
             <Col xs={6} sm={1}>
-               <Button variant="link" onClick={setModal(Description, Link)}>Link</ Button>
+               <Button style={{ padding: 0, margin: 0 }} variant="link" onClick={setModal(Description, Link)}>Link</ Button>
             </Col>
             <Col className="xs-visible" xs={12}><hr></hr></Col>
 
@@ -89,7 +89,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
             <Col className="xs-visible" xs={12}><hr></hr></Col>
 
             <Col className="xs-visible" xs={6}>Tempo</Col>
-            <Col xs={6} sm={1}>{Tempo}</Col>
+            <Col xs={6} sm={2}>{Tempo}</Col>
             <Col className="xs-visible" xs={12}><hr></hr></Col>
 
             <Col className="xs-visible" xs={6}>Rest</Col>
@@ -97,13 +97,13 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
             <Col className="xs-visible" xs={12}><hr></hr></Col>
 
             {/* <Col className="xs-visible" xs={6}>Track</Col> */}
-            <Col xs={12} sm={2}>
-               <Button className="text-center"
+            <Col xs={12} sm={1}>
+               <Button className="text-center sm-block"
                   onClick={() => setOpen(!open)}
                   aria-controls="example-collapse-text"
                   aria-expanded={open}
                   variant="outline-primary"
-                  block
+               // block
                >
                   Track
             </Button>

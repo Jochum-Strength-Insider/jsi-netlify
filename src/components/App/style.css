@@ -86,6 +86,14 @@ html {
 }
 
 
+
+@media (max-width: 576px) {
+   .sm-block {
+      width: 100%;
+      display: block;
+   }
+}
+
 @media (min-width: 576px) {
    .xs-visible {
       display: none;

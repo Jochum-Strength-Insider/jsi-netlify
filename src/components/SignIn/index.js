@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 
@@ -15,6 +15,14 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
+const schema = yup.object({
+   email: yup.string().email()
+      .required('Required'),
+   password: yup.string().required("Required")
+});
 
 const SignInPage = () => (
    <>
@@ -23,7 +31,7 @@ const SignInPage = () => (
             <Col className="d-flex justify-content-center align-items-center">
                <Card style={{ width: "30rem" }}>
                   <Card.Header className="text-center">
-                     <h1>Sign In To Your Account</h1>
+                     <h1>Sign In</h1>
                      <SignUpLink />
                   </Card.Header>
                   <Card.Body>
@@ -41,137 +49,177 @@ const SignInPage = () => (
    </>
 );
 
-const INITIAL_STATE = {
-   email: '',
-   password: '',
-   error: null,
-};
+// const ERROR_CODE_ACCOUNT_EXISTS =
+//    'auth/account-exists-with-different-credential';
 
-const ERROR_CODE_ACCOUNT_EXISTS =
-   'auth/account-exists-with-different-credential';
+// const ERROR_MSG_ACCOUNT_EXISTS = `
+//   An account with an E-Mail address to
+//   this social account already exists. Try to login from
+//   this account instead and associate your social accounts on
+//   your personal account page.
+// `;
 
-const ERROR_MSG_ACCOUNT_EXISTS = `
-  An account with an E-Mail address to
-  this social account already exists. Try to login from
-  this account instead and associate your social accounts on
-  your personal account page.
-`;
+const SignInFormBase = ({ firebase, history }) => {
+   const [error, setError] = useState(null);
 
-class SignInFormBase extends Component {
-   constructor(props) {
-      super(props);
+   const onSubmit = (values, { resetForm }) => {
+      const { email, password } = values;
 
-      this.state = { ...INITIAL_STATE };
-   }
-
-   onSubmit = event => {
-      const { email, password } = this.state;
-
-      this.props.firebase
+      firebase
          .doSignInWithEmailAndPassword(email, password)
          .then(() => {
-            this.setState({ ...INITIAL_STATE });
-            this.props.history.push(ROUTES.LANDING);
+            setError(null);
+            resetForm({});
+            history.push(ROUTES.LANDING);
          })
          .catch(error => {
-            this.setState({ error });
+            setError(error);
          });
-
-      event.preventDefault();
    };
 
-   onChange = event => {
-      this.setState({ [event.target.name]: event.target.value });
-   };
+   return (
+      // <Form onSubmit={this.onSubmit}>
+      //    <Form.Group controlId="formBasicEmail">
+      //       <Form.Label>Email Address</Form.Label>
+      //       <Form.Control
+      //          required
+      //          name="email"
+      //          value={email}
+      //          onChange={this.onChange}
+      //          type="text"
+      //          placeholder="Email Address"
+      //       />
+      //    </Form.Group>
 
-   render() {
-      const { email, password, error } = this.state;
+      //    <Form.Group controlId="formBasicPasswordOne">
+      //       <Form.Label>Password</Form.Label>
+      //       <Form.Control
+      //          name="password"
+      //          value={password}
+      //          onChange={this.onChange}
+      //          type="password"
+      //          placeholder="Password"
+      //       />
+      //    </Form.Group>
 
-      const isInvalid = password === '' || email === '';
+      //    <PasswordForgetLink />
 
-      return (
-         <Form onSubmit={this.onSubmit}>
-            <Form.Group controlId="formBasicEmail">
-               <Form.Label>Email Address</Form.Label>
-               <Form.Control
-                  required
-                  name="email"
-                  value={email}
-                  onChange={this.onChange}
-                  type="text"
-                  placeholder="Email Address"
-               />
-            </Form.Group>
+      //    <Button disabled={isInvalid} block variant="primary" type="submit">
+      //       Sign In
+      //    </Button>
 
-            <Form.Group controlId="formBasicPasswordOne">
-               <Form.Label>Password</Form.Label>
-               <Form.Control
-                  name="password"
-                  value={password}
-                  onChange={this.onChange}
-                  type="password"
-                  placeholder="Password"
-               />
-            </Form.Group>
+      //    {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
+      // </Form>
 
-            <PasswordForgetLink />
+      <Formik
+         validationSchema={schema}
+         onSubmit={onSubmit}
+         initialValues={{
+            email: '',
+            password: '',
+         }}
+      >
+         {({
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            values,
+            touched,
+            isValid,
+            errors,
+         }) => (
+               <Form noValidate onSubmit={handleSubmit}>
+                  <Form.Group md="4" controlId="validationFormikUsername">
+                     <Form.Label>Email</Form.Label>
+                     <Form.Control
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        value={values.email}
+                        onChange={handleChange}
+                        isInvalid={!!errors.email}
+                     />
+                     <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                     </Form.Control.Feedback>
+                  </Form.Group>
 
-            <Button disabled={isInvalid} block variant="primary" type="submit">
-               Sign In
-            </Button>
+                  <Form.Group md="4" >
+                     <Form.Label>Password</Form.Label>
+                     <Form.Control
+                        type="password"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        isInvalid={!!errors.password}
+                        placeholder="Password"
+                     />
+                     <Form.Control.Feedback type="invalid">
+                        {errors.password}
+                     </Form.Control.Feedback>
+                  </Form.Group>
 
-            {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
-         </Form>
-      );
-   }
+                  <PasswordForgetLink />
+
+                  <hr></hr>
+
+                  <Button block variant="primary" type="submit">
+                     Sign In
+                     </Button>
+
+                  {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
+               </Form>
+            )}
+      </Formik>
+   );
 }
 
 // eslint-disable-next-line
-class SignInGoogleBase extends Component {
-   constructor(props) {
-      super(props);
+// class SignInGoogleBase extends Component {
+//    constructor(props) {
+//       super(props);
 
-      this.state = { error: null };
-   }
+//       this.state = { error: null };
+//    }
 
-   onSubmit = event => {
-      this.props.firebase
-         .doSignInWithGoogle()
-         .then(socialAuthUser => {
-            // Create a user in your Firebase Realtime Database too
-            return this.props.firebase.user(socialAuthUser.user.uid).set({
-               username: socialAuthUser.user.displayName,
-               email: socialAuthUser.user.email,
-               roles: [],
-            });
-         })
-         .then(() => {
-            this.setState({ error: null });
-            this.props.history.push(ROUTES.LANDING);
-         })
-         .catch(error => {
-            if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-               error.message = ERROR_MSG_ACCOUNT_EXISTS;
-            }
+//    onSubmit = event => {
+//       this.props.firebase
+//          .doSignInWithGoogle()
+//          .then(socialAuthUser => {
+//             // Create a user in your Firebase Realtime Database too
+//             return this.props.firebase.user(socialAuthUser.user.uid).set({
+//                username: socialAuthUser.user.displayName,
+//                email: socialAuthUser.user.email,
+//                roles: [],
+//             });
+//          })
+//          .then(() => {
+//             this.setState({ error: null });
+//             this.props.history.push(ROUTES.LANDING);
+//          })
+//          .catch(error => {
+//             if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+//                error.message = ERROR_MSG_ACCOUNT_EXISTS;
+//             }
 
-            this.setState({ error });
-         });
+//             this.setState({ error });
+//          });
 
-      event.preventDefault();
-   };
+//       event.preventDefault();
+//    };
 
-   render() {
-      const { error } = this.state;
+//    render() {
+//       const { error } = this.state;
 
-      return (
-         <Form onSubmit={this.onSubmit}>
-            <Button type="submit" block>Sign In with Google</Button>
+//       return (
+//          <Form onSubmit={this.onSubmit}>
+//             <Button type="submit" block>Sign In with Google</Button>
 
-            {error && <p>{error.message}</p>}
-         </Form>
-      );
-   }
-}
+//             {error && <p>{error.message}</p>}
+//          </Form>
+//       );
+//    }
+// }
 
 const SignInLink = ({ color }) => (
    <p style={{ color: color }}>

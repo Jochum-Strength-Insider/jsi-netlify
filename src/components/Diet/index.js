@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
 
-const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "Breakfast", Lunch: "Lunch", Dinner: "Dinner" } };
+const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "Breakfast", Lunch: "Lunch", Dinner: "Dinner", "Snack 1": "", "Snack 2": "", "Snack 3": "", } };
 
 //TODO
 // Should I have it scroll through the idsList and use startAt(index).endAt(index) instead???
@@ -285,7 +285,54 @@ class Diet extends Component {
                                           />
                                        </InputGroup>
                                     </Form.Group>
-
+                                    <Form.Group as={Col} xs={12} md={size} key={`${index}-Snack-1`} className="align-self-center">
+                                       <InputGroup className="mb-3">
+                                          <InputGroup.Prepend>
+                                             <InputGroup.Text id={`basic-addon-meal-${index + 1}`}>Snack 1</InputGroup.Text>
+                                          </InputGroup.Prepend>
+                                          <Form.Control
+                                             disabled={pastDate}
+                                             aria-label={"Snack1-tracking"}
+                                             type="text"
+                                             value={diet[index].meals["Snack 1"]}
+                                             name={"Snack 1"}
+                                             onChange={this.onChange(index)}
+                                             aria-describedby={`basic-addon-meal-${index + 1}`}
+                                          />
+                                       </InputGroup>
+                                    </Form.Group>
+                                    <Form.Group as={Col} xs={12} md={size} key={`${index}-Snack-2`} className="align-self-center">
+                                       <InputGroup className="mb-3">
+                                          <InputGroup.Prepend>
+                                             <InputGroup.Text id={`basic-addon-meal-${index + 1}`}>Snack 2</InputGroup.Text>
+                                          </InputGroup.Prepend>
+                                          <Form.Control
+                                             disabled={pastDate}
+                                             aria-label={"Snack2-tracking"}
+                                             type="text"
+                                             value={diet[index].meals["Snack 2"]}
+                                             name={"Snack 2"}
+                                             onChange={this.onChange(index)}
+                                             aria-describedby={`basic-addon-meal-${index + 1}`}
+                                          />
+                                       </InputGroup>
+                                    </Form.Group>
+                                    <Form.Group as={Col} xs={12} md={size} key={`${index}-Snack-3`} className="align-self-center">
+                                       <InputGroup className="mb-3">
+                                          <InputGroup.Prepend>
+                                             <InputGroup.Text id={`basic-addon-meal-${index + 1}`}>Snack 3</InputGroup.Text>
+                                          </InputGroup.Prepend>
+                                          <Form.Control
+                                             disabled={pastDate}
+                                             aria-label={"Snack3-tracking"}
+                                             type="text"
+                                             value={diet[index].meals["Snack 3"]}
+                                             name={"Snack 3"}
+                                             onChange={this.onChange(index)}
+                                             aria-describedby={`basic-addon-meal-${index + 1}`}
+                                          />
+                                       </InputGroup>
+                                    </Form.Group>
 
                                     {
                                        !pastDate && (

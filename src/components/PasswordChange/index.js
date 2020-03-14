@@ -1,126 +1,114 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+import { Formik } from 'formik';
+import * as yup from 'yup';
 import { withFirebase } from '../Firebase';
 
-// Is there a better logic for this so the password error does show right away?
-// Low priority
+const schema = yup.object({
+   passwordOne: yup.string()
+      .min(7, 'Must be at least 7 characters!')
+      .max(24, 'Too Long!')
+      .required('Required'),
+   passwordTwo: yup.string()
+      .oneOf([yup.ref('passwordOne'), null], 'Passwords must match')
+      .required("Required")
+});
 
-class PasswordChangeForm extends Component {
-   constructor(props) {
-      super(props);
+const PasswordChangeForm = ({ firebase }) => {
 
-      this.state = {
-         passwordOne: '',
-         passwordTwo: '',
-         error: null,
-         alert: false
-      };
-   }
+   const [error, setError] = useState(null);
+   const [alert, setAlert] = useState(false);
 
-   onAlert = () => {
-      this.setState({ alert: true });
+   const onAlert = () => {
+      setAlert(true)
       setTimeout(() => {
-         this.setState({ alert: false });
+         setAlert(false);
       }, 2000);
    }
 
-   onSubmit = (e) => {
-      e.preventDefault();
-      // e.stopPropagation();
+   const onSubmit = (values, { resetForm }) => {
+      firebase
+         .doPasswordUpdate(values.passwordOne)
+         .then(() => {
+            setError(null);
+            onAlert();
+            resetForm();
+         })
+         .catch(error => {
+            setError(error);
+         });
+   };
 
-      const { passwordOne, passwordTwo } = this.state;
-      const isValid = (passwordOne === passwordTwo) && (passwordOne !== '') && (passwordOne.length > 7);
-      if (isValid === false) {
-         e.preventDefault();
-         e.stopPropagation();
-      } else {
-         this.props.firebase
-            .doPasswordUpdate(passwordOne)
-            .then(() => {
-               this.setState({
+   return (
+      <Card className="my-3">
+         <Card.Header>Change Password</Card.Header>
+         <Card.Body>
+            <Formik
+               validationSchema={schema}
+               onSubmit={onSubmit}
+               initialValues={{
                   passwordOne: '',
                   passwordTwo: '',
-                  error: null,
-               });
-               this.onAlert();
-            })
-            .catch(error => {
-               this.setState({ error });
-            });
-      }
-   };
+               }}
+            >
+               {({
+                  handleSubmit,
+                  handleChange,
+                  handleBlur,
+                  values,
+                  touched,
+                  isValid,
+                  errors,
+               }) => (
+                     <Form noValidate onSubmit={handleSubmit}>
+                        <Form.Group md="4">
+                           <Form.Label>Password</Form.Label>
+                           <Form.Control
+                              type="password"
+                              aria-describedby="inputGroupPrepend"
+                              name="passwordOne"
+                              value={values.passwordOne}
+                              onChange={handleChange}
+                              isInvalid={!!errors.passwordOne}
+                           />
+                           <Form.Control.Feedback type="invalid">
+                              {errors.passwordOne}
+                           </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group md="4" controlId="validationFormik02">
+                           <Form.Label>Confirm Password</Form.Label>
+                           <Form.Control
+                              type="password"
+                              name="passwordTwo"
+                              value={values.passwordTwo}
+                              onChange={handleChange}
+                              isInvalid={!!errors.passwordTwo}
+                           />
 
-   onChange = event => {
-      this.setState({ [event.target.name]: event.target.value });
-   };
+                           <Form.Control.Feedback type="invalid">
+                              {errors.passwordTwo}
+                           </Form.Control.Feedback>
+                        </Form.Group>
+                        <hr></hr>
+                        {
+                           alert
+                              ? <Button type="submit" variant="success" block>Password Reset!</Button>
+                              : <Button type="submit" variant="primary" block>Reset Password</Button>
+                        }
 
-   render() {
-      const { passwordOne, passwordTwo, error, alert } = this.state;
+                        {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
+                     </Form>
+                  )}
+            </Formik>
 
-      const isValid = (passwordOne === passwordTwo) && (passwordOne !== '') && (passwordOne.length > 7);
-
-      return (
-         <Card className="my-3">
-            <Card.Header>Change Password</Card.Header>
-            <Card.Body>
-               <Form validated={isValid} onSubmit={this.onSubmit}>
-                  <Form.Group controlId="formPasswordOne">
-                     <Form.Label>New Password</Form.Label>
-                     <Form.Control
-                        name="passwordOne"
-                        value={passwordOne}
-                        onChange={this.onChange}
-                        type="password"
-                        required
-                        placeholder="New Password"
-
-                        isInvalid={passwordOne.length < 7}
-                     />
-                     <Form.Control.Feedback type="invalid">Passwords Must Have 7 Or More Characters</Form.Control.Feedback>
-                  </Form.Group>
-
-                  <Form.Group controlId="formPasswordTwo">
-                     <Form.Label>Confirm Password</Form.Label>
-                     <Form.Control
-                        name="passwordTwo"
-                        value={passwordTwo}
-                        onChange={this.onChange}
-                        type="password"
-                        required
-                        placeholder="Confirm New Password"
-                        isInvalid={passwordOne !== passwordTwo}
-                     />
-
-                     <Form.Control.Feedback type="invalid">Passwords Must Match</Form.Control.Feedback>
-
-                  </Form.Group>
-
-                  {/* <Button variant="primary" type="submit">
-                     Reset Password
-                  </Button> */}
-
-                  <hr></hr>
-                  {
-                     alert
-                        ? <Button onClick={this.handleSave} type="submit" variant="success" block>Password Reset!</Button>
-                        : <Button onClick={this.handleSave} type="submit" variant="primary" block>Reset Password</Button>
-                  }
-
-                  {/* {error && <p>{error.message}</p>} */}
-                  {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
-
-               </Form>
-            </Card.Body>
-         </Card>
-
-
-      );
-   }
+         </Card.Body>
+      </Card>
+   );
 }
 
 export default withFirebase(PasswordChangeForm);

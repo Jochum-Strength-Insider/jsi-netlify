@@ -15,7 +15,6 @@ import SignOutButton from '../SignOut';
 
 import { withFirebase } from '../Firebase';
 import UserInfo from '../UserInfo';
-import { PasswordForgetForm } from '../PasswordForget';
 import PasswordChangeForm from '../PasswordChange';
 
 const SIGN_IN_METHODS = [
@@ -45,7 +44,6 @@ const AccountPage = () => {
       <>
          <h1 className="color-white">Account</h1>
          <UserInfo authUser={authUser} />
-         <PasswordForgetForm />
          <PasswordChangeForm />
          <SignOutButton />
          {/* <LoginManagement authUser={authUser} /> */}
@@ -109,7 +107,7 @@ class LoginManagementBase extends Component {
       return (
          <div>
             Sign In Methods:
-        <ul>
+            <ul>
                {SIGN_IN_METHODS.map(signInMethod => {
                   const onlyOneLeft = activeSignInMethods.length === 1;
                   const isEnabled = activeSignInMethods.includes(

@@ -57,7 +57,7 @@ class WorkoutListBase extends Component {
             // const title = this.state.programIds[key].title;
             // console.log(this.state.programIds);
 
-            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: timestamp } });
+            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: timestamp, active: false } });
             this.props.firebase.user(currentUserId).update({ programDate: timestamp });
             this.props.history.push(`/admin/${currentUserId}/${key}`);
          })
@@ -66,7 +66,6 @@ class WorkoutListBase extends Component {
 
    handleCreateNewWorkout = (e) => {
       e.preventDefault();
-
       // const currentUserId = this.state.user.uid;
       const currentUserId = this.props.match.params.id;
 
@@ -80,7 +79,7 @@ class WorkoutListBase extends Component {
       this.props.firebase.workouts(currentUserId).push(programData)
          .then((snap) => {
             const key = snap.key;
-            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programData.title, createdAt: timestamp } });
+            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programData.title, createdAt: timestamp, active: false } });
             this.props.firebase.user(currentUserId).update({ programDate: timestamp });
             this.props.history.push(`/admin/${currentUserId}/${key}`);
          })
@@ -120,8 +119,27 @@ class WorkoutListBase extends Component {
       })
    }
 
-   componentDidMount() {
+   // Should this be a property on the user object or left in the workoutId???
+   // Set program date when it's activated?
+   setActive = (wid) => () => {
+      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+      console.log(wid, "setActive");
+      const workoutIdsArray = Object.keys(this.state.workoutIds);
+      workoutIdsArray.forEach(each => {
+         this.props.firebase.workoutId(this.props.match.params.id, each).update({ active: false });
+      })
 
+      this.props.firebase.workoutId(this.props.match.params.id, wid).update({ active: true });
+      this.props.firebase.user(this.props.match.params.id).update({ programDate: timestamp });
+   };
+
+   setInactive = (wid) => () => {
+      console.log(wid, "setInactive");
+      this.props.firebase.workoutId(this.props.match.params.id, wid).update({ active: false });
+      this.props.firebase.user(this.props.match.params.id).update({ programDate: null });
+   };
+
+   componentDidMount() {
       //Refactor??? Might have multiple sources of information between workoutIds and user.workouts / etc...
 
       //listen for update to users workouts
@@ -247,7 +265,6 @@ class WorkoutListBase extends Component {
                         </Form.Group>
                         <Button type="submit">Add From Template</Button>
                      </Form>
-
                   </Modal>
 
                   <ListGroup className="mb-5">
@@ -268,20 +285,23 @@ class WorkoutListBase extends Component {
                                     <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
                                        <>
                                           <span>
-                                             <strong>Title:</strong> {workoutIds[workoutId].title}
-                                             <strong className="ml-2">Date:</strong> {dateString}
-                                          </span>
-
-                                          <span>
+                                             {/* <strong>Title:</strong> {workoutIds[workoutId].title} */}
+                                             <strong>Title:</strong>
                                              <Link
-                                                className="ml-2 btn btn-outline-primary"
+                                                className="ml-2 btn btn-link"
                                                 to={{
                                                    pathname: `${ROUTES.ADMIN}/${this.props.match.params.id}/${workoutId}`,
                                                    state: { user },
                                                 }}
                                              >
-                                                Details
+                                                {workoutIds[workoutId].title}
                                              </Link>
+
+                                             <strong className="ml-2">Date:</strong> {dateString}
+                                          </span>
+
+                                          <span>
+                                             {!workoutIds[workoutId].active ? <Button variant="outline-warning" onClick={this.setActive(workoutId)}>Activate</Button> : <Button variant="outline-success" onClick={this.setInactive(workoutId)}>Current</Button>}
                                              <Button className="ml-2" variant="outline-danger"
                                                 type="button"
                                                 onClick={() => this.setRemoveKey(workoutId)}

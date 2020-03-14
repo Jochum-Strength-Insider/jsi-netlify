@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
@@ -6,98 +6,100 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const PasswordForgetPage = () => (
    <div>
-      <h1 className="color-white">PasswordForget</h1>
+      <h1 className="color-white">Forgot Password?</h1>
       <PasswordForgetForm />
    </div>
 );
 
+const schema = yup.object({
+   email: yup.string().email()
+      .required('Required'),
 
-class PasswordForgetFormBase extends Component {
-   constructor(props) {
-      super(props);
+});
 
-      this.state = {
-         email: '',
-         error: null,
-         alert: false,
-      };
-   }
+const PasswordForgetFormBase = ({ firebase }) => {
+   const [error, setError] = useState(null);
+   const [alert, setAlert] = useState(false);
 
-   onAlert = () => {
-      this.setState({ alert: true });
+   const onAlert = () => {
+      setAlert(true)
       setTimeout(() => {
-         this.setState({ alert: false });
+         setAlert(false);
       }, 2000);
    }
 
-   onSubmit = event => {
-      event.preventDefault();
-      const { email } = this.state;
-
-      this.props.firebase
-         .doPasswordReset(email)
+   const onSubmit = (values, { resetForm }) => {
+      firebase
+         .doPasswordReset(values.email)
          .then(() => {
-            this.setState({
-               email: '',
-               error: null
-            });
-            this.onAlert();
+            setError(null);
+            onAlert();
+            resetForm({});
          })
          .catch(error => {
-            this.setState({ error });
+            setError(error);
          });
-      // console.log(email);
    };
 
-   onChange = event => {
-      const { name, value } = event.target;
-      this.setState({ [name]: value });
-   };
+   return (
+      <Card className="my-3">
+         <Card.Header>Forgot Password</Card.Header>
+         <Card.Body>
+            <Formik
+               validationSchema={schema}
+               onSubmit={onSubmit}
+               initialValues={{
+                  email: '',
+               }}
+            >
+               {({
+                  handleSubmit,
+                  handleChange,
+                  handleBlur,
+                  values,
+                  touched,
+                  isValid,
+                  errors,
+               }) => (
+                     <Form noValidate onSubmit={handleSubmit}>
+                        <Form.Group md="4" controlId="validationFormikUsername">
+                           <Form.Label>Email</Form.Label>
+                           <Form.Control
+                              type="email"
+                              name="email"
+                              placeholder="Email Address"
+                              value={values.email}
+                              onChange={handleChange}
+                              isInvalid={!!errors.email}
+                           />
+                           <Form.Control.Feedback type="invalid">
+                              {errors.email}
+                           </Form.Control.Feedback>
+                        </Form.Group>
 
-   render() {
-      const { error, email, alert } = this.state;
+                        <hr></hr>
+                        {
+                           alert
+                              ? <Button type="submit" variant="success" block>New Password Requested!</Button>
+                              : <Button type="submit" variant="primary" block>Request New Password</Button>
+                        }
 
-      return (
-         <Card className="my-3">
-            <Card.Header>Change Password</Card.Header>
-            <Card.Body>
+                        {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
+                     </Form>
+                  )}
+            </Formik>
 
-               <Form onSubmit={this.onSubmit}>
-                  <Form.Group controlId="formEmailRequest">
-                     <Form.Label>Email Address</Form.Label>
-                     <Form.Control
-                        name="email"
-                        value={email}
-                        onChange={this.onChange}
-                        type="email"
-                        placeholder="Email Address"
-                        required
-                     />
-                  </Form.Group>
-
-                  {/* <Button variant="primary" type="submit">
-                     Request New Password
-                  </Button> */}
-                  <hr></hr>
-                  {
-                     alert
-                        ? <Button onClick={this.handleSave} type="submit" variant="success" block>New Password Requested!</Button>
-                        : <Button onClick={this.handleSave} type="submit" variant="primary" block>Request New Password</Button>
-                  }
-
-                  {error && <p>{error.message}</p>}
-                  {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
-
-               </Form>
-            </Card.Body>
-         </Card>
-      );
-   }
+         </Card.Body>
+      </Card>
+   );
 }
 
 const PasswordForgetLink = () => (

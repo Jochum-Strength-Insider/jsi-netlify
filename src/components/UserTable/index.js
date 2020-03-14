@@ -98,7 +98,7 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
 
                      return (
                         <ListGroup.Item className="no-top-border" key={daysIndex}>
-                           <CustomToggle eventKey={daysIndex}>{dayCapitalized}</CustomToggle>
+                           <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
                            <Accordion.Collapse eventKey={daysIndex}>
                               <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
                            </Accordion.Collapse>
@@ -150,9 +150,9 @@ const DayTable = ({ day, dayTitle, updateSaveTracking }) => {
                   <Col xs={12} sm={1}>Link</Col>
                   <Col xs={12} sm={1}>Sets</Col>
                   <Col xs={12} sm={2}>Reps</Col>
-                  <Col xs={12} sm={1}>Tempo</Col>
+                  <Col xs={12} sm={2}>Tempo</Col>
                   <Col xs={12} sm={1}>Rest</Col>
-                  <Col xs={12} sm={2}>Track</Col>
+                  <Col xs={12} sm={1}>Track</Col>
                </Row>
             </ ListGroup.Item >
 
