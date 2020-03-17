@@ -13,7 +13,6 @@ import AdminPage from '../Admin';
 import CreateProgram from '../CreateProgram';
 import CreateTask from '../CreateTask';
 import TrackingPage from '../TrackingPage';
-// import FormPractice from '../FormPractice';
 import Footer from '../Footer';
 
 import * as ROUTES from '../../constants/routes';
@@ -30,7 +29,6 @@ const App = () => (
 
       <Container fluid className="pt-4" style={{ minHeight: "93vh" }}>
          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-         {/* <Route exact path={"/"} component={FormPractice} /> */}
          <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
          <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
          <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />

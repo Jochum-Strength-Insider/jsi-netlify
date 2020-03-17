@@ -7,12 +7,13 @@
 1. emails don't need to be verified if austin sets them up.
 1. copy the landing page.
 1. Messages page - part of navbar with message badges.
-1. try the react-datagrid library.
 1. use a proper date management tool on the tracking page.
 1. So users can check in when they want to and put the date they want to check in on.
 1. Leave a check in today button as well as check in on date.
 1. How do you add the dates in between check in dates so the graph displays appropriately?
 1. Restyle graph.
+1. Restyle admin table. - Responsiveness? Where to put tracking data? Copy list group from usertable?
+1. style no workouts message into component on programs page.
 
 ### UI
 1. consistent headings on each page

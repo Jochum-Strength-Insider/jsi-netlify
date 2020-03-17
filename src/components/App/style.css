@@ -24,9 +24,11 @@ body::-webkit-scrollbar {
    color: white;
 }
 
-html {
+/* responsive text */
+/* html {
    font-size: calc(.5rem + 1vw);
-}
+   font-size: min(calc(.5rem + 1vw), 2rem);
+} */
 
 /* .color-white {
    color: white;
@@ -171,4 +173,69 @@ html {
    .lg-visible {
       display: flex;
    } */
+}
+
+.data-grid-control {
+   background-color: rgba(173, 216, 230, 0);
+   border: none;
+   width: 100%;
+   /* min-width: 11vw; */
+}
+
+table .vertical-align-center {
+   vertical-align: middle;
+}
+
+.dth-number {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-description {
+   min-width: 15rem;
+   width: 15rem;
+}
+
+.dth-link {
+   min-width: 9rem;
+   width: 9rem;
+}
+
+.dth-sets {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-reps {
+   min-width: 9rem;
+   width: 9rem;
+}
+
+.dth-tempo {
+   min-width: 9rem;
+   width: 9rem;
+}
+
+.dth-rest {
+   min-width: 6rem;
+   width: 6rem;
+}
+
+.dth-w1 {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-w2 {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-w3 {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-btn {
+   width: 45px;
 }

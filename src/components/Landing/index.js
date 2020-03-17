@@ -2,14 +2,10 @@ import React, { useEffect } from 'react';
 
 import { SignInLink } from '../SignIn';
 
-// import Jumbotron from 'react-bootstrap/Jumbotron';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-// import Col from 'react-bootstrap/Col';
 import logo from '../../images/logo.png';
-
-
 
 const Landing = () => {
 

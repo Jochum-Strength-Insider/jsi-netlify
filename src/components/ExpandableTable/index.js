@@ -291,82 +291,101 @@ class ExpandableTable extends React.Component {
 
                                  <Accordion.Collapse eventKey={idx}>
                                     <>
-                                       <Table responsive striped hover size="sm" borderless>
+                                       <Table responsive bordered striped size="sm" >
                                           <thead>
-                                             <tr>
-                                                {headers.map(header => {
-                                                   if (header === "Number") {
-                                                      return <th style={{ width: "3rem" }} className="text-center" key={header}>#</th>
-                                                   } else {
-                                                      return <th className="text-center" key={header}>{header}</th>
-                                                   }
-                                                })}
-                                                <th className="text-center">x</th>
+                                             <tr style={{ position: "relative" }}>
+                                                <th className="text-center  dth-number">#</th>
+                                                <th className="text-center  dth-description">Description</th>
+                                                <th className="text-center  dth-link">Link</th>
+                                                <th className="text-center  dth-sets">Sets</th>
+                                                <th className="text-center  dth-reps">Reps</th>
+                                                <th className="text-center  dth-tempo">Tempo</th>
+                                                <th className="text-center  dth-rest">Rest</th>
+                                                <th className="text-center  dth-w1">w1</th>
+                                                <th className="text-center  dth-w2">w2</th>
+                                                <th className="text-center  dth-w3">w3</th>
+                                                <th className="text-center  dth-btn">x</th>
                                              </tr>
                                           </thead>
 
                                           <tbody>
                                              {dayRows.map((item, rowIndex) => (
-
                                                 <tr id="addr0" key={rowIndex}>
-
-                                                   {
-                                                      headers.map((header, idx) => {
-                                                         if (header === "Description") {
-                                                            return (
-                                                               <td key={`${header}-${idx}`}>
-                                                                  <SearchBar suggestions={this.props.tasks} initialValue={item[header]} onChange={this.handleSearchChange(rowIndex, key, header)} />
-                                                               </td>
-                                                            )
-                                                         } else if (header === "Number" || header === "Sets") {
-                                                            return (
-                                                               <td key={`${header}-${idx}`}>
-                                                                  <input
-                                                                     style={{ width: "3rem" }}
-                                                                     type="text"
-                                                                     name={header}
-                                                                     value={item[header]}
-                                                                     onChange={this.handleChange(rowIndex, key)}
-                                                                     className="form-control"
-                                                                  />
-                                                               </td>
-                                                            )
-                                                         } else if (header === "Rest") {
-                                                            return (
-                                                               <td key={`${header}-${idx}`}>
-                                                                  <input
-                                                                     style={{ width: "4rem" }}
-                                                                     type="text"
-                                                                     name={header}
-                                                                     value={item[header]}
-                                                                     onChange={this.handleChange(rowIndex, key)}
-                                                                     className="form-control"
-                                                                  />
-                                                               </td>
-                                                            )
-                                                         } else {
-                                                            return (
-                                                               <td key={`${header}-${idx}`}>
-                                                                  <input
-                                                                     type="text"
-                                                                     name={header}
-                                                                     value={item[header]}
-                                                                     onChange={this.handleChange(rowIndex, key)}
-                                                                     className="form-control"
-                                                                  />
-                                                               </td>
-                                                            )
-                                                         }
-                                                      })
-                                                   }
-
                                                    <td>
-                                                      <button
-                                                         className="btn btn-outline-danger btn-sm"
+                                                      <input
+                                                         type="text"
+                                                         name="Number"
+                                                         value={item["Number"]}
+                                                         onChange={this.handleChange(rowIndex, key)}
+                                                         className="data-grid-control"
+                                                      />
+                                                   </td>
+                                                   <td>
+                                                      <SearchBar suggestions={this.props.tasks} initialValue={item["Description"]} onChange={this.handleSearchChange(rowIndex, key, "Description")} />
+                                                   </td>
+                                                   <td>
+                                                      <input
+                                                         type="text"
+                                                         name="Link"
+                                                         value={item["Link"]}
+                                                         onChange={this.handleChange(rowIndex, key)}
+                                                         className="data-grid-control"
+                                                      />
+                                                   </td>
+                                                   <td>
+                                                      <input
+                                                         type="text"
+                                                         name="Sets"
+                                                         value={item["Sets"]}
+                                                         onChange={this.handleChange(rowIndex, key)}
+                                                         className="data-grid-control"
+                                                      />
+                                                   </td>
+                                                   <td>
+                                                      <input
+                                                         type="text"
+                                                         name="Reps"
+                                                         value={item["Reps"]}
+                                                         onChange={this.handleChange(rowIndex, key)}
+                                                         className="data-grid-control"
+                                                      />
+                                                   </td>
+                                                   <td>
+                                                      <input
+                                                         type="text"
+                                                         name="Tempo"
+                                                         value={item["Tempo"]}
+                                                         onChange={this.handleChange(rowIndex, key)}
+                                                         className="data-grid-control"
+                                                      />
+                                                   </td>
+                                                   <td>
+                                                      <input
+                                                         type="text"
+                                                         name="Rest"
+                                                         value={item["Rest"]}
+                                                         onChange={this.handleChange(rowIndex, key)}
+                                                         className="data-grid-control"
+                                                      />
+                                                   </td>
+
+                                                   <td className="vertical-align-center">
+                                                      {item["tracking"]["week 1"]}
+                                                   </td>
+                                                   <td className="vertical-align-center">
+                                                      {item["tracking"]["week 2"]}
+                                                   </td>
+                                                   <td className="vertical-align-center">
+                                                      {item["tracking"]["week 3"]}
+                                                   </td>
+
+                                                   <td className="vertical-align-center">
+                                                      <Button
+                                                         variant={"outline-danger"}
                                                          onClick={this.handleRemoveSpecificRow(rowIndex, key)}
                                                       >
                                                          x
-                                             </button>
+                                             </Button>
                                                    </td>
                                                 </tr>
                                              ))}

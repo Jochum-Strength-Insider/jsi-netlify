@@ -5,7 +5,6 @@ import { compose } from 'recompose';
 import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 
-
 import { AuthUserContext } from '../Session';
 import Modal from '../Modal';
 import Diet from '../Diet';
@@ -15,7 +14,9 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
-import { Line } from 'react-chartjs-2';
+import { Scatter } from 'react-chartjs-2';
+import moment from 'moment';
+// import { Line } from 'react-chartjs-2';
 // import { Bar } from 'react-chartjs-2';
 
 const data = {
@@ -91,12 +92,11 @@ class WeightBase extends Component {
 
    addWeightIn = (e) => {
       e.preventDefault();
-      const now = new Date();
-      const nowString = now.toLocaleDateString("en-US");
-      // const date = "2/24/2020";
-      // const oldDate = new Date(date).getTime();
       const timestamp = this.props.firebase.serverValue.TIMESTAMP;
-      if (this.state.lastDate === nowString) {
+      const nowString = moment().format("MMM D");
+      const lastDatestring = moment(this.state.lastDate).format("MMM D");
+
+      if (lastDatestring === nowString) {
          this.setState({ invalid: true })
       } else {
          console.log("Checked In Added", this.state.weight)
@@ -117,12 +117,11 @@ class WeightBase extends Component {
       //    { date: new Date("2/26/2020").getTime(), weight: "184" },
       //    { date: new Date("2/27/2020").getTime(), weight: "183" },
       //    { date: new Date("2/28/2020").getTime(), weight: "182" },
-      //    { date: new Date("2/19/2020").getTime(), weight: "181" },
       //    { date: new Date("3/1/2020").getTime(), weight: "180" },
       //    { date: new Date("3/2/2020").getTime(), weight: "179" },
-      //    { date: new Date("3/3/2020").getTime(), weight: "178" },
-      //    { date: new Date("3/4/2020").getTime(), weight: "177" },
-      //    { date: new Date("3/5/2020").getTime(), weight: "176" },
+      //    { date: new Date("3/6/2020").getTime(), weight: "178" },
+      //    { date: new Date("3/8/2020").getTime(), weight: "177" },
+      //    { date: new Date("3/15/2020").getTime(), weight: "176" },
       // ]
       // quickAdd.map(key => this.props.firebase.weighIn(this.props.authUser.uid).push(key));
 
@@ -143,13 +142,15 @@ class WeightBase extends Component {
                   );
 
                const weightData = dataArray.map(item => item.weight);
-               const dateLabels = dataArray.map(item => {
+               const dateLabels = dataArray.map((item, idx) => {
                   const date = new Date(item.date);
-                  return date.toLocaleDateString("en-US");
+                  // return moment(date, "MMM D");
+                  return moment(date).startOf("day");
                });
 
                const chartData = {
                   labels: dateLabels,
+                  // labels: ["Scatter"],
                   datasets: [
                      {
                         ...this.dataSetOptions,
@@ -170,6 +171,16 @@ class WeightBase extends Component {
                   animation: {
                      animateScale: true
                   },
+                  tooltips: {
+                     callbacks: {
+                        label: function (tooltipItem, data) {
+                           const label = data.labels[tooltipItem.index];
+                           const toDay = label.format("MMM D");
+                           const weight = tooltipItem.yLabel;
+                           return toDay + ": " + weight + "lbs";
+                        }
+                     }
+                  },
                   scales: {
                      yAxes: [{
                         ticks: {
@@ -185,15 +196,20 @@ class WeightBase extends Component {
                         }
                      }],
                      xAxes: [{
+                        // time settings
+                        type: 'time',
+                        time: {
+                           unit: 'day',
+                           unitStepSize: 1,
+                           displayFormats: {
+                              day: 'MMM D'
+                           }
+                        },
                         scaleLabel: {
                            display: true,
-                           labelString: 'Date'
+                           labelString: 'Date',
                         },
-                        // ticks: {
-                        //    autoSkip: false,
-                        //    maxRotation: 33,
-                        //    minRotation: 33
-                        // }
+                        distribution: 'linear',
                      }]
                   }
                }
@@ -238,7 +254,7 @@ class WeightBase extends Component {
                <Card.Body>
                   {this.state.error && <Alert variant="warning">{this.state.error.message}</Alert>}
 
-                  <Line
+                  <Scatter
                      data={this.state.data}
                      options={this.state.options}
                   />
@@ -246,7 +262,6 @@ class WeightBase extends Component {
                   <Form className="mt-3">
                      <Button block variant="outline-primary" onClick={this.showModal}>Add Weigh In</Button>
                   </Form>
-                  {/* Users can add a weigh in whenever they want... */}
                </Card.Body>
             </Card>
          </>

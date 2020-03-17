@@ -213,7 +213,8 @@ class Autocomplete extends Component {
          <Fragment>
 
             <input
-               className="form-control"
+               // className="form-control"
+               className="data-grid-control"
                type="text"
                onChange={handleChange}
                onKeyDown={onKeyDown}
@@ -224,9 +225,7 @@ class Autocomplete extends Component {
                onBlur={blurInput}
             />
             {suggestionsListComponent}
-
          </Fragment>
-
       );
    }
 }
