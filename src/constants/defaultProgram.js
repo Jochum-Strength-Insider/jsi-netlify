@@ -15,9 +15,15 @@ const INITIAL_DATA = [
 
 const INITIAL_DATA_RECOVERY = [
    { 'Number': '1A', "Description": "Band Pull Aparts", "Link": "781ImK2YCIM", 'Sets': 3, 'Reps': "15", "Tempo": "-", 'Rest': ":30", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
-   { 'Number': '1B', "Description": "Goblet Squat with Prying", "Link": "XhUAlz3w80U", 'Sets': 3, 'Reps': "1-", "Tempo": "0-3-0", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '1B', "Description": "Goblet Squat with Prying", "Link": "XhUAlz3w80U", 'Sets': 3, 'Reps': "1", "Tempo": "0-3-0", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
    { 'Number': '1C', "Description": "Face Pulls", "Link": "pRLmJta5dZc", 'Sets': 3, 'Reps': 10, "Tempo": "-", 'Rest': ":0", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
    { 'Number': '1D', "Description": "DB Curls", "Link": "nZzBsbpiO8I", 'Sets': 3, 'Reps': 20, "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+]
+const INITIAL_DATA_EMPTY = [
+   { 'Number': '1', "Description": "", "Link": "", 'Sets': "3", 'Reps': "5", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '2', "Description": "", "Link": "", 'Sets': "3", 'Reps': "5", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '3', "Description": "", "Link": "", 'Sets': "3", 'Reps': "5", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
+   { 'Number': '4', "Description": "", "Link": "", 'Sets': "3", 'Reps': "5", "Tempo": "-", 'Rest': ":00", "tracking": { "week 1": "", "week 2": "", "week 3": "" } },
 ]
 
 const INITIALJSON = JSON.stringify(INITIAL_DATA);
@@ -46,4 +52,25 @@ const PROGRAM = (timestamp) => {
    })
 }
 
-export { PROGRAM, INITIALJSON, INITIALJSONRECOVERY };
+const PROGRAM_EMPTY = (timestamp) => {
+   return ({
+      instruction: {
+         "Phase": {
+            "day 1": { title: "Max Effort Upper", exercises: JSON.stringify(INITIAL_DATA_EMPTY) },
+            "completed": "false",
+         },
+         "Recovery Days": {
+            "day 1": { title: "Recovery Day 1", exercises: JSON.stringify(INITIAL_DATA_EMPTY) },
+            "completed": "false",
+         },
+      },
+      createdAt: timestamp,
+      notes: "",
+      completed: false,
+      title: "Default"
+   })
+}
+
+
+
+export { PROGRAM, PROGRAM_EMPTY, INITIALJSON, INITIALJSONRECOVERY };

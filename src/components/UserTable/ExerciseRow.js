@@ -105,8 +105,8 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                   variant="outline-primary"
                // block
                >
-                  Track
-            </Button>
+                  {open ? <span>&#9650;</span> : <span>&#9660;</span>}
+               </Button>
             </Col>
          </Row>
 
@@ -144,8 +144,8 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                   <Form.Group as={Col} xs={12} md={3}>
                      {
                         alert
-                           ? <Button block type="submit" className="mx-1 px-5" variant="outline-success">Saved!</Button>
-                           : <Button block type="submit" className="mx-1 px-5" variant="outline-primary">Save</Button>
+                           ? <Button block type="submit" variant="outline-success">Saved!</Button>
+                           : <Button block type="submit" variant="outline-primary">Save</Button>
                      }
                   </Form.Group>
                </Form.Row>

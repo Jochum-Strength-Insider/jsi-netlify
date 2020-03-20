@@ -1,4 +1,5 @@
 import React from 'react';
+import "./style.css"
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
@@ -49,6 +50,13 @@ class ExpandableTable extends React.Component {
          select: "end",
          alert: false,
          error: null,
+         //separate into own component
+         currentCell: {
+            dayIndex: "day 1",
+            rowIndex: 0,
+            name: 'Description',
+            number: "1A"
+         }
       }
    }
 
@@ -198,6 +206,14 @@ class ExpandableTable extends React.Component {
       this.setState({ select: index })
    }
 
+   setCurrentCell = (dayIndex, rowIndex, name, number) => () => {
+      this.setState({ currentCell: { dayIndex, rowIndex, name, number } })
+   }
+
+   resetCurrentCell = (dayIndex) => () => {
+      this.setState({ currentCell: { dayIndex: dayIndex, rowIndex: 0, name: "Description", number: "1A" } })
+   }
+
    handleAddDay = (e) => {
       e.preventDefault();
       const { days, dayTitle } = this.state;
@@ -210,13 +226,12 @@ class ExpandableTable extends React.Component {
          exercises: JSON.parse(INITIALJSON),
          title: dayTitle,
       };
-
       this.setState({ days: daysUpdate });
       this.hideModal();
    }
 
    render() {
-      const { days, show, dayTitle, alert, error } = this.state;
+      const { days, show, dayTitle, alert, error, currentCell } = this.state;
       // const { days, completed, show, dayTitle } = this.state;
       // const completeColor = (completed === "true") ? "green" : "black";
       // const { phase } = this.props;
@@ -274,16 +289,17 @@ class ExpandableTable extends React.Component {
                         const dayRows = days[key].exercises;
                         const title = days[key].title;
                         const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + title;
+                        const fromUserDetail = this.props.path === ROUTES.PROGRAM_DETAILS;
+
                         // const tasksList = Object.keys(this.props.tasks);
 
                         return (
-
                            <React.Fragment key={idx}>
 
                               <ListGroup.Item className="overrideBorder no-top-border" key={idx}>
 
                                  <span className="d-flex justify-content-between align-items-center">
-                                    <CustomToggle eventKey={idx} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
+                                    <CustomToggle onClick={this.resetCurrentCell(idx)} eventKey={idx} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
                                     <span>
                                        <Button variant="outline-danger" onClick={this.showModal(key)}>Remove</Button>
                                     </span>
@@ -291,6 +307,29 @@ class ExpandableTable extends React.Component {
 
                                  <Accordion.Collapse eventKey={idx}>
                                     <>
+                                       <Form onSubmit={(e) => e.preventDefault()}>
+                                          <Form.Group>
+
+                                             <div className="lineContainer">
+                                                <div className="cell left input-group-text">
+                                                   <span>{currentCell.number}</span>
+                                                   <span>{currentCell.name}</span>
+                                                </div>
+                                                {currentCell.name === "Description" ? (
+                                                   <SearchBar className="cell" suggestions={this.props.tasks} initialValue={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex]["Description"] : ""} onChange={this.handleSearchChange(currentCell.rowIndex, currentCell.dayIndex, "Description")} />
+                                                ) : (
+                                                      <Form.Control
+                                                         type="text"
+                                                         className="cell right"
+                                                         name={currentCell.name}
+                                                         value={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex][currentCell.name] : ""}
+                                                         onChange={this.handleChange(currentCell.rowIndex, currentCell.dayIndex)}
+                                                      />
+                                                   )}
+                                             </div>
+                                          </Form.Group>
+                                       </Form>
+
                                        <Table responsive bordered striped size="sm" >
                                           <thead>
                                              <tr style={{ position: "relative" }}>
@@ -301,9 +340,15 @@ class ExpandableTable extends React.Component {
                                                 <th className="text-center  dth-reps">Reps</th>
                                                 <th className="text-center  dth-tempo">Tempo</th>
                                                 <th className="text-center  dth-rest">Rest</th>
-                                                <th className="text-center  dth-w1">w1</th>
-                                                <th className="text-center  dth-w2">w2</th>
-                                                <th className="text-center  dth-w3">w3</th>
+                                                {fromUserDetail && (
+                                                   <>
+                                                      <th className="text-center  dth-w1">w1</th>
+                                                      <th className="text-center  dth-w2">w2</th>
+                                                      <th className="text-center  dth-w3">w3</th>
+                                                   </>
+                                                )
+                                                }
+
                                                 <th className="text-center  dth-btn">x</th>
                                              </tr>
                                           </thead>
@@ -317,10 +362,11 @@ class ExpandableTable extends React.Component {
                                                          name="Number"
                                                          value={item["Number"]}
                                                          onChange={this.handleChange(rowIndex, key)}
+                                                         onClick={this.setCurrentCell(key, rowIndex, "Number", item["Number"])}
                                                          className="data-grid-control"
                                                       />
                                                    </td>
-                                                   <td>
+                                                   <td className="data-grid-control" onClick={this.setCurrentCell(key, rowIndex, "Description", item["Number"])}>
                                                       <SearchBar suggestions={this.props.tasks} initialValue={item["Description"]} onChange={this.handleSearchChange(rowIndex, key, "Description")} />
                                                    </td>
                                                    <td>
@@ -329,6 +375,7 @@ class ExpandableTable extends React.Component {
                                                          name="Link"
                                                          value={item["Link"]}
                                                          onChange={this.handleChange(rowIndex, key)}
+                                                         onClick={this.setCurrentCell(key, rowIndex, "Link", item["Number"])}
                                                          className="data-grid-control"
                                                       />
                                                    </td>
@@ -338,6 +385,7 @@ class ExpandableTable extends React.Component {
                                                          name="Sets"
                                                          value={item["Sets"]}
                                                          onChange={this.handleChange(rowIndex, key)}
+                                                         onClick={this.setCurrentCell(key, rowIndex, "Sets", item["Number"])}
                                                          className="data-grid-control"
                                                       />
                                                    </td>
@@ -347,6 +395,8 @@ class ExpandableTable extends React.Component {
                                                          name="Reps"
                                                          value={item["Reps"]}
                                                          onChange={this.handleChange(rowIndex, key)}
+                                                         onClick={this.setCurrentCell(key, rowIndex, "Reps", item["Number"])}
+
                                                          className="data-grid-control"
                                                       />
                                                    </td>
@@ -356,6 +406,8 @@ class ExpandableTable extends React.Component {
                                                          name="Tempo"
                                                          value={item["Tempo"]}
                                                          onChange={this.handleChange(rowIndex, key)}
+                                                         onClick={this.setCurrentCell(key, rowIndex, "Tempo", item["Number"])}
+
                                                          className="data-grid-control"
                                                       />
                                                    </td>
@@ -365,19 +417,25 @@ class ExpandableTable extends React.Component {
                                                          name="Rest"
                                                          value={item["Rest"]}
                                                          onChange={this.handleChange(rowIndex, key)}
+                                                         onClick={this.setCurrentCell(key, rowIndex, "Rest", item["Number"])}
                                                          className="data-grid-control"
                                                       />
                                                    </td>
 
-                                                   <td className="vertical-align-center">
-                                                      {item["tracking"]["week 1"]}
-                                                   </td>
-                                                   <td className="vertical-align-center">
-                                                      {item["tracking"]["week 2"]}
-                                                   </td>
-                                                   <td className="vertical-align-center">
-                                                      {item["tracking"]["week 3"]}
-                                                   </td>
+                                                   {fromUserDetail && (
+                                                      <>
+                                                         <td className="vertical-align-center">
+                                                            {item["tracking"]["week 1"]}
+                                                         </td>
+                                                         <td className="vertical-align-center">
+                                                            {item["tracking"]["week 2"]}
+                                                         </td>
+                                                         <td className="vertical-align-center">
+                                                            {item["tracking"]["week 3"]}
+                                                         </td>
+                                                      </>
+                                                   )
+                                                   }
 
                                                    <td className="vertical-align-center">
                                                       <Button
@@ -390,7 +448,6 @@ class ExpandableTable extends React.Component {
                                                 </tr>
                                              ))}
                                           </tbody>
-
                                        </Table>
 
                                        <Form onSubmit={this.handleAddRow(key)}>

@@ -110,6 +110,10 @@ class Firebase {
          }
       });
 
+   // *** Info / Connected *** //
+
+   info = () => this.db.ref(".info/connected");
+
    // *** User API ***
 
    user = uid => this.db.ref(`users/${uid}`);

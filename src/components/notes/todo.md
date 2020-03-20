@@ -7,24 +7,19 @@
 1. emails don't need to be verified if austin sets them up.
 1. copy the landing page.
 1. Messages page - part of navbar with message badges.
-1. use a proper date management tool on the tracking page.
+1. Leave a check in today button as well as check in on date?
 1. So users can check in when they want to and put the date they want to check in on.
-1. Leave a check in today button as well as check in on date.
-1. How do you add the dates in between check in dates so the graph displays appropriately?
-1. Restyle graph.
 1. Restyle admin table. - Responsiveness? Where to put tracking data? Copy list group from usertable?
-1. style no workouts message into component on programs page.
+1. if there is no localstorage for tasks in the searchbar make sure to load them.
 
 ### UI
 1. consistent headings on each page
 1. style footer
 1. fix time to first paint. Aka have items prerendered to dom without dummy data. while the real data is being store. Aka limit { data && <element>} patterns.
-1. style no exercises page.
 
 ### Minor
 1. Rename days in createProgram ???
 1. Add exercise id to the tracking. So if down the line they can track based on exercise?
-1. Cache the userProgram so it's accessible offline.
 1. Look into firebase offline use.
 1. add redirects if the authUser id in the route doens't exist???
 1. same for home page??

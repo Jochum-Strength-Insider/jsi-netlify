@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 import "./style.css";
+import Form from 'react-bootstrap/Form'
 
 // I need to pass the value back up into the component so it can still be saved to the database.
 // Can i just use the header[item] as a value prop? and pass it back up through onChange after onClick / enter.
@@ -81,14 +82,12 @@ class Autocomplete extends Component {
    }
 
    blurInput = (e) => {
-      // If there's no timeout the blur triggers before the onClick
-      setTimeout(() => {
-         this.setState({
-            activeSuggestion: null,
-            filteredSuggestions: [],
-            showSuggestions: false,
-         });
-      }, 100);
+
+      this.setState({
+         activeSuggestion: null,
+         filteredSuggestions: [],
+         showSuggestions: false,
+      });
    }
 
    // Got it working how I wanted. Keep trying to break it!
@@ -199,7 +198,7 @@ class Autocomplete extends Component {
                      }
 
                      return (
-                        <li ref={this.state.refsList[index]} className={className} key={index} onClick={onClick(suggestion.e, suggestion.l)}>
+                        <li ref={this.state.refsList[index]} className={className} key={index} onMouseDown={onClick(suggestion.e, suggestion.l)}>
                            {suggestion.e}
                         </li>
                      );
@@ -211,15 +210,12 @@ class Autocomplete extends Component {
 
       return (
          <Fragment>
-
-            <input
-               // className="form-control"
-               className="data-grid-control"
+            <Form.Control
                type="text"
+               className="cell right"
                onChange={handleChange}
                onKeyDown={onKeyDown}
                name={this.props.header}
-               // value={userInput}
                value={this.props.initialValue}
                ref={this.myRef}
                onBlur={blurInput}

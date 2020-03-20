@@ -3,7 +3,7 @@ body {
 }
 
 input {
-   border: 1px solid #999;
+   border: 1px solid #ced4da;
    padding: 0.5rem;
    width: 100px;
 }
@@ -14,9 +14,9 @@ input {
 }
 
 .suggestions {
-   border: 1px solid #999;
+   border: 1px solid #ced4da;
    background-color: white;
-   border-top-width: 0;
+   /* border-top-width: 0; */
    list-style: none;
    margin-top: 0;
    max-height: 143px;
@@ -54,5 +54,5 @@ input {
 }
 
 .suggestions li:not(:last-of-type) {
-   border-bottom: 1px solid #999;
+   border-bottom: 1px solid #ced4da;
 }

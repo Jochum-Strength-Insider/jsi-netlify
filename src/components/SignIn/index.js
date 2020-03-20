@@ -45,7 +45,6 @@ const SignInPage = () => (
             </Col>
          </Row>
       </Container>
-
    </>
 );
 
@@ -78,38 +77,6 @@ const SignInFormBase = ({ firebase, history }) => {
    };
 
    return (
-      // <Form onSubmit={this.onSubmit}>
-      //    <Form.Group controlId="formBasicEmail">
-      //       <Form.Label>Email Address</Form.Label>
-      //       <Form.Control
-      //          required
-      //          name="email"
-      //          value={email}
-      //          onChange={this.onChange}
-      //          type="text"
-      //          placeholder="Email Address"
-      //       />
-      //    </Form.Group>
-
-      //    <Form.Group controlId="formBasicPasswordOne">
-      //       <Form.Label>Password</Form.Label>
-      //       <Form.Control
-      //          name="password"
-      //          value={password}
-      //          onChange={this.onChange}
-      //          type="password"
-      //          placeholder="Password"
-      //       />
-      //    </Form.Group>
-
-      //    <PasswordForgetLink />
-
-      //    <Button disabled={isInvalid} block variant="primary" type="submit">
-      //       Sign In
-      //    </Button>
-
-      //    {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
-      // </Form>
 
       <Formik
          validationSchema={schema}

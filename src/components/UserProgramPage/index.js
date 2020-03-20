@@ -1,10 +1,10 @@
 import React, { Component, useContext } from 'react';
 import { compose } from 'recompose';
 
-// TODO:
-
-// Limit loading previous workouts to loading batches of 5. Only for admin. Users can only see one workout at a time.
-// break the account page into smaller components
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Card from 'react-bootstrap/Card'
 
 import {
    AuthUserContext,
@@ -42,7 +42,7 @@ class ManageUserTablesBase extends Component {
          workoutIndex: 0,
          // workoutids: [],
          workoutsList: [],
-         program: null,
+         program: JSON.parse(localStorage.getItem('program')) || null,
          key: null,
          // allLoaded: false,
       }
@@ -85,7 +85,6 @@ class ManageUserTablesBase extends Component {
 
    saveTracking = (authUser, workoutId) => (phase, day, row, item) => {
       // console.log(authUser, workoutId, phase, day, item);
-
       return this.props.firebase
          .workout(authUser, workoutId)
          .child("instruction")
@@ -96,33 +95,32 @@ class ManageUserTablesBase extends Component {
 
    componentDidMount() {
 
-      this.props.firebase.workouts(this.props.authUser.uid)
-         .limitToLast(1)
-         .on("value", snapshot => {
-            const workoutObject = snapshot.val();
+      // this.props.firebase.workouts(this.props.authUser.uid)
+      //    .limitToLast(1)
+      //    .on("value", snapshot => {
+      //       const workoutObject = snapshot.val();
 
-            if (workoutObject) {
+      //       if (workoutObject) {
 
-               const workoutids = Object.keys(workoutObject)
+      //          const workoutids = Object.keys(workoutObject)
 
-               const workoutsList = workoutids.map(key => ({
-                  ...workoutObject[key],
-                  workoutId: key
-               }));
+      //          const workoutsList = workoutids.map(key => ({
+      //             ...workoutObject[key],
+      //             workoutId: key
+      //          }));
+      //          this.setState({ workoutsList: workoutsList })
+      //       }
+      //    });
 
-               this.setState({ workoutsList: workoutsList })
-            }
-         });
+      // this.props.firebase.workoutIds(this.props.authUser.uid)
+      //    .on("value", snapshot => {
+      //       const workoutIdsObject = snapshot.val();
 
-      this.props.firebase.workoutIds(this.props.authUser.uid)
-         .on("value", snapshot => {
-            const workoutIdsObject = snapshot.val();
-
-            if (workoutIdsObject) {
-               const workoutids = Object.keys(workoutIdsObject)
-               this.setState({ workoutids: workoutids })
-            }
-         });
+      //       if (workoutIdsObject) {
+      //          const workoutids = Object.keys(workoutIdsObject)
+      //          this.setState({ workoutids: workoutids })
+      //       }
+      //    });
 
       this.props.firebase
          .workoutIds(this.props.authUser.uid)
@@ -140,9 +138,16 @@ class ManageUserTablesBase extends Component {
                      const workoutObject = snapshot.val();
 
                      if (workoutObject) {
+                        localStorage.setItem('program', JSON.stringify(workoutObject));
                         this.setState({ program: workoutObject, key })
+                     } else {
+                        localStorage.removeItem('program');
+                        this.setState({ program: null, key: "" })
                      }
                   });
+            } else {
+               localStorage.removeItem('program');
+               this.setState({ program: null, key: "" })
             }
          }).catch(error => this.setState({ error }));
    }
@@ -167,10 +172,10 @@ class ManageUserTablesBase extends Component {
 
       // console.log(program);
       return (
-         <div>
+         <>
             {program ? (
                <>
-                  <h1 className="color-white">Program: {program.title}</h1>
+                  <h1 className="color-white">{program.title}</h1>
                   <h4 className="color-white">{dateString}</h4>
                   {/* <div>
                      <button onClick={this.previousWorkout} disabled={index === 0}>←</button>
@@ -179,9 +184,22 @@ class ManageUserTablesBase extends Component {
                   <UserTable program={program} uid={authUser.uid} saveTracking={this.saveTracking(authUser.uid, key)} />
                </>
             ) : (
-                  <h1>No programs</h1>
+                  <Container >
+                     <Row>
+                        <Col className="d-flex justify-content-center align-items-center">
+                           <Card style={{ width: "30rem" }}>
+                              <Card.Header className="text-center">
+                                 <strong>No Programs</strong>
+                              </Card.Header>
+                              <Card.Body className="text-center">
+                                 You have no available programs at this time.
+                              </Card.Body>
+                           </Card>
+                        </Col>
+                     </Row>
+                  </Container>
                )}
-         </div>
+         </>
       )
    }
 }

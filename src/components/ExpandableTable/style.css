@@ -1,0 +1,30 @@
+.lineContainer {
+   display: table;
+   width: 100%;
+}
+
+.lineContainer .cell {
+   display: table-cell;
+}
+
+.lineContainer .left {
+   width: 100px;
+   border: 1px solid #ced4da;
+   border-radius: .25rem 0 0 .25rem;
+   border-right: none;
+}
+
+.lineContainer .left span {
+   height: 100%;
+   padding-left: .25rem;
+   padding-right: .25rem;
+}
+
+.lineContainer .left span:first-of-type {
+   border-right: 1px solid #ced4da;
+}
+
+.lineContainer .right {
+   border: 1px solid #ced4da;
+   border-radius: 0 .25rem .25rem 0;
+}

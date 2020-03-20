@@ -54,7 +54,7 @@ const ProgramTable = ({ program, pid, uid, path, tasks }) => {
                const phaseTitle = key.charAt(0).toUpperCase() + key.substring(1);
                return (
                   <Tab eventKey={key} title={phaseTitle} key={key}>
-                     <ExpandableTable tasks={tasks} days={days} phase={key} key={key} completed={completed} pid={pid} uid={uid} path={path} />
+                     <ExpandableTable tasks={tasks} days={days} phase={key} key={key} pid={pid} uid={uid} path={path} />
                   </Tab>
                )
             })}

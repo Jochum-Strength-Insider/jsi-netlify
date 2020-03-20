@@ -175,12 +175,13 @@ body::-webkit-scrollbar {
    } */
 }
 
-.data-grid-control {
+.data-grid-control,
+.data-grid-control input {
    background-color: rgba(173, 216, 230, 0);
    border: none;
    width: 100%;
-   /* min-width: 11vw; */
 }
+
 
 table .vertical-align-center {
    vertical-align: middle;

@@ -69,8 +69,10 @@ class UserItemBase extends Component {
 
    render() {
       const { user, loading } = this.state;
-      const date = user ? new Date(user.createdAt) : new Date();
-      const dateString = date.toLocaleDateString("en-US");
+      const memberDate = user ? new Date(user.createdAt) : new Date();
+      const memberDateString = memberDate.toLocaleDateString("en-US");
+      const programDate = user.programDate ? new Date(user.programDate) : null;
+      const programDateString = programDate ? programDate.toLocaleDateString("en-US") : "-";
 
       return (
          <div>
@@ -81,20 +83,19 @@ class UserItemBase extends Component {
                <>
                   <BreadCrumbs />
                   <h2 className="color-white">User: {user.username}</h2>
-
                   {/* <Modal handleClose={this.handleClose} show={show} heading={"Remove " + user.username + "?"}>
                      <Form className="d-flex justify-content-between align-items-center">
                         <Button variant="outline-danger" onClick={this.onRemoveUser}>Remove</Button>
                         <Button variant="primary" onClick={this.handleClose}>Cancel</Button>
                      </Form>
                   </Modal> */}
-
                   <Tabs fill defaultActiveKey="profile" className="dark-tab">
                      <Tab eventKey="profile" title="Profile">
                         <ListGroup className="mb-5">
                            <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
                            <ListGroup.Item><strong>Username:</strong> {user.username}</ListGroup.Item>
-                           <ListGroup.Item><strong>Member Since:</strong> {dateString}</ListGroup.Item>
+                           <ListGroup.Item><strong>Member Since:</strong> {memberDateString}</ListGroup.Item>
+                           <ListGroup.Item><strong>Last Program:</strong> {programDateString}</ListGroup.Item>
                            <ListGroup.Item>
                               <Button
                                  type="button"
