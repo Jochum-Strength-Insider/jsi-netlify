@@ -94,6 +94,16 @@ body::-webkit-scrollbar {
       width: 100%;
       display: block;
    }
+
+   .sm-hide {
+      display: none;
+   }
+}
+
+@media (max-width: 767px) {
+   .md-hide {
+      display: none;
+   }
 }
 
 @media (min-width: 576px) {
@@ -113,6 +123,7 @@ body::-webkit-scrollbar {
    .lg-visible {
       display: flex;
    }
+
 }
 
 /* Small devices (tablets, 768px and up) */
@@ -133,6 +144,7 @@ body::-webkit-scrollbar {
    .lg-visible {
       display: flex;
    } */
+
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -153,7 +165,10 @@ body::-webkit-scrollbar {
    .lg-visible {
       display: flex;
    } */
+
 }
+
+
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
@@ -173,6 +188,7 @@ body::-webkit-scrollbar {
    .lg-visible {
       display: flex;
    } */
+
 }
 
 .data-grid-control,
@@ -239,4 +255,33 @@ table .vertical-align-center {
 
 .dth-btn {
    width: 45px;
+}
+
+.messageContainer {
+   height: 70vh;
+   overflow-y: scroll;
+}
+
+.messageContainer::-webkit-scrollbar {
+   width: 0px;
+   /* Remove scrollbar space */
+   background: transparent;
+   /* Optional: just make scrollbar invisible */
+}
+
+.message {
+   display: inline-block;
+   max-width: 50%;
+   padding: 0.5rem 1rem;
+   margin-top: .5rem;
+}
+
+.messageReceiver {
+   background-color: rgb(205, 205, 205);
+   border-radius: 2rem 2rem 2rem 0px;
+}
+
+.messageSender {
+   background-color: lightblue;
+   border-radius: 2rem 2rem 0px 2rem;
 }

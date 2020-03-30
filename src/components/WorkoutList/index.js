@@ -6,6 +6,7 @@ import Modal from '../Modal';
 import { Link, withRouter } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import { PROGRAM } from '../../constants/defaultProgram';
+import HoverButton from '../HoverButton';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -301,8 +302,11 @@ class WorkoutListBase extends Component {
                                           </span>
 
                                           <span>
-                                             {!workoutIds[workoutId].active ? <Button variant="outline-warning" onClick={this.setActive(workoutId)}>Activate</Button> : <Button variant="outline-success" onClick={this.setInactive(workoutId)}>Current</Button>}
-                                             <Button className="ml-2" variant="outline-danger"
+                                             {!workoutIds[workoutId].active
+                                                ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(workoutId)} />
+                                                : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(workoutId)} />
+                                             }
+                                             <Button className="ml-3" variant="outline-danger"
                                                 type="button"
                                                 onClick={() => this.setRemoveKey(workoutId)}
                                              >

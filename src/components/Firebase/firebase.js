@@ -4,7 +4,16 @@ import 'firebase/auth';
 
 const app = firebase;
 
-const config = {
+// const prodConfig = {
+//    apiKey: process.env.REACT_APP_PROD_API_KEY,
+//    authDomain: process.env.REACT_APP_PROD_AUTH_DOMAIN,
+//    databaseURL: process.env.REACT_APP_PROD_DATABASE_URL,
+//    projectId: process.env.REACT_APP_PROD_PROJECT_ID,
+//    storageBucket: process.env.REACT_APP_PROD_STORAGE_BUCKET,
+//    messagingSenderId: process.env.REACT_APP_PROD_MESSAGING_SENDER_ID,
+// };
+
+const prodConfig = {
    apiKey: process.env.REACT_APP_API_KEY,
    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
    databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -12,6 +21,17 @@ const config = {
    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
+
+const devConfig = {
+   apiKey: process.env.REACT_APP_DEV_API_KEY,
+   authDomain: process.env.REACT_APP_DEV_AUTH_DOMAIN,
+   databaseURL: process.env.REACT_APP_DEV_DATABASE_URL,
+   projectId: process.env.REACT_APP_DEV_PROJECT_ID,
+   storageBucket: process.env.REACT_APP_DEV_STORAGE_BUCKET,
+   messagingSenderId: process.env.REACT_APP_DEV_MESSAGING_SENDER_ID,
+};
+
+const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 
 class Firebase {
    constructor() {
@@ -51,7 +71,7 @@ class Firebase {
 
    doSendEmailVerification = () =>
       this.auth.currentUser.sendEmailVerification({
-         url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
+         url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT || process.env.REACT_APP_DEV_CONFIRMATION_EMAIL_REDIRECT,
       });
 
    doPasswordUpdate = password =>
@@ -126,9 +146,9 @@ class Firebase {
 
    // *** Message API ***
 
-   message = uid => this.db.ref(`messages/${uid}`);
+   message = (uid, mid) => this.db.ref(`messages/${uid}/${mid}`);
 
-   messages = () => this.db.ref('messages');
+   messages = uid => this.db.ref(`messages/${uid}`);
 
    // *** Workout API ***
 

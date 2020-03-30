@@ -35,6 +35,7 @@ class UserItemBase extends Component {
          showRemove: false,
          removeKey: 0,
          error: null,
+
       };
    }
 

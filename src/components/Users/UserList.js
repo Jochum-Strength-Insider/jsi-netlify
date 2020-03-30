@@ -8,6 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+// import Badge from 'react-bootstrap/Badge';
 
 class UserListBase extends Component {
    constructor(props) {
@@ -15,7 +16,7 @@ class UserListBase extends Component {
 
       this.state = {
          loading: false,
-         users: [],
+         users: JSON.parse(localStorage.getItem('users')) || [],
          asc: true,
       };
    }
@@ -33,15 +34,18 @@ class UserListBase extends Component {
       this.props.firebase.users().on('value', snapshot => {
          const usersObject = snapshot.val();
 
-         const usersList = Object.keys(usersObject).map(key => ({
-            ...usersObject[key],
-            uid: key,
-         }));
+         if (usersObject) {
+            const usersList = Object.keys(usersObject).map(key => ({
+               ...usersObject[key],
+               uid: key,
+            }));
 
-         this.setState({
-            users: usersList,
-            loading: false,
-         });
+            localStorage.setItem('users', JSON.stringify(usersList));
+            this.setState({ users: usersList, loading: false, })
+         } else {
+            localStorage.removeItem('users');
+            this.setState({ loading: false })
+         }
       });
    }
 
@@ -59,15 +63,14 @@ class UserListBase extends Component {
             </Card.Header>
             <Card.Body>
                <ListGroup variant="flush" >
-                  <ListGroup.Item>
+                  <ListGroup.Item className="md-hide">
                      <Row className="text-center">
-                        <Col xs="12" sm="12" md="3" lg="3" onClick={this.sortUsersBy("username")}><strong>Username:</strong></Col>
-                        <Col xs="12" sm="12" md="3" lg="3" onClick={this.sortUsersBy("email")}><strong>E-Mail:</strong></Col>
-                        <Col xs="12" sm="12" md="3" lg="3" onClick={this.sortUsersBy("programDate")}><strong>Last Program:</strong></Col>
-                        <Col xs="12" sm="12" md="3" lg="3"><strong>Details:</strong></Col>
+                        <Col xs="12" sm="12" md="3" onClick={this.sortUsersBy("username")}><strong>Username:</strong></Col>
+                        <Col xs="12" sm="12" md="3" onClick={this.sortUsersBy("email")}><strong>E-Mail:</strong></Col>
+                        <Col xs="12" sm="12" md="3" onClick={this.sortUsersBy("programDate")}><strong>Last Program:</strong></Col>
+                        <Col xs="12" sm="12" md="3"><strong>Messages:</strong></Col>
                      </Row>
                   </ListGroup.Item>
-                  {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
 
                   {users.map(user => {
 
@@ -79,28 +82,42 @@ class UserListBase extends Component {
                         // <ListGroup.Item key={user.uid} className="d-flex justify-content-between align-items-center">
                         <ListGroup.Item key={user.uid} >
                            <>
-
                               <Row className="text-center">
-                                 <Col xs="12" sm="12" md="3" lg="3">{user.username}</Col>
-                                 <Col xs="12" sm="12" md="3" lg="3">{user.email}</Col>
-                                 <Col xs="12" sm="12" md="3" lg="3">{date}</Col>
-
                                  <Col xs="12" sm="12" md="3" lg="3">
                                     <Link
-                                       className="btn btn-outline-primary"
+                                       className="btn btn-link px-0 py-0"
                                        to={{
                                           pathname: `${ROUTES.ADMIN}/${user.uid}`,
                                           state: { user },
                                        }}
                                     >
-                                       Details
-                              </Link>
+                                       {user.username}
+                                    </Link>
+                                 </Col>
+                                 <Col xs="12" sm="12" md="3" lg="3">{user.email}</Col>
+                                 <Col xs="12" sm="12" md="3" lg="3">{date}</Col>
+                                 <Col xs="12" sm="12" md="3" lg="3">
+
+                                    <Link
+                                       className="btn btn-link px-0 py-0"
+                                       to={{
+                                          pathname: `${ROUTES.ADMIN_MESSAGES}/${user.uid}`,
+                                          state: { user },
+                                       }}
+                                    >
+                                       Messages {user.adminUnread && <span style={{ color: "red" }}>•</span>}
+                                       {/* Messages<Badge variant="light">{user.adminUnread}</Badge> */}
+                                       <span className="sr-only">unread messages</span>
+                                    </Link>
                                  </Col>
                               </Row>
                            </>
                         </ListGroup.Item>
                      )
                   })}
+
+                  {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
+
                </ListGroup>
             </Card.Body>
          </Card >

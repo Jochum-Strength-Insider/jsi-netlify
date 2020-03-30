@@ -78,7 +78,7 @@ class WeightBase extends Component {
          data: initialData,
          show: false,
          options: {},
-         weight: 180,
+         weight: "180",
          lastDate: "",
          invalid: false,
          error: null,

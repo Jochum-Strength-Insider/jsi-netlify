@@ -2,15 +2,18 @@
 
 ### Major
 
+1. Secure api key / api key usage. This will be easier once jochum has a domain subdomain.
+https://javebratt.com/hide-firebase-api/
+https://console.developers.google.com/apis/credentials?project=wp-practice-227620&folder=&organizationId=
+
 1. Remove sign-up form from home page? Move it into a modal within the users page.
 1. So johcum sets ups the accounts and the users can change the passwords once theyre ready.
 1. emails don't need to be verified if austin sets them up.
 1. copy the landing page.
-1. Messages page - part of navbar with message badges.
 1. Leave a check in today button as well as check in on date?
 1. So users can check in when they want to and put the date they want to check in on.
-1. Restyle admin table. - Responsiveness? Where to put tracking data? Copy list group from usertable?
 1. if there is no localstorage for tasks in the searchbar make sure to load them.
+
 
 ### UI
 1. consistent headings on each page

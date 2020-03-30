@@ -13,6 +13,8 @@ import AdminPage from '../Admin';
 import CreateProgram from '../CreateProgram';
 import CreateTask from '../CreateTask';
 import TrackingPage from '../TrackingPage';
+import UserChat from '../ChatUser';
+import AdminChat from '../ChatAdmin';
 import Footer from '../Footer';
 
 import * as ROUTES from '../../constants/routes';
@@ -23,10 +25,8 @@ import Container from 'react-bootstrap/Container';
 import "./style.css";
 
 const App = () => (
-
    <Router >
       <Navigation />
-
       <Container fluid className="pt-4" style={{ minHeight: "93vh" }}>
          <Route exact path={ROUTES.LANDING} component={LandingPage} />
          <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
@@ -39,11 +39,11 @@ const App = () => (
          <Route path={ROUTES.CREATETASK} component={CreateTask} />
          <Route path={ROUTES.USERPROGRAM} component={UserProgramPage} />
          <Route path={ROUTES.TRACKING} component={TrackingPage} />
+         <Route path={ROUTES.ADMIN_MESSAGES} component={AdminChat} />
+         <Route path={ROUTES.MESSAGES} component={UserChat} />
       </Container>
       <Footer />
-
    </Router>
-
 );
 
 export default withAuthentication(App);
