@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { compose } from 'recompose';
 import { Switch, Route, useParams } from 'react-router-dom';
 
@@ -12,10 +12,24 @@ import {
    withEmailVerification,
 } from '../Session';
 
-const ChatRoom = ({ location }) => {
+import { withFirebase } from '../Firebase';
+
+const ChatRoomBase = ({ location, firebase }) => {
+   const userFromLocationState = location.state ? location.state.user : null;
+   const [user, setUser] = useState(userFromLocationState);
+
    const authUser = useContext(AuthUserContext);
    const { uid } = useParams();
-   const { user } = location.state
+
+   if (!user) {
+      firebase.user(uid).once("value").then(snap => {
+         const userObject = snap.val();
+         if (userObject) {
+            setUser(userObject);
+         }
+      });
+   }
+
    const unread = user ? user.adminUnread : 0;
 
    // let match = useRouteMatch();
@@ -23,6 +37,8 @@ const ChatRoom = ({ location }) => {
       <ChatMessages authUser={authUser} roomId={uid} unreadCount={unread} setUnread={"adminUnread"} setPartnerUnread={"unread"} />
    )
 };
+
+const ChatRoom = withFirebase(ChatRoomBase);
 
 const AdminChatPage = () => {
    return (
@@ -35,7 +51,7 @@ const AdminChatPage = () => {
    )
 };
 
-const condition = authUser => !!authUser;
+const condition = authUser => authUser && authUser.ADMIN;
 
 export default compose(
    withEmailVerification,

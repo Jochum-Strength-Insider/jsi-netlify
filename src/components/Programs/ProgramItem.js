@@ -8,7 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-// import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import ProgramTable from './ProgramTable';
 import * as ROUTES from '../../constants/routes';
@@ -69,6 +69,7 @@ class ProgramItemBase extends Component {
                   editable: true,
                });
             } else {
+               // this.props.history.push(ROUTES.ADMIN);
                console.log("no program object");
             }
          });
@@ -83,13 +84,13 @@ class ProgramItemBase extends Component {
             const programObject = snapshot.val();
             if (programObject) {
                // console.log(programObject)
-
                this.setState({
                   program: programObject,
                   title: programObject.title,
                   loading: false,
                });
             } else {
+               // this.props.history.push(ROUTES.ADMIN);
                console.log("no program object");
             }
          });
@@ -98,7 +99,7 @@ class ProgramItemBase extends Component {
    fetchTasks() {
       const tasks = JSON.parse(localStorage.getItem('tasks'));
       if (tasks) {
-         this.setState({ tasks: tasks })
+         this.setState({ tasks: tasks });
       } else {
          this.props.firebase.tasks().once("value").then(snap => {
             const tasksObject = snap.val();
@@ -270,6 +271,6 @@ class ProgramItemBase extends Component {
 }
 
 // const ProgramItem = withRouter(withFirebase(ProgramItemBase));
-const ProgramItem = withFirebase(ProgramItemBase);
+const ProgramItem = withRouter(withFirebase(ProgramItemBase));
 
 export default ProgramItem;

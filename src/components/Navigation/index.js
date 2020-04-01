@@ -42,7 +42,7 @@ const Navigation = () => (
 
 const NavigationAuth = ({ authUser }) => (
    <>
-      <Navbar variant="dark" bg="purple" expand="lg" sticky="top">
+      <Navbar variant="dark" bg="purple" expand="md" sticky="top">
          <Navbar.Brand href={ROUTES.USERPROGRAM}>
             <img
                src={logo}

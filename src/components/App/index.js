@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
+// import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
 // import HomePage from '../Home';
@@ -25,25 +25,34 @@ import Container from 'react-bootstrap/Container';
 import "./style.css";
 
 const App = () => (
-   <Router >
-      <Navigation />
-      <Container fluid className="pt-4" style={{ minHeight: "93vh" }}>
-         <Route exact path={ROUTES.LANDING} component={LandingPage} />
-         <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-         <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-         <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-         {/* <Route exact path={ROUTES.HOME} component={HomePage} /> */}
-         <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-         <Route path={ROUTES.ADMIN} component={AdminPage} />
-         <Route path={ROUTES.CREATEPROGRAM} component={CreateProgram} />
-         <Route path={ROUTES.CREATETASK} component={CreateTask} />
-         <Route path={ROUTES.USERPROGRAM} component={UserProgramPage} />
-         <Route path={ROUTES.TRACKING} component={TrackingPage} />
-         <Route path={ROUTES.ADMIN_MESSAGES} component={AdminChat} />
-         <Route path={ROUTES.MESSAGES} component={UserChat} />
-      </Container>
-      <Footer />
-   </Router>
+   <>
+      <Router >
+         <Navigation />
+         <Container fluid className="pt-4" style={{ minHeight: "93vh" }}>
+            <Switch>
+               <Route exact path={ROUTES.LANDING} component={LandingPage} />
+               {/* <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} /> */}
+               <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+               <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+               {/* <Route exact path={ROUTES.HOME} component={HomePage} /> */}
+               <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+               <Route path={ROUTES.ADMIN} component={AdminPage} />
+               <Route path={ROUTES.CREATEPROGRAM} component={CreateProgram} />
+               <Route path={ROUTES.CREATETASK} component={CreateTask} />
+               <Route path={ROUTES.USERPROGRAM} component={UserProgramPage} />
+               <Route path={ROUTES.TRACKING} component={TrackingPage} />
+               <Route path={ROUTES.ADMIN_MESSAGES} component={AdminChat} />
+               <Route path={ROUTES.MESSAGES} component={UserChat} />
+               <Route path="*" component={NoMatch} />
+            </Switch>
+         </Container>
+         <Footer />
+      </Router>
+   </>
 );
+
+const NoMatch = () => (
+   <Redirect to="/" />
+)
 
 export default withAuthentication(App);

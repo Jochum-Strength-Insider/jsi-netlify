@@ -12,31 +12,22 @@ import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
 
-// todo:
-// Styling
-// Separate text into own component so the list isn't rerendered after every keystroke
-// change on to child added
-// set limit? limit for initial load then show all? no limit?
-// do this for all components. How to memoize so the components aren't rerendered after setting loading to false
+// set limit? limit for initial load then show all?
 
 class AdminChatBase extends Component {
    constructor(props) {
       super(props);
-      this.messagesEndRef = React.createRef();
       this.scrollContain = React.createRef();
+      this.inputRef = React.createRef();
       this.state = {
-         text: "",
          loading: false,
          messages: [],
-         limit: 30,
+         limit: 50,
       }
    }
 
    scrollToBottom = () => {
-      // console.log(this.scrollContain, this.messagesEndRef.current.offsetTop)
-      // this.scrollContain.current.scrollTop = this.messagesEndRef.current.offsetTop;
       this.scrollContain.current.scrollTop = this.scrollContain.current.scrollHeight;
-      // this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
    }
 
    componentDidMount() {
@@ -80,16 +71,21 @@ class AdminChatBase extends Component {
    }
 
    onCreateMessage = (authUser) => (e) => {
-      this.props.firebase.messages(this.props.roomId).push({
-         text: this.state.text,
-         userId: authUser.uid,
-         username: authUser.username,
-         createdAt: this.props.firebase.serverValue.TIMESTAMP,
-      });
+      const text = this.inputRef.current.value.trim();
+      if (text !== "") {
+         this.props.firebase.messages(this.props.roomId).push({
+            // text: this.state.text,
+            text,
+            userId: authUser.uid,
+            username: authUser.username,
+            createdAt: this.props.firebase.serverValue.TIMESTAMP,
+         });
 
-      this.props.firebase.user(this.props.roomId).update({ [this.props.setPartnerUnread]: true });
-      this.setState(state => ({ text: "", unreadCount: state.unreadCount + 1 }));
+         this.props.firebase.user(this.props.roomId).update({ [this.props.setPartnerUnread]: true });
+         this.setState(state => ({ text: "", unreadCount: state.unreadCount + 1 }));
 
+         this.inputRef.current.value = "";
+      }
       e.preventDefault();
    }
 
@@ -114,7 +110,7 @@ class AdminChatBase extends Component {
    // };
 
    render() {
-      const { text, messages, loading } = this.state;
+      const { messages, loading } = this.state;
 
       return (
          <AuthUserContext.Consumer>
@@ -129,7 +125,6 @@ class AdminChatBase extends Component {
 
                      {loading && <div>Loading ...</div>}
 
-
                      {(messages.length > 0) ? (
                         <MessageList
                            authUser={authUser}
@@ -140,7 +135,7 @@ class AdminChatBase extends Component {
                      ) : (
                            <div>There are no messages ...</div>
                         )}
-                     <div ref={this.messagesEndRef} />
+                     {/* <div ref={this.messagesEndRef} /> */}
                   </Container>
                   <hr />
                   {/* <Row>
@@ -149,8 +144,7 @@ class AdminChatBase extends Component {
                      <InputGroup className="mb-3">
                         <Form.Control
                            type="text"
-                           value={text}
-                           onChange={this.onChangeText}
+                           ref={this.inputRef}
                         />
                         <InputGroup.Append>
                            <Button type="submit">Send</Button>

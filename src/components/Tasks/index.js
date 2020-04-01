@@ -11,11 +11,6 @@ import Col from 'react-bootstrap/Col';
 
 import { withFirebase } from '../Firebase';
 
-// Load Tasks into firebase and see how much damage they do to loading.
-// Look into chaching
-
-// Should taskform be fully controlled??
-
 class Tasks extends Component {
    constructor(props) {
       super(props);
@@ -131,8 +126,8 @@ class Tasks extends Component {
       this.fetchTasks();
    }
 
-   // Add all tasks to firebase
    // import EXERCISES from '../../constants/exercisesEmbed';
+   // Add all tasks to firebase
    // EXERCISES.forEach(each => this.onCreateTask(each));
    // onCreateTask = (task) => {
    //    this.props.firebase

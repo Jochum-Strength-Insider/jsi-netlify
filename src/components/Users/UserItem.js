@@ -4,7 +4,7 @@ import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import WorkoutList from '../WorkoutList';
 
 import Tabs from 'react-bootstrap/Tabs'
@@ -43,10 +43,11 @@ class UserItemBase extends Component {
                   loading: false,
                });
             } else {
-               this.setState({
-                  user: null,
-                  loading: false,
-               })
+               this.props.history.push(ROUTES.ADMIN);
+               // this.setState({
+               //    user: null,
+               //    loading: false,
+               // })
             }
 
          });
@@ -71,7 +72,7 @@ class UserItemBase extends Component {
       const { user, loading } = this.state;
       const memberDate = user ? new Date(user.createdAt) : new Date();
       const memberDateString = memberDate.toLocaleDateString("en-US");
-      const programDate = user.programDate ? new Date(user.programDate) : null;
+      const programDate = (user && user.programDate) ? new Date(user.programDate) : null;
       const programDateString = programDate ? programDate.toLocaleDateString("en-US") : "-";
 
       return (
@@ -128,6 +129,6 @@ class UserItemBase extends Component {
    }
 }
 
-const UserItem = withFirebase(UserItemBase);
+const UserItem = withRouter(withFirebase(UserItemBase));
 
 export default UserItem;

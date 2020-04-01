@@ -50,8 +50,17 @@ class Firebase {
 
    // *** Auth API ***
 
-   doCreateUserWithEmailAndPassword = (email, password) =>
-      this.auth.createUserWithEmailAndPassword(email, password);
+   doCreateUserWithEmailAndPassword = (email, password) => {
+      // this.auth.createUserWithEmailAndPassword(email, password)
+      console.log(email, password);
+
+      const secondaryApp = firebase.initializeApp(config, "Secondary");
+      const newUser = secondaryApp.auth().createUserWithEmailAndPassword(email, password)
+
+      return new Promise(function (resolve, reject) {
+         resolve({ newUser, secondaryApp });
+      });
+   };
 
    doSignInWithEmailAndPassword = (email, password) =>
       this.auth.signInWithEmailAndPassword(email, password);
@@ -69,8 +78,14 @@ class Firebase {
 
    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
+   // can you send this to a non current user?
    doSendEmailVerification = () =>
       this.auth.currentUser.sendEmailVerification({
+         url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT || process.env.REACT_APP_DEV_CONFIRMATION_EMAIL_REDIRECT,
+      });
+
+   doSendNewUserEmailVerification = (authUser) =>
+      authUser.sendEmailVerification({
          url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT || process.env.REACT_APP_DEV_CONFIRMATION_EMAIL_REDIRECT,
       });
 
@@ -86,33 +101,6 @@ class Firebase {
                .once('value')
                .then(snapshot => {
                   const dbUser = snapshot.val();
-                  // console.log("dbUser signup", dbUser);
-                  // There's an odd bug where the workoutIds aren't progagated to the authUser object when a user is created.
-                  // It's fixed after a refresh but going straight from signup to account causes an error.
-
-                  // default empty roles
-                  // if (!dbUser.roles) {
-                  //    dbUser.roles = [];
-                  // }
-
-                  // this.workouts(authUser.uid)
-                  //    .limitToLast(1)
-                  //    .once("value")
-                  //    .then(snapshot => {
-                  //       const workout = snapshot.val();
-
-                  //       // merge auth and db user
-                  //       authUser = {
-                  //          uid: authUser.uid,
-                  //          email: authUser.email,
-                  //          emailVerified: authUser.emailVerified,
-                  //          providerData: authUser.providerData,
-                  //          ...dbUser,
-                  //          workouts: [workout],
-                  //       };
-
-                  //       next(authUser);
-                  //    });
 
                   // merge auth and db user
                   authUser = {

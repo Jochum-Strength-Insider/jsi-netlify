@@ -56,51 +56,61 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
   Try to login with this account instead.
 `;
 
-const SignUpFormBase = ({firebase, history}) => {
+const SignUpFormBase = ({firebase, history, handleClose}) => {
    const [error, setError] = useState(null);
 
    const onSubmit = ( values, {resetForm}) => {
-      const { username, email, passwordOne, isAdmin } = values;
+      const { username, email, passwordOne } = values;
 
       firebase
          .doCreateUserWithEmailAndPassword(email, passwordOne)
-         .then(authUser => {
-            // Create a user in your Firebase realtime database
-            const timestamp = firebase.serverValue.TIMESTAMP;
-            firebase.user(authUser.user.uid).set({
-               username,
-               email,
-               ADMIN: isAdmin,
-               createdAt: timestamp,
-               // programDate: timestamp,
-               programDate: null,
-            });
-            return authUser.user.uid;
-         })
-         .then(uid => {
-
-            const timestamp = firebase.serverValue.TIMESTAMP;
-            const programData = PROGRAM(timestamp);
-
-            firebase.workouts(uid).push(programData)
-               .then((snap) => {
-                  const key = snap.key;
-                  firebase.workoutIds(uid).update({ [key]: { title: "Default", createdAt: timestamp, active: false } });
+         .then(({newUser, secondaryApp}) => {
+            newUser.then(authUser => {
+               // console.log("authUser", authUser.user);
+               const timestamp = firebase.serverValue.TIMESTAMP;
+               firebase.user(authUser.user.uid).set({
+                  username,
+                  email,
+                  ADMIN: false,
+                  createdAt: timestamp,
+                  programDate: null,
+                  adminUnread: false,
+                  unread: false,
                });
-         })
-         .then(() => {
-            return firebase.doSendEmailVerification();
-         })
-         .then(() => {
-            resetForm({})
-            history.push(ROUTES.LANDING);
-         })
-         .catch(error => {
-            if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-               error.message = ERROR_MSG_ACCOUNT_EXISTS;
-            }
-            setError(error);
-         });
+
+               const currentUser = secondaryApp.auth().currentUser;
+               firebase.doSendNewUserEmailVerification(currentUser);
+
+               secondaryApp.auth().signOut();
+               secondaryApp.delete();
+
+               return authUser.user.uid;
+            })
+            .then(uid => {
+               console.log("uid", uid);
+               const timestamp = firebase.serverValue.TIMESTAMP;
+               const programData = PROGRAM(timestamp);
+
+               firebase.workouts(uid).push(programData)
+                  .then((snap) => {
+                     const key = snap.key;
+                     firebase.workoutIds(uid).update({ [key]: { title: "Default", createdAt: timestamp, active: false } });
+                  });
+            })
+            .then(() => {
+               resetForm({});
+               handleClose();
+               // history.push(ROUTES.LANDING);
+            })
+            .catch(error => {
+               if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+                  error.message = ERROR_MSG_ACCOUNT_EXISTS;
+               }
+               secondaryApp.auth().signOut();
+               secondaryApp.delete();
+               setError(error);
+            });
+         }).catch(error => setError(error));
       };
 
       return (
@@ -113,7 +123,6 @@ const SignUpFormBase = ({firebase, history}) => {
                   email: '',
                   passwordOne: '',
                   passwordTwo: '',
-                  isAdmin: false,
                }}
             >
                {({
@@ -184,17 +193,6 @@ const SignUpFormBase = ({firebase, history}) => {
                               {errors.passwordTwo}
                            </Form.Control.Feedback>
                         </Form.Group>
-
-                        {/* <Form.Group>
-                           <Form.Check
-                              name="isAdmin"
-                              label=" Is Admin?"
-                              onChange={handleChange}
-                              value={values.isAdmin}
-                              isInvalid={!!errors.isAdmin}
-                              feedback={errors.isAdmin}
-                           />
-                        </Form.Group> */}
 
                         <hr></hr>
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import { SignUpLink } from '../SignUp';
+// import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
@@ -32,7 +32,7 @@ const SignInPage = () => (
                <Card style={{ width: "30rem" }}>
                   <Card.Header className="text-center">
                      <h1>Sign In</h1>
-                     <SignUpLink />
+                     {/* <SignUpLink /> */}
                   </Card.Header>
                   <Card.Body>
                      <SignInForm />

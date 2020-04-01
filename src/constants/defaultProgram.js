@@ -35,7 +35,7 @@ const PROGRAM = (timestamp) => {
             "day 1": { title: "Max Effort Upper", exercises: INITIALJSON },
             "day 2": { title: "Max Effort Lower", exercises: INITIALJSON },
             "day 3": { title: "Dynamic Effort Upper", exercises: INITIALJSON },
-            "day 4": { title: "Dynamic Effore Lower Body", exercises: INITIALJSON },
+            "day 4": { title: "Dynamic Effort Lower Body", exercises: INITIALJSON },
             "completed": "false",
          },
          "Recovery Days": {

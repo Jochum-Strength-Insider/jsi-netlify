@@ -71,6 +71,7 @@ class ExpandableTable extends React.Component {
       const { name, value } = e.target;
       // console.log(day, idx, name, value);
       const days = { ...this.state.days };
+      console.log(day);
       days[day].exercises[idx][name] = value;
       this.setState({ days });
    };
@@ -211,7 +212,8 @@ class ExpandableTable extends React.Component {
    }
 
    resetCurrentCell = (dayIndex) => () => {
-      this.setState({ currentCell: { dayIndex: dayIndex, rowIndex: 0, name: "Description", number: "1A" } })
+      const day = dayIndex + 1
+      this.setState({ currentCell: { dayIndex: "day " + day, rowIndex: 0, name: "Number", number: "1A" } })
    }
 
    handleAddDay = (e) => {
@@ -316,7 +318,12 @@ class ExpandableTable extends React.Component {
                                                    <span>{currentCell.name}</span>
                                                 </div>
                                                 {currentCell.name === "Description" ? (
-                                                   <SearchBar className="cell" suggestions={this.props.tasks} initialValue={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex]["Description"] : ""} onChange={this.handleSearchChange(currentCell.rowIndex, currentCell.dayIndex, "Description")} />
+                                                   <SearchBar
+                                                      className="cell"
+                                                      suggestions={this.props.tasks}
+                                                      initialValue={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex]["Description"] : ""}
+                                                      onChange={this.handleSearchChange(currentCell.rowIndex, currentCell.dayIndex, "Description")}
+                                                   />
                                                 ) : (
                                                       <Form.Control
                                                          type="text"

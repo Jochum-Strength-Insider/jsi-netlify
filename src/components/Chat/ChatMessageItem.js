@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 
 // import Button from 'react-bootstrap/Button';
 // import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-class MessageItem extends Component {
+const MessageItem = ({ message, authUser, showDate, showName }) => {
    // constructor(props) {
    //    super(props);
    //    this.state = {
@@ -21,31 +21,35 @@ class MessageItem extends Component {
    //    }));
    // };
 
-   onChangeEditText = event => {
-      this.setState({ editText: event.target.value });
-   };
+   // const onChangeEditText = event => {
+   //    this.setState({ editText: event.target.value });
+   // };
 
-   onSaveEditText = () => {
-      this.props.onEditMessage(this.props.message, this.state.editText);
-      this.setState({ editMode: false });
-   };
+   // const onSaveEditText = () => {
+   //    this.props.onEditMessage(this.props.message, this.state.editText);
+   //    this.setState({ editMode: false });
+   // };
 
-   render() {
-      const { message, authUser } = this.props;
-      // const { editMode, editText } = this.state;
+   const style = (authUser.uid === message.userId) ? 'messageSender' : 'messageReceiver';
+   const end = (authUser.uid === message.userId) ? 'justify-content-end' : 'justify-content-start';
+   const date = new Date(message.createdAt);
+   const dateString = date.toLocaleDateString("en-US");
+   const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      // (authUser.uid === message.userId)
 
-      const style = (authUser.uid === message.userId) ? 'messageSender' : 'messageReceiver';
-      const end = (authUser.uid === message.userId) ? 'justify-content-end' : 'justify-content-start';
+   return (
 
-      return (
+      <>
          <Row>
             <Col className={"d-flex " + end}>
+
                <div className={"message " + style}>
-                  {message.text}
-                  {/* <strong>{message.username}</strong> {message.text} */}
-                  {/* {message.editedAt && <span>(Edited)</span>} */}
+                  {showName ? <div className="messageUsername">{message.username}</div> : null}
+                  <div className="messageText">
+                     {message.text}
+                     {/* <strong>{message.username}</strong> {message.text} */}
+                     {/* {message.editedAt && <span>(Edited)</span>} */}
+                  </div>
                </div>
 
                {/* {((authUser.uid === message.userId) || (authUser.ADMIN)) &&
@@ -58,8 +62,18 @@ class MessageItem extends Component {
             } */}
             </Col>
          </Row>
-      )
-   }
+         {showDate
+            ? (
+               <Row>
+                  <Col className="d-flex justify-content-center">
+                     <div className="messageDate">{dateString + " " + timeString}</div>
+                  </Col>
+               </Row>
+            )
+            : null
+         }
+      </>
+   )
 }
 
-export default MessageItem;
+export default React.memo(MessageItem);
