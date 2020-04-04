@@ -10,7 +10,7 @@ import * as ROUTES from '../../constants/routes';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import Card from 'react-bootstrap/Card';
+// import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
@@ -24,25 +24,29 @@ const schema = yup.object({
    password: yup.string().required("Required")
 });
 
+const style = {
+   maxWidth: "600px",
+   minWidth: "300px",
+   width: "75%",
+}
+
 const SignInPage = () => (
    <>
       <Container >
          <Row>
             <Col className="d-flex justify-content-center align-items-center">
-               <Card style={{ width: "30rem" }}>
-                  <Card.Header className="text-center">
-                     <h1>Sign In</h1>
-                     {/* <SignUpLink /> */}
-                  </Card.Header>
-                  <Card.Body>
-                     <SignInForm />
+               <div style={style}>
+                  <h1 className="text-center">Sign In</h1>
+                  {/* <SignUpLink /> */}
 
-                     {/* <SignInGoogle /> */}
-                     {/* <SignInFacebook /> */}
-                     {/* <SignInTwitter /> */}
-                  </Card.Body>
-               </Card>
+                  <SignInForm />
+
+                  {/* <SignInGoogle /> */}
+                  {/* <SignInFacebook /> */}
+                  {/* <SignInTwitter /> */}
+               </div>
             </Col>
+
          </Row>
       </Container>
    </>
@@ -69,7 +73,7 @@ const SignInFormBase = ({ firebase, history }) => {
          .then(() => {
             setError(null);
             resetForm({});
-            history.push(ROUTES.LANDING);
+            history.push(ROUTES.USERPROGRAM);
          })
          .catch(error => {
             setError(error);
@@ -95,7 +99,7 @@ const SignInFormBase = ({ firebase, history }) => {
             isValid,
             errors,
          }) => (
-               <Form noValidate onSubmit={handleSubmit}>
+               <Form className="w-100" noValidate onSubmit={handleSubmit}>
                   <Form.Group md="4" controlId="validationFormikUsername">
                      <Form.Label>Email</Form.Label>
                      <Form.Control

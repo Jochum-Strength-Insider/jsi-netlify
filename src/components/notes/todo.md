@@ -1,13 +1,17 @@
 # ToDo
 
 ###TODAY
-1. Landing Page
 1. Diet page
-1. Send email login link
+1. Send email login link?
    * Create sendLoginLink page.
    * change emailverify redirect link to send loginLink page.
    * User enters email address. Gets another email that logs them in.
    * Prompt user to change password upon sign in.
+   * Do they need to enter their email? Can this be sent right after user creation?
+
+#Fix
+1. users account page: shows program count even when none are live.
+1. Reapply the bootstrap hidden style to the self created ones.
 
 #TODO
 
@@ -22,6 +26,9 @@
    * refactor inputs to be own components / pure components that only update when props change
 1. Restyle into material ui?
 1. Look into wix / heroku subdomains
+1. Make an exercises page for non-admin users.
+
+1. Restyle admin page so it includes everything on one page. More of an admin panel.
 
 ### Major
 

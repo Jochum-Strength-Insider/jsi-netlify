@@ -179,7 +179,8 @@ class Diet extends Component {
                   localStorage.setItem('diet', JSON.stringify(dietArray));
                   this.setState({ diet: dietArray, firstVisible: firstVisible, lastVisible: lastVisible, loading: false });
 
-               } else if (!this.state.switch) {
+               }
+               else if (!this.state.switch) {
                   console.log(dateString, nowString, "New day added");
                   localStorage.removeItem('diet');
                   this.setState({ loading: false, switch: true });

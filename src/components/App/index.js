@@ -24,11 +24,13 @@ import Container from 'react-bootstrap/Container';
 
 import "./style.css";
 
+const style = { minHeight: "calc(100vh - 66px)" }
+
 const App = () => (
    <>
       <Router >
          <Navigation />
-         <Container fluid className="pt-4" style={{ minHeight: "93vh" }}>
+         <Container fluid className="pt-4" style={style}>
             <Switch>
                <Route exact path={ROUTES.LANDING} component={LandingPage} />
                {/* <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} /> */}

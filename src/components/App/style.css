@@ -1,3 +1,16 @@
+:root {
+   --circle-size: min(25vw, 15rem);
+   --js-purple: #412a34;
+   --js-purple-light: #a76884;
+   --js-gray: rgb(26, 26, 26);
+}
+
+/* font-family: 'Raleway', Arial, sans-serif; weights: regular, italic, 900 */
+body {
+   font-family: 'Raleway', Arial, sans-serif;
+   background-color: rgb(244, 239, 244);
+}
+
 body::-webkit-scrollbar {
    width: 0px;
    /* Remove scrollbar space */
@@ -5,12 +18,16 @@ body::-webkit-scrollbar {
    /* Optional: just make scrollbar invisible */
 }
 
+.navbar {
+   box-shadow: 0 10px 10px -5px rgba(0, 0, 0, .2);
+}
+
 .bg-purple {
-   background-color: rgb(65, 42, 52);
+   background-color: var(--js-purple);
 }
 
 .bg-gray {
-   background-color: rgb(26, 26, 26);
+   background-color: var(--js-gray);
    color: white;
 }
 
@@ -87,109 +104,6 @@ body::-webkit-scrollbar {
    display: none;
 }
 
-
-
-@media (max-width: 576px) {
-   .sm-block {
-      width: 100%;
-      display: block;
-   }
-
-   .sm-hide {
-      display: none;
-   }
-}
-
-@media (max-width: 767px) {
-   .md-hide {
-      display: none;
-   }
-}
-
-@media (min-width: 576px) {
-   .xs-visible {
-      display: none;
-   }
-
-
-   .sm-visible {
-      display: flex;
-   }
-
-   .md-visible {
-      display: flex;
-   }
-
-   .lg-visible {
-      display: flex;
-   }
-
-}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-   .xs-visible {
-      display: none;
-   }
-
-   .sm-visible {
-      display: flex;
-   }
-
-   /*
-   .md-visible {
-      display: flex;
-   }
-
-   .lg-visible {
-      display: flex;
-   } */
-
-}
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-   .xs-visible {
-      display: none;
-   }
-
-   .sm-visible {
-      display: flex;
-   }
-
-   /*
-   .md-visible {
-      display: flex;
-   }
-
-   .lg-visible {
-      display: flex;
-   } */
-
-}
-
-
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-   .xs-visible {
-      display: none;
-   }
-
-   .sm-visible {
-      display: flex;
-   }
-
-   /*
-   .md-visible {
-      display: none;
-   }
-
-   .lg-visible {
-      display: flex;
-   } */
-
-}
 
 .data-grid-control,
 .data-grid-control input {
@@ -305,4 +219,248 @@ table .vertical-align-center {
 
 .messageSender .messageUsername {
    text-align: right;
+}
+
+.landingContain {
+   max-width: 700px;
+   font-size: 1.25rem;
+}
+
+.joinTitle {
+   text-align: center;
+   font-size: 1.5rem;
+}
+
+.info {
+   font-size: 1rem;
+   max-width: 700px;
+}
+
+.signUpButton {
+   /* width: 100px;
+height: 75px; */
+   font-size: 2rem;
+   background-color: #ffffff00;
+   border: 5px solid var(--js-purple);
+   color: black;
+   padding: 50px 50px;
+   text-align: center;
+}
+
+.signUpButton:hover {
+   text-decoration: none;
+   background-color: var(--js-purple);
+   color: white;
+}
+
+/* .benefitCircleContain {
+   width: 80%;
+} */
+
+
+.whatDoesVideo {
+   /* height: auto;
+   width: 33vw; */
+   /* height: 360px; */
+   /* width: 480px; */
+   max-width: 500px;
+   width: 75%;
+   height: 300px;
+   /* background-color: black; */
+}
+
+.topRow {
+   margin-bottom: -10px;
+}
+
+.benefitCircle {
+   /* background-color: #ffffff00;
+   width: 100px;
+   height: 100px;
+   /* padding: 14px 25px; */
+
+   margin-left: 1vw;
+   margin-right: 1vw;
+   color: black;
+   text-align: center;
+   border-radius: 50%;
+   border: 3px solid var(--js-purple);
+   width: var(--circle-size);
+   height: var(--circle-size);
+   text-align: center;
+   font-weight: 900;
+   /* background-color: #333; */
+}
+
+.benefitsTitle {
+   font-weight: 900;
+   font-size: 3rem;
+}
+
+.benefitCircle span {
+   height: var(--circle-size);
+   display: inline-block;
+   zoom: 1;
+   *display: inline;
+   vertical-align: middle;
+}
+
+.benefitCircle p {
+   max-width: 75%;
+   display: inline-block;
+   zoom: 1;
+   *display: inline;
+   vertical-align: middle;
+   /* color: #fff; */
+   font-size: calc(0.5rem + 1vw);
+   color: black;
+   margin: 0;
+   padding: 0;
+}
+
+.onlineTitle {
+   font-weight: 900;
+   font-size: 4rem;
+   text-align: center;
+}
+
+.whatDoesTitle {
+   font-size: 2rem;
+}
+
+.detailsTitle {
+   font-weight: 900;
+   font-size: 2rem;
+}
+
+@media (max-width: 576px) {
+   .sm-block {
+      width: 100%;
+      display: block;
+   }
+
+   .sm-hide {
+      display: none;
+   }
+
+   .landingContain {
+      font-size: 1rem;
+   }
+
+   .info {
+      font-size: .75rem;
+   }
+
+   .onlineTitle {
+      font-size: 2.5rem;
+   }
+
+   .benefitCircle {
+      width: calc(var(--circle-size) + 4vw);
+      height: calc(var(--circle-size) + 4vw);
+   }
+
+   .benefitsTitle {
+      font-weight: 900;
+      font-size: 2.5rem;
+   }
+
+   .benefitCircle span {
+      height: calc(var(--circle-size) + 4vw);
+   }
+
+   .benefitCircle p {
+      font-size: calc(0.4rem + 1vw);
+   }
+
+}
+
+@media (max-width: 767px) {
+   .md-hide {
+      display: none;
+   }
+}
+
+@media (min-width: 576px) {
+   .xs-visible {
+      display: none;
+   }
+
+
+   .sm-visible {
+      display: flex;
+   }
+
+   .md-visible {
+      display: flex;
+   }
+
+   .lg-visible {
+      display: flex;
+   }
+
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+   .xs-visible {
+      display: none;
+   }
+
+   .sm-visible {
+      display: flex;
+   }
+
+   /*
+   .md-visible {
+      display: flex;
+   }
+
+   .lg-visible {
+      display: flex;
+   } */
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+   .xs-visible {
+      display: none;
+   }
+
+   .sm-visible {
+      display: flex;
+   }
+
+   /*
+   .md-visible {
+      display: flex;
+   }
+
+   .lg-visible {
+      display: flex;
+   } */
+
+}
+
+
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+   .xs-visible {
+      display: none;
+   }
+
+   .sm-visible {
+      display: flex;
+   }
+
+   /*
+   .md-visible {
+      display: none;
+   }
+
+   .lg-visible {
+      display: flex;
+   } */
+
 }
