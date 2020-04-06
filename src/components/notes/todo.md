@@ -2,19 +2,17 @@
 
 ###TODAY
 1. Diet page
-1. Send email login link?
-   * Create sendLoginLink page.
-   * change emailverify redirect link to send loginLink page.
+1. Email sign in link
+   * Remove email verification?
    * User enters email address. Gets another email that logs them in.
    * Prompt user to change password upon sign in.
-   * Do they need to enter their email? Can this be sent right after user creation?
+1. Look into firebase bucket storage for images.
 
 #Fix
 1. users account page: shows program count even when none are live.
 1. Reapply the bootstrap hidden style to the self created ones.
 
 #TODO
-
 1. Chat
    1. restyle users page to include
       1. list of users
@@ -36,10 +34,8 @@
 https://javebratt.com/hide-firebase-api/
 https://console.developers.google.com/apis/credentials?project=wp-practice-227620&folder=&organizationId=
 
-1. copy the landing page.
 1. Leave a check in today button as well as check in on date?
 1. So users can check in when they want to and put the date they want to check in on.
-1. if there is no localstorage for tasks in the searchbar make sure to load them.
 
 ### UI
 1. consistent headings on each page

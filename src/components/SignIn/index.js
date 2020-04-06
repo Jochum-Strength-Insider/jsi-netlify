@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 
 // import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
+import { EmailSignInLink } from '../EmailSignIn';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
@@ -130,7 +131,10 @@ const SignInFormBase = ({ firebase, history }) => {
                      </Form.Control.Feedback>
                   </Form.Group>
 
-                  <PasswordForgetLink />
+                  <div className="d-flex justify-content-between">
+                     <PasswordForgetLink />
+                     <EmailSignInLink />
+                  </div>
 
                   <hr></hr>
 

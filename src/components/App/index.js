@@ -5,6 +5,8 @@ import Navigation from '../Navigation';
 import LandingPage from '../Landing';
 // import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
+
+import EmailSignInPage from '../EmailSignIn';
 import PasswordForgetPage from '../PasswordForget';
 // import HomePage from '../Home';
 import UserProgramPage from '../UserProgramPage';
@@ -35,6 +37,7 @@ const App = () => (
                <Route exact path={ROUTES.LANDING} component={LandingPage} />
                {/* <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} /> */}
                <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+               <Route exact path={ROUTES.SIGN_IN_LINK} component={EmailSignInPage} />
                <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
                {/* <Route exact path={ROUTES.HOME} component={HomePage} /> */}
                <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />

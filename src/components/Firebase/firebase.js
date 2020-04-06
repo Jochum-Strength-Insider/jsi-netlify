@@ -92,6 +92,23 @@ class Firebase {
    doPasswordUpdate = password =>
       this.auth.currentUser.updatePassword(password);
 
+   doSendSignInLinkToEmail = (email) => {
+      const actionCodeSettings = {
+         // make this a .env
+         // url: 'http://localhost:3000/email-signin',
+         url: process.env.REACT_APP_EMAIL_SIGN_IN_REDIRECT || process.env.REACT_APP_DEV_EMAIL_SIGN_IN_REDIRECT,
+         handleCodeInApp: true,
+      };
+
+      return this.auth.sendSignInLinkToEmail(email, actionCodeSettings);
+   }
+
+   doSignInWithEmailLink = (email, location) =>
+      this.auth.signInWithEmailLink(email, location);
+
+   doIsSignInWithEmailLink = (location) =>
+      this.auth.isSignInWithEmailLink(location);
+
    // *** Merge Auth and DB User API *** //
 
    onAuthUserListener = (next, fallback) =>
