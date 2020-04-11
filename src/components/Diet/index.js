@@ -104,7 +104,7 @@ class Diet extends Component {
       // Return items greater than or equal to the specified key or value
       // .startAt(prevDate)
 
-      query.once("value").then((snap) => {
+      query.on("value", (snap) => {
          const dietsObject = snap.val();
          // snap.forEach(each => console.log(each));
          if (dietsObject) {
