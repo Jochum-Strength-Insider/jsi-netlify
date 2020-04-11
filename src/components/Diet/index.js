@@ -226,12 +226,11 @@ class Diet extends Component {
 }
 
 const PaginationBasic = ({ queryDate, changeQueryDate, now }) => {
-   const weeks = [1, 2];
    const currentDate = {
       formatted: queryDate,
       unix: Number(moment(queryDate).format("x"))
    }
-   const pastDates = weeks.reverse().map(sub => {
+   const pastDates = [2, 1].map(sub => {
       const date = moment(queryDate).subtract(sub, 'w')
       const formatted = date.format('YYYY-MM-DD');
       const unix = Number(date.format("x"));
@@ -240,7 +239,7 @@ const PaginationBasic = ({ queryDate, changeQueryDate, now }) => {
          unix,
       }
    });
-   const futureDates = weeks.map(add => {
+   const futureDates = [1, 2].map(add => {
       const date = moment(queryDate).add(add, 'w')
       const formatted = date.format('YYYY-MM-DD');
       const unix = Number(date.format("x"));
