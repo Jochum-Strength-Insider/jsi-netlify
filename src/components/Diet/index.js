@@ -231,7 +231,7 @@ const PaginationBasic = ({ queryDate, changeQueryDate, now }) => {
       formatted: queryDate,
       unix: Number(moment(queryDate).format("x"))
    }
-   const pastDates = weeks.map(sub => {
+   const pastDates = weeks.reverse().map(sub => {
       const date = moment(queryDate).subtract(sub, 'w')
       const formatted = date.format('YYYY-MM-DD');
       const unix = Number(date.format("x"));
