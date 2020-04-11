@@ -184,10 +184,9 @@ class Firebase {
 
    usersDiet = (uid, did) => this.db.ref(`diets/${uid}/${did}`);
 
-   // *** Diet Ids Array API ***
-   //Rename these
+   // *** Diet IDS API ***
 
-   usersDietIds = (uid) => this.db.ref(`users/${uid}/dietIds`);
+   dietIds = (uid) => this.db.ref(`dietIds/${uid}`);
 
    // *** Weight Ins API ***
    weighIn = (uid) => this.db.ref(`weighIns/${uid}`);

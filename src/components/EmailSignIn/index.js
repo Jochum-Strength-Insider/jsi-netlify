@@ -57,6 +57,7 @@ const SignInFormBase = ({ firebase, history }) => {
          firebase.doSignInWithEmailLink(email, window.location.href)
             .then(function (result) {
                window.localStorage.removeItem('emailForSignIn');
+               //Change this to push to the welcome page.
                history.push(ROUTES.USERPROGRAM);
             })
             .catch(function (error) {
@@ -122,7 +123,11 @@ const SignInFormBase = ({ firebase, history }) => {
                      </Button>
 
                   {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
-                  {sent && <Alert className="mt-3" variant="success">Email sign in link sent! Please check your inbox.</Alert>}
+                  {sent &&
+                     <Alert className="mt-3" variant="success">
+                        Email sign in link sent! Please check your inbox. <br />
+                        If this is your first time signing in please set up a new password on the account page after login.
+                  </Alert>}
                </Form>
             )}
       </Formik>

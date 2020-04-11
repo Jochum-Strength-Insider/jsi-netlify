@@ -71,7 +71,7 @@ class ExpandableTable extends React.Component {
       const { name, value } = e.target;
       // console.log(day, idx, name, value);
       const days = { ...this.state.days };
-      console.log(day);
+      // console.log(day);
       days[day].exercises[idx][name] = value;
       this.setState({ days });
    };
@@ -178,6 +178,8 @@ class ExpandableTable extends React.Component {
       const days = { ...this.state.days };
       // const dayArray = [...days[key]];
       const { exercises } = days[key];
+
+      this.resetCurrentCell(idx)();
 
       if (exercises.length > 1) {
          exercises.splice(idx, 1);

@@ -1,42 +1,23 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 
-import { compose } from 'recompose';
-
-import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 
-import { AuthUserContext } from '../Session';
 import Modal from '../Modal';
-import Diet from '../Diet';
 
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+// import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
 import { Scatter } from 'react-chartjs-2';
 import moment from 'moment';
-// import { Line } from 'react-chartjs-2';
-// import { Bar } from 'react-chartjs-2';
 
-const data = {
-   "0": { date: "3/1/2020", weight: "180" },
-   "1": { date: "3/2/2020", weight: "185" },
-   "2": { date: "3/3/2020", weight: "184" },
-   "3": { date: "3/4/2020", weight: "182" }
-}
-
-const TrackingPage = () => {
-
-   const authUser = useContext(AuthUserContext);
-   return (
-      <>
-         <h1 className="color-white">Tracking Page</h1>
-         <Weight authUser={authUser} data={data} />
-         <Diet uid={authUser.uid} ids={authUser.dietIds} />
-      </>
-   )
-}
+// const data = {
+//    "0": { date: "3/1/2020", weight: "180" },
+//    "1": { date: "3/2/2020", weight: "185" },
+//    "2": { date: "3/3/2020", weight: "184" },
+//    "3": { date: "3/4/2020", weight: "182" }
+// }
 
 class WeightBase extends Component {
    constructor(props) {
@@ -75,7 +56,7 @@ class WeightBase extends Component {
       this.state = {
          tracking: [],
          loading: false,
-         data: initialData,
+         data: JSON.parse(localStorage.getItem('chartData')) || initialData,
          show: false,
          options: {},
          weight: "180",
@@ -125,6 +106,7 @@ class WeightBase extends Component {
       // ]
       // quickAdd.map(key => this.props.firebase.weighIn(this.props.authUser.uid).push(key));
 
+      // Add a range slider? Or add year, month, day buttons?
       this.props.firebase
          .weighIn(this.props.authUser.uid)
          // .orderByChild("date")
@@ -158,6 +140,7 @@ class WeightBase extends Component {
                      }
                   ],
                };
+               localStorage.setItem('chartData', JSON.stringify(chartData));
 
                const options = {
                   responsive: true,
@@ -215,12 +198,14 @@ class WeightBase extends Component {
                }
 
                this.setState({ data: chartData, options: options, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1] });
+            } else {
+               localStorage.removeItem('chartData');
             }
          })
    }
 
    componentDidMount() {
-      this.fetchData()
+      this.fetchData();
    }
 
    render() {
@@ -247,23 +232,16 @@ class WeightBase extends Component {
                </Form>
             </Modal>
 
-            <Card className="my-3">
-               <Card.Header>
-                  <h3>Tracking Component</h3>
-               </Card.Header>
-               <Card.Body>
-                  {this.state.error && <Alert variant="warning">{this.state.error.message}</Alert>}
+            {this.state.error && <Alert variant="warning">{this.state.error.message}</Alert>}
 
-                  <Scatter
-                     data={this.state.data}
-                     options={this.state.options}
-                  />
+            <Scatter
+               data={this.state.data}
+               options={this.state.options}
+            />
 
-                  <Form className="mt-3">
-                     <Button block variant="outline-primary" onClick={this.showModal}>Add Weigh In</Button>
-                  </Form>
-               </Card.Body>
-            </Card>
+            <Form className="mt-3 px-5">
+               <Button block variant="outline-primary" onClick={this.showModal}>Add Weigh In</Button>
+            </Form>
          </>
       )
    }
@@ -271,9 +249,4 @@ class WeightBase extends Component {
 
 const Weight = withFirebase(WeightBase);
 
-const condition = authUser => !!authUser;
-
-export default compose(
-   withEmailVerification,
-   withAuthorization(condition),
-)(TrackingPage);
+export default Weight;

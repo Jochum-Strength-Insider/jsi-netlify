@@ -60,7 +60,8 @@ const NavigationAuth = ({ authUser }) => (
       <Navbar.Collapse id="basic-navbar-nav">
          <Nav className="mr-auto">
             <Nav.Link href={ROUTES.USERPROGRAM}>Program</Nav.Link>
-            <Nav.Link href={ROUTES.TRACKING}>Tracking</Nav.Link>
+            <Nav.Link href={ROUTES.WEIGHIN}>Weight</Nav.Link>
+            <Nav.Link href={ROUTES.DIET}>Diet</Nav.Link>
             <Nav.Link href={ROUTES.MESSAGES}>
                {/* Messages {authUser.unread && <Badge variant="light">{authUser.unread}</Badge>} */}
                   Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}

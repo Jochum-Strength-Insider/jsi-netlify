@@ -1,16 +1,19 @@
 # ToDo
 
 ###TODAY
-1. Diet page
-1. Email sign in link
-   * Remove email verification?
-   * User enters email address. Gets another email that logs them in.
-   * Prompt user to change password upon sign in.
+1. Add pagination to weigh in's
 1. Look into firebase bucket storage for images.
+1. Messages only load an initial value then add a "load more" button at the top of the messages to load more. Only show load more if the current messages list exceeds a certain size.
 
 #Fix
-1. users account page: shows program count even when none are live.
+1. Change new Date to Number(moment(date).format(x));
 1. Reapply the bootstrap hidden style to the self created ones.
+1. Organize component structure into components / pages
+1. Reorganize the user-program components. i.e. expandable table
+1. UseMemo more often.
+1. Cut back on as many firebase calls as possible.
+1. Create use a forEach on table rows to create listeners??
+1. Add the show state to the modal object so it doesn't have to mix with component state.
 
 #TODO
 1. Chat
@@ -22,11 +25,13 @@
    3. Restyle input form so it expands?
 1. Inputs
    * refactor inputs to be own components / pure components that only update when props change
-1. Restyle into material ui?
 1. Look into wix / heroku subdomains
-1. Make an exercises page for non-admin users.
-
+1. Make an exercises page for non-admin users?
+1. Restyle workouts page.
+1. Add weight pagination.
 1. Restyle admin page so it includes everything on one page. More of an admin panel.
+1. Diet page
+   * restyle
 
 ### Major
 

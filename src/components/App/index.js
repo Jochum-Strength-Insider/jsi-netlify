@@ -14,10 +14,12 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import CreateProgram from '../CreateProgram';
 import CreateTask from '../CreateTask';
-import TrackingPage from '../TrackingPage';
+import DietPage from '../DietPage';
+import WeighInPage from '../WeighInPage';
 import UserChat from '../ChatUser';
 import AdminChat from '../ChatAdmin';
 import Footer from '../Footer';
+import WelcomePage from '../WelcomePage';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -45,9 +47,11 @@ const App = () => (
                <Route path={ROUTES.CREATEPROGRAM} component={CreateProgram} />
                <Route path={ROUTES.CREATETASK} component={CreateTask} />
                <Route path={ROUTES.USERPROGRAM} component={UserProgramPage} />
-               <Route path={ROUTES.TRACKING} component={TrackingPage} />
+               <Route path={ROUTES.DIET} component={DietPage} />
+               <Route path={ROUTES.WEIGHIN} component={WeighInPage} />
                <Route path={ROUTES.ADMIN_MESSAGES} component={AdminChat} />
                <Route path={ROUTES.MESSAGES} component={UserChat} />
+               <Route path={ROUTES.WELCOME} component={WelcomePage} />
                <Route path="*" component={NoMatch} />
             </Switch>
          </Container>

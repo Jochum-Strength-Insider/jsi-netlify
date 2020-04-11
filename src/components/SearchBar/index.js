@@ -4,9 +4,6 @@ import PropTypes from "prop-types";
 import "./style.css";
 import Form from 'react-bootstrap/Form'
 
-// I need to pass the value back up into the component so it can still be saved to the database.
-// Can i just use the header[item] as a value prop? and pass it back up through onChange after onClick / enter.
-
 class Autocomplete extends Component {
    static propTypes = {
       suggestions: PropTypes.instanceOf(Array)
