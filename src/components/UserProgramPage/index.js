@@ -166,8 +166,7 @@ class ManageUserTablesBase extends Component {
       // const { workoutIndex, workoutids, workoutsList } = this.state;
       // const { workoutIndex, workoutsList } = this.state;
       // const program = workoutsList[workoutIndex] ? workoutsList[workoutIndex] : null;
-      const date = program ? new Date(program.createdAt) : new Date();
-      const dateString = date.toLocaleDateString("en-US");
+      const dateString = program ? new Date(program.createdAt).toLocaleDateString("en-US") : "";
       // const index = program ? workoutids.indexOf(program.workoutId) : 0;
 
       // console.log(program);

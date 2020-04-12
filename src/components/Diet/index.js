@@ -8,10 +8,9 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-// import Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
-import Pagination from 'react-bootstrap/Pagination';
 import Modal from '../Modal';
+import PaginationBasic from '../PaginationBasic';
 
 const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "", } };
 
@@ -168,7 +167,7 @@ class Diet extends Component {
       const paginate = (
          <div className="d-flex justify-content-center">
             <div>
-               <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} />
+               <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={'w'} />
             </div>
          </div>)
 
@@ -224,48 +223,6 @@ class Diet extends Component {
    }
 
 }
-
-const PaginationBasic = ({ queryDate, changeQueryDate, now }) => {
-   const currentDate = {
-      formatted: queryDate,
-      unix: Number(moment(queryDate).format("x"))
-   }
-   const pastDates = [2, 1].map(sub => {
-      const date = moment(queryDate).subtract(sub, 'w')
-      const formatted = date.format('YYYY-MM-DD');
-      const unix = Number(date.format("x"));
-      return {
-         formatted,
-         unix,
-      }
-   });
-   const futureDates = [1, 2].map(add => {
-      const date = moment(queryDate).add(add, 'w')
-      const formatted = date.format('YYYY-MM-DD');
-      const unix = Number(date.format("x"));
-      return {
-         formatted,
-         unix,
-      }
-   });
-   const dates = [...pastDates, currentDate, ...futureDates];
-   // const now = Number(moment().format('x'));
-
-   const paginationDates = dates.map((date, idx) => {
-      return (
-         <Pagination.Item key={date.unix} active={date.formatted === queryDate} disabled={date.unix > now} onClick={changeQueryDate(date.formatted)}>
-            {date.formatted}
-         </Pagination.Item>
-      )
-   })
-   const prevWeek = pastDates[0];
-   const prevWeekButton = <Pagination.Prev disabled={prevWeek.unix > now} onClick={changeQueryDate(prevWeek.formatted)} />
-
-   const nextWeek = futureDates[0];
-   const nextWeekButton = <Pagination.Next disabled={nextWeek.unix > now} onClick={changeQueryDate(nextWeek.formatted)} />
-
-   return <Pagination className="my-0 py-0">{prevWeekButton}{paginationDates}{nextWeekButton}</Pagination>
-};
 
 
 class DietSheetPageBase extends Component {

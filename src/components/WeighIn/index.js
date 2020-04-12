@@ -5,10 +5,10 @@ import { withFirebase } from '../Firebase';
 import Modal from '../Modal';
 
 import Button from 'react-bootstrap/Button';
-// import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
+import PaginationBasic from '../PaginationBasic';
 import { Scatter } from 'react-chartjs-2';
 import moment from 'moment';
 
@@ -53,6 +53,8 @@ class WeightBase extends Component {
 
       };
 
+      const currentDate = moment().format('YYYY-MM-DD');
+
       this.state = {
          tracking: [],
          loading: false,
@@ -62,9 +64,66 @@ class WeightBase extends Component {
          weight: "180",
          lastDate: "",
          invalid: false,
+         date: currentDate,
+         queryDate: currentDate,
          error: null,
       }
    }
+
+   options = (weightData) => ({
+      responsive: true,
+      legend: {
+         display: false,
+      },
+      title: {
+         display: true,
+         text: 'Weight'
+      },
+      animation: {
+         animateScale: true
+      },
+      tooltips: {
+         callbacks: {
+            label: function (tooltipItem, data) {
+               const label = data.labels[tooltipItem.index];
+               const toDay = label.format("MMM D");
+               const weight = tooltipItem.yLabel;
+               return toDay + ": " + weight + "lbs";
+            }
+         }
+      },
+      scales: {
+         yAxes: [{
+            ticks: {
+               // beginAtZero: true,
+               callback: function (value) { if (Number.isInteger(value)) { return value; } },
+               stepSize: 1,
+               suggestedMin: Math.min(...weightData) - 5,
+               suggestedMax: Math.max(...weightData) + 5,
+            },
+            scaleLabel: {
+               display: true,
+               labelString: 'lbs'
+            }
+         }],
+         xAxes: [{
+            // time settings
+            type: 'time',
+            time: {
+               unit: 'day',
+               unitStepSize: 1,
+               displayFormats: {
+                  day: 'MMM D'
+               }
+            },
+            scaleLabel: {
+               display: true,
+               labelString: 'Date',
+            },
+            distribution: 'linear',
+         }]
+      }
+   })
 
    onChange = (e) => {
       const { name, value } = e.target;
@@ -73,10 +132,11 @@ class WeightBase extends Component {
 
    addWeightIn = (e) => {
       e.preventDefault();
-      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
-      const nowString = moment().format("MMM D");
+      const timestamp = Number(moment(this.state.date).format("x"));
+      const nowString = moment(this.state.date).format("MMM D");
       const lastDatestring = moment(this.state.lastDate).format("MMM D");
 
+      // this check need to be redone. Maybe do a checkQuery function like in the diet page.
       if (lastDatestring === nowString) {
          this.setState({ invalid: true })
       } else {
@@ -85,14 +145,12 @@ class WeightBase extends Component {
             .then(this.hideModal)
             .catch(error => this.setState({ error }))
       }
-      // console.log(this.state.weight, "clicked");
-      // this.hideModal()
    }
 
    showModal = () => this.setState({ show: true });
    hideModal = () => this.setState({ show: false, invalid: false });
 
-   fetchData = () => {
+   fetchData = (date, onMount) => {
 
       // const quickAdd = [
       //    { date: new Date("2/26/2020").getTime(), weight: "184" },
@@ -106,33 +164,58 @@ class WeightBase extends Component {
       // ]
       // quickAdd.map(key => this.props.firebase.weighIn(this.props.authUser.uid).push(key));
 
-      // Add a range slider? Or add year, month, day buttons?
+
+      // const recentDate = Number(moment(date).format("x"));
+      // const previousDate = Number(moment(date).subtract(1, "w").format("x"));
+
+      const startOf = Number(moment(date).startOf("month").format("x"));
+      const endOf = Number(moment(date).endOf("month").format("x"));
+
+      // const startOfFormatted = moment(date).startOf("month").format("YYYY-MM-DD");
+      // const endOfFormatted = moment(date).endOf("month").format("YYYY-MM-DD");
+
       this.props.firebase
          .weighIn(this.props.authUser.uid)
-         // .orderByChild("date")
-         .limitToLast(7)
+         .orderByChild("date")
+         .startAt(startOf)
+         .endAt(endOf)
+         // .limitToLast(7)
          .on("value", (snap) => {
             const weighInObject = snap.val();
 
             if (weighInObject) {
 
-               const dataArray = Object.keys(weighInObject)
-                  .map(
-                     key => {
-                        return weighInObject[key];
-                     }
-                  );
+               const dataArray = Object.keys(weighInObject).map(key => weighInObject[key]);
 
                const weightData = dataArray.map(item => item.weight);
-               const dateLabels = dataArray.map((item, idx) => {
-                  const date = new Date(item.date);
-                  // return moment(date, "MMM D");
-                  return moment(date).startOf("day");
-               });
+               const dateLabels = dataArray.map((item) => moment(item.date).startOf("day"));
+
+               const weightDataFullMonth = [null, ...weightData, null];
+               const dateLabelsFullMonth = [startOf, ...dateLabels, endOf];
 
                const chartData = {
-                  labels: dateLabels,
-                  // labels: ["Scatter"],
+                  labels: dateLabelsFullMonth,
+                  datasets: [
+                     {
+                        ...this.dataSetOptions,
+                        data: weightDataFullMonth
+                     }
+                  ],
+               };
+               localStorage.setItem('chartData', JSON.stringify(chartData));
+
+               const newOptions = this.options(weightData);
+
+               if (onMount) {
+                  this.setState({ data: chartData, options: newOptions, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1] });
+               } else {
+                  this.setState({ data: chartData, options: newOptions });
+               }
+            } else {
+               const weightData = [null, null];
+
+               const chartData = {
+                  labels: [startOf, endOf],
                   datasets: [
                      {
                         ...this.dataSetOptions,
@@ -140,108 +223,74 @@ class WeightBase extends Component {
                      }
                   ],
                };
-               localStorage.setItem('chartData', JSON.stringify(chartData));
-
-               const options = {
-                  responsive: true,
-                  legend: {
-                     display: false,
-                  },
-                  title: {
-                     display: true,
-                     text: 'Weight'
-                  },
-                  animation: {
-                     animateScale: true
-                  },
-                  tooltips: {
-                     callbacks: {
-                        label: function (tooltipItem, data) {
-                           const label = data.labels[tooltipItem.index];
-                           const toDay = label.format("MMM D");
-                           const weight = tooltipItem.yLabel;
-                           return toDay + ": " + weight + "lbs";
-                        }
-                     }
-                  },
-                  scales: {
-                     yAxes: [{
-                        ticks: {
-                           // beginAtZero: true,
-                           callback: function (value) { if (Number.isInteger(value)) { return value; } },
-                           stepSize: 1,
-                           suggestedMin: Math.min(...weightData) - 5,
-                           suggestedMax: Math.max(...weightData) + 5,
-                        },
-                        scaleLabel: {
-                           display: true,
-                           labelString: 'lbs'
-                        }
-                     }],
-                     xAxes: [{
-                        // time settings
-                        type: 'time',
-                        time: {
-                           unit: 'day',
-                           unitStepSize: 1,
-                           displayFormats: {
-                              day: 'MMM D'
-                           }
-                        },
-                        scaleLabel: {
-                           display: true,
-                           labelString: 'Date',
-                        },
-                        distribution: 'linear',
-                     }]
-                  }
+               const newOptions = this.options([this.state.weight]);
+               // make a reset object?
+               if (onMount) {
+                  this.setState({ data: chartData, options: newOptions, weight: '180', lastDate: '' });
+               } else {
+                  this.setState({ data: chartData, options: newOptions });
                }
-
-               this.setState({ data: chartData, options: options, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1] });
-            } else {
                localStorage.removeItem('chartData');
             }
          })
    }
 
+   changeQueryDate = (date) => () => {
+      this.setState({ queryDate: date });
+      this.fetchData(date, false);
+   }
+
    componentDidMount() {
-      this.fetchData();
+      this.fetchData((this.state.queryDate), true);
    }
 
    render() {
 
+      const { data, options, loading, invalid, show, weight, error, queryDate } = this.state;
+      const now = moment().format('YYYY-MM-DD');
+      const nowDateUnix = Number(moment(now).format("x"));
+
       return (
          <>
-            <Modal show={this.state.show} handleClose={this.hideModal} heading={"Add Weigh In"}>
+            <Modal show={show} handleClose={this.hideModal} heading={"Add Weigh In"}>
                <Form onSubmit={this.addWeightIn}>
                   <Form.Group>
-                     <Form.Label>Add Weigh In</Form.Label>
+                     <Form.Label>Add Weigh In - {now}</Form.Label>
                      <Form.Control
                         type="number"
                         name="weight"
                         onChange={this.onChange}
-                        value={this.state.weight}
+                        value={weight}
                         required
-                        isInvalid={this.state.invalid}
+                        isInvalid={invalid}
+                        min="0"
+                        max="1000"
                      />
                      <Form.Control.Feedback type="invalid">
                         Already Checked In Today.
                      </Form.Control.Feedback>
                   </Form.Group>
-                  <Button disabled={this.state.invalid} type="submit">Add</Button>
+                  <Button disabled={invalid} type="submit">Add</Button>
                </Form>
             </Modal>
 
-            {this.state.error && <Alert variant="warning">{this.state.error.message}</Alert>}
-
-            <Scatter
-               data={this.state.data}
-               options={this.state.options}
-            />
+            {error && <Alert variant="warning">{error.message}</Alert>}
 
             <Form className="mt-3 px-5">
                <Button block variant="outline-primary" onClick={this.showModal}>Add Weigh In</Button>
             </Form>
+
+            <Scatter
+               data={data}
+               options={options}
+            />
+
+            <div className="d-flex justify-content-center">
+               <div>
+                  <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={"months"} />
+               </div>
+            </div>
+
          </>
       )
    }
