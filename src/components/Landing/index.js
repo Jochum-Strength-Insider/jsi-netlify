@@ -92,7 +92,7 @@ const Landing = () => (
       </Row>
 
       <Row className="d-flex justify-content-center mt-5 mb-3">
-         <h4 className="text-center whatDoesTitle">What Does <div><b>Jochum Strength</b></div> Mean To You?</h4>
+         <h3 className="text-center whatDoesTitle">What Does <div><b>Jochum Strength</b></div> Mean To You?</h3>
       </Row>
       <Row className="d-flex mb-5 justify-content-center">
          <video className="whatDoesVideo" controls>

@@ -1,6 +1,7 @@
 # ToDo
 
 ###TODAY
+1. diet sheet / weigh in mobile styling
 1. restyle admin exercises page
 1. Messages only load an initial value then add a "load more" button at the top of the messages to load more. Only show load more if the current messages list exceeds a certain size.
 1. Overall styling
@@ -15,6 +16,7 @@
 1. Look into firebase bucket storage for images.
 
 #Fix
+1. add a sign in with email / password link to the email-link sign in page
 1. in the diet page do I need to have a separate diet id's object. Can I just query the createdAt object of diets object?
 1. Should workoutIds be still be apart of the user object or should they be their own object
 1. Reapply the bootstrap hidden style to the self created ones.

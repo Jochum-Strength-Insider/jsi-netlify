@@ -15,11 +15,6 @@ import PaginationBasic from '../PaginationBasic';
 
 const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "", } };
 
-//TODO
-// Should I have it scroll through the idsList and use startAt(index).endAt(index) instead???
-// Restructure dietIds to own folder. Not part of userObject. Listen for changes to it onMount.
-
-
 class Diet extends Component {
    constructor(props) {
       super(props);
@@ -57,25 +52,19 @@ class Diet extends Component {
       newDiet["createdAt"] = newDate;
 
       if (!isInvalid) {
-         console.log(date);
+         // console.log(date);
          this.props.firebase.usersDiets(this.props.uid).push(newDiet)
             .then((snap) => {
                this.hideModal();
                const key = snap.key
-               this.props.firebase.dietIds(this.props.uid).update({ [key]: newDate })
-               this.setState({ isInvalid: true });
+               this.props.firebase.dietIds(this.props.uid).update({ [key]: newDate });
+               this.fetchDiets(date);
+               this.setState({ isInvalid: true, queryDate: date });
             })
             .catch(error => {
                this.setState({ error });
             });
       }
-   }
-
-   loadPrevious = () => {
-      const newDate = moment(this.state.queryDate).subtract(1, "w").format("YYYY-MM-DD");
-      console.log(newDate);
-      this.setState({ queryDate: newDate });
-      this.fetchDiets(newDate);
    }
 
    changeQueryDate = (date) => () => {
@@ -84,27 +73,29 @@ class Diet extends Component {
    }
 
    fetchDiets = (date) => {
-      // Figure out pagination
+      const startOf = Number(moment(date).startOf("week").format("x"));
+      const endOf = Number(moment(date).endOf("week").format("x"));
 
-      const recentDate = Number(moment(date).format("x"));
+      // const startOfFormatted = moment(date).startOf("month").format("YYYY-MM-DD");
+      // const endOfFormatted = moment(date).endOf("month").format("YYYY-MM-DD");
+
+      // const recentDate = Number(moment(date).format("x"));
       // const prevDate = Number(moment(date).subtract(1, "d").format("x"));
-      // console.log(start);
-      //[1,2,3,4,5,6,7, 8, 9, 10]
-      // limitToLast(3) - [8,9,10]
-      // limitToFirst(3) - [1,2,3]
 
       this.setState({ loading: true });
       const query = this.props.firebase
          .usersDiets(this.props.uid)
          .orderByChild("createdAt")
-         // Return items less than or equal to the specified key or value
-         .endAt(recentDate)
-         // .limitToFirst(7)
-         .limitToLast(7)
+         .startAt(startOf)
+         .endAt(endOf)
+
+      // Return items less than or equal to the specified key or value
+      // .endAt(recentDate)
+      // .limitToLast(7)
       // Return items greater than or equal to the specified key or value
       // .startAt(prevDate)
 
-      query.on("value", (snap) => {
+      query.once("value").then((snap) => {
          const dietsObject = snap.val();
          // snap.forEach(each => console.log(each));
          if (dietsObject) {
@@ -116,13 +107,13 @@ class Diet extends Component {
             const dietArray = keys.map(key => {
                return { ...dietsObject[key], key: key }
             }).sort(compareNumbers);
-            console.log(dietArray);
+            // console.log(dietArray);
 
             localStorage.setItem('diet', JSON.stringify(dietArray));
             this.setState({ diets: dietArray, loading: false });
 
          } else {
-            console.log("No diets / First Diet");
+            // console.log("No diets / First Diet");
             localStorage.removeItem('diet');
             this.setState({ diets: [], loading: false });
          }
@@ -159,11 +150,6 @@ class Diet extends Component {
       const { diets, loading, error, queryDate } = this.state;
       const now = moment().format('YYYY-MM-DD');
       const nowDateUnix = Number(moment(now).format("x"));
-      // const queryDateUnix = Number(moment(queryDate).format("x"));
-      // const dietKeysArray = diets.map(diet => diet.key);
-
-      // const loadRecent = queryDateUnix < nowDateUnix ? true : false;
-      // const loadPrevious = dietKeysArray.length >= 7 ? true : false;
 
       const paginate = (
          <div className="d-flex justify-content-center">
@@ -222,13 +208,14 @@ class Diet extends Component {
          </>
       )
    }
-
 }
 
 
 class DietSheetPageBase extends Component {
    constructor(props) {
       super(props);
+
+      this.timer = null;
 
       const initialDietState = this.props.diet.meals;
       this.state = {
@@ -245,7 +232,7 @@ class DietSheetPageBase extends Component {
 
    onAlert = () => {
       this.setState({ alert: true });
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
          this.setState({ alert: false });
       }, 2000);
    }
@@ -266,6 +253,11 @@ class DietSheetPageBase extends Component {
    onChange = (e) => {
       const { name, value } = e.target;
       this.setState({ [name]: value })
+   }
+
+   componentWillUnmount() {
+      // this.props.firebase.usersDiet(this.props.uid, key)
+      clearTimeout(this.timer);
    }
 
    render() {

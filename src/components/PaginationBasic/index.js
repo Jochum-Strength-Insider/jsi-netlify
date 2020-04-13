@@ -5,24 +5,29 @@ import Pagination from 'react-bootstrap/Pagination';
 const PaginationBasic = ({ queryDate, changeQueryDate, now, format, spacing }) => {
    const currentDate = {
       formatted: moment(queryDate).format(format),
-      unix: Number(moment(queryDate).format("x"))
+      unix: Number(moment(queryDate).format("x")),
+      startOf: moment(queryDate).startOf(spacing).format(format)
    }
    const pastDates = [2, 1].map(sub => {
       const date = moment(queryDate).subtract(sub, spacing)
       const formatted = date.format(format);
       const unix = Number(date.format("x"));
+      const startOf = moment(date).startOf(spacing).format(format);
       return {
          formatted,
          unix,
+         startOf
       }
    });
    const futureDates = [1, 2].map(add => {
       const date = moment(queryDate).add(add, spacing)
       const formatted = date.format(format);
       const unix = Number(date.format("x"));
+      const startOf = moment(date).startOf(spacing).format(format);
       return {
          formatted,
          unix,
+         startOf
       }
    });
    const dates = [...pastDates, currentDate, ...futureDates];
@@ -31,7 +36,7 @@ const PaginationBasic = ({ queryDate, changeQueryDate, now, format, spacing }) =
    const paginationDates = dates.map((date, idx) => {
       return (
          <Pagination.Item key={date.unix} active={date.formatted === queryDate} disabled={date.unix > now} onClick={changeQueryDate(date.formatted)}>
-            {date.formatted}
+            {date.startOf}
          </Pagination.Item>
       )
    })
