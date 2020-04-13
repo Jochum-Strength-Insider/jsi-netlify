@@ -75,13 +75,16 @@ const NavigationAuth = ({ authUser }) => (
                      <NavDropdown.Item href={ROUTES.CREATETASK}>Exercises</NavDropdown.Item>
                      {/* <NavDropdown.Item href={ROUTES.ADMIN_MESSAGES}>Admin Messages</NavDropdown.Item> */}
                   </NavDropdown>
-
                </>
             )}
          </Nav>
          <Nav>
             <Navbar.Text>
-               Signed in as: <a href={ROUTES.ACCOUNT}>{authUser.username}</a>
+               <span className="material-icons">
+                  Account:
+               </span>
+               {" "}
+               <a href={ROUTES.ACCOUNT}>{authUser.username}</a>
             </Navbar.Text>
             {/* <Nav.Link href={ROUTES.ACCOUNT}>{authUser.username}</Nav.Link> */}
          </Nav>

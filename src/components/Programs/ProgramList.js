@@ -66,7 +66,6 @@ class UserItemBase extends Component {
 
    handleTitleChange = (e) => {
       const { value } = e.target;
-
       this.setState({ programTitle: value })
    }
 
@@ -119,75 +118,78 @@ class UserItemBase extends Component {
    render() {
       const { loading, programIds, error } = this.state;
       const idsArray = Object.keys(programIds).reverse();
+      const style = { width: "100%", maxWidth: "1000px", flex: "1" };
+
 
       return (
-         <div>
-            {/* {program && ( */}
-            <>
-               <Modal handleClose={this.handleClose} show={this.state.show} heading={"Create New Program"}>
+         <>
+            <Modal handleClose={this.handleClose} show={this.state.show} heading={"Create New Program"}>
 
-                  <Form onSubmit={this.handleCreateProgram}>
-                     <Form.Group>
-                        <Form.Label>Program Title</Form.Label>
-                        <Form.Control
-                           type="text"
-                           name="programTitle"
-                           value={this.state.programTitle}
-                           onChange={this.handleTitleChange}
-                        />
-                     </Form.Group>
-                     <Button type="submit" >Add Program</Button>
-                     {error && <Alert variant="warning">{error.message}</Alert>}
-                  </Form>
-               </Modal>
+               <Form onSubmit={this.handleCreateProgram}>
+                  <Form.Group>
+                     <Form.Label>Program Title</Form.Label>
+                     <Form.Control
+                        type="text"
+                        name="programTitle"
+                        value={this.state.programTitle}
+                        onChange={this.handleTitleChange}
+                     />
+                  </Form.Group>
+                  <Button type="submit" >Add Program</Button>
+                  {error && <Alert variant="warning">{error.message}</Alert>}
+               </Form>
+            </Modal>
 
-               <Modal handleClose={this.handleRemoveClose} show={this.state.showRemove} heading={"Remove Program?"}>
-                  <Form className="d-flex justify-content-between align-items-center">
-                     <Button variant="outline-danger" onClick={this.onRemoveProgram}>Remove</Button>
-                     <Button variant="primary" onClick={this.handleRemoveClose}>Cancel</Button>
-                  </Form>
-               </Modal>
+            <Modal handleClose={this.handleRemoveClose} show={this.state.showRemove} heading={"Remove Program?"}>
+               <Form className="d-flex justify-content-between align-items-center">
+                  <Button variant="outline-danger" onClick={this.onRemoveProgram}>Remove</Button>
+                  <Button variant="primary" onClick={this.handleRemoveClose}>Cancel</Button>
+               </Form>
+            </Modal>
 
-               <ListGroup variant="flush">
-                  <ListGroup.Item>
-                     <Button onClick={this.handleOpen} block>Add Program</Button>
-                  </ListGroup.Item>
+            <div className="d-flex justify-content-center">
+               <div style={style}>
+                  <h1 className="color-white">Programs</h1>
+                  <ListGroup>
+                     <ListGroup.Item>
+                        <Button onClick={this.handleOpen} block>Add Program</Button>
+                     </ListGroup.Item>
 
-                  {
-                     idsArray.map(key => {
-                        const date = new Date(programIds[key].createdAt);
-                        const dateString = date.toLocaleDateString("en-US");
+                     {
+                        idsArray.map(key => {
+                           const date = new Date(programIds[key].createdAt);
+                           const dateString = date.toLocaleDateString("en-US");
 
-                        return (
-                           <ListGroup.Item className="d-flex justify-content-between align-items-center" key={key}>
-                              <>
-                                 <span>
-                                    <strong> Title:</strong>{programIds[key].title}
-                                    <strong className="ml-2">Date:</strong> {dateString}
-                                 </span>
-                                 <span>
-                                    <Button className="ml-2" variant="outline-primary" href={`${ROUTES.CREATEPROGRAM}/${key}`}>
-                                       Edit
+                           return (
+                              <ListGroup.Item className="d-flex justify-content-between align-items-center" key={key}>
+                                 <>
+                                    <span>
+                                       <strong> Title: </strong>
+                                       <a href={`${ROUTES.CREATEPROGRAM}/${key}`}>
+                                          {programIds[key].title}
+                                       </a>
+                                       <strong className="ml-2">Date: </strong> {dateString}
+                                    </span>
+                                    <span>
+                                       <Button className="ml-2" variant="outline-danger"
+                                          type="button"
+                                          onClick={() => this.setRemoveKey(key)}
+                                       >
+                                          Delete
                                  </Button>
-                                    <Button className="ml-2" variant="outline-danger"
-                                       type="button"
-                                       onClick={() => this.setRemoveKey(key)}
-                                    >
-                                       Delete
-                                 </Button>
-                                 </span>
-                              </>
-                           </ListGroup.Item>
+                                    </span>
+                                 </>
+                              </ListGroup.Item>
+                           )
+                        }
                         )
                      }
-                     )
-                  }
-                  {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
-                  {idsArray.length === 0 && <ListGroup.Item>No Programs ...</ListGroup.Item>}
-               </ListGroup>
-            </>
-            {/* )} */}
-         </div>
+                     {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
+                     {idsArray.length === 0 && <ListGroup.Item>No Programs ...</ListGroup.Item>}
+                  </ListGroup>
+               </div>
+            </div>
+         </>
       );
    }
 }

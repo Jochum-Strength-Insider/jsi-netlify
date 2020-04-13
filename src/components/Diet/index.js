@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from '../Modal';
+import Loading from '../Loading';
 import PaginationBasic from '../PaginationBasic';
 
 const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "", } };
@@ -194,12 +195,12 @@ class Diet extends Component {
                </Form>
             </Modal>
 
-            <ListGroup className="mb-5 mt-4">
-               <ListGroup.Item>
-                  <Button className="py-2 my-2" onClick={this.showModal} block>Add Diet Page</Button>
+            <ListGroup className="mb-5">
+               <ListGroup.Item className="pt-4 pb-4">
+                  <Button className="py-2" onClick={this.showModal} block>Add Diet Page</Button>
                </ListGroup.Item>
 
-               {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
+               {loading && <ListGroup.Item><Loading /></ListGroup.Item>}
 
                {
                   diets.length === 0 && (
@@ -378,8 +379,8 @@ class DietSheetPageBase extends Component {
                      <Form.Group as={Col} xs={12} md={size}>
                         {
                            alert
-                              ? <Button block type="submit" className="mx-1 px-5" variant="outline-success">Saved!</Button>
-                              : <Button block type="submit" className="mx-1 px-5" variant="outline-primary">Save</Button>
+                              ? <Button block type="submit" variant="outline-success">Saved!</Button>
+                              : <Button block type="submit" variant="outline-primary">Save</Button>
                         }
                      </Form.Group>
                      // )

@@ -14,9 +14,9 @@ const UserInfoCard = ({ authUser }) => {
 
       <Card className="my-3">
          <Card.Header>Account Info</Card.Header>
-         <Card.Body>
-            <ListGroup variant="flush" >
-               <ListGroup.Item>Account: {authUser.username}</ListGroup.Item>
+         <Card.Body className="px-0 py-2">
+            <ListGroup variant="flush">
+               <ListGroup.Item>Username: {authUser.username}</ListGroup.Item>
                <ListGroup.Item>Email: {authUser.email}</ListGroup.Item>
                <ListGroup.Item>Programs: {authUser.workoutids ? Object.keys(authUser.workoutids).length : 0}</ListGroup.Item>
                <ListGroup.Item>Member Since: {dateString}</ListGroup.Item>

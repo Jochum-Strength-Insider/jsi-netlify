@@ -15,6 +15,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 // import Modal from 'react-bootstrap/Modal';
 import Modal from '../Modal';
+import Loading from '../Loading';
 // import Badge from 'react-bootstrap/Badge';
 
 class UserListBase extends Component {
@@ -86,6 +87,8 @@ class UserListBase extends Component {
 
                   <Card className="mb-5">
                      <ListGroup variant="flush" >
+
+
                         <ListGroup.Item>
                            <Button className="py-2 my-2" block onClick={this.handleOpen}>Add User</Button>
                         </ListGroup.Item>
@@ -143,7 +146,7 @@ class UserListBase extends Component {
                            )
                         })}
 
-                        {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
+                        {loading && <ListGroup.Item><Loading /></ListGroup.Item>}
 
                      </ListGroup>
                   </Card>

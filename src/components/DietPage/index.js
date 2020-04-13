@@ -10,9 +10,7 @@ import Diet from '../Diet';
 const style = { width: "100%", maxWidth: "1000px", flex: "1" };
 
 const DietPage = () => {
-
    const authUser = useContext(AuthUserContext);
-   // console.log(authUser);
    return (
       <>
          <div className="d-flex justify-content-center">

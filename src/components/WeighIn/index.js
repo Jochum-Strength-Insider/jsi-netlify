@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 
 import Modal from '../Modal';
+// import Loading from '../Loading';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -145,12 +146,15 @@ class WeightBase extends Component {
             .then(this.hideModal)
             .catch(error => this.setState({ error }))
       }
+
+      // add a changeQuery back to current date?
    }
 
    showModal = () => this.setState({ show: true });
    hideModal = () => this.setState({ show: false, invalid: false });
 
    fetchData = (date, onMount) => {
+      this.setState({ loading: true });
 
       // const quickAdd = [
       //    { date: new Date("2/26/2020").getTime(), weight: "184" },
@@ -207,9 +211,9 @@ class WeightBase extends Component {
                const newOptions = this.options(weightData);
 
                if (onMount) {
-                  this.setState({ data: chartData, options: newOptions, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1] });
+                  this.setState({ data: chartData, options: newOptions, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1], loading: false });
                } else {
-                  this.setState({ data: chartData, options: newOptions });
+                  this.setState({ data: chartData, options: newOptions, loading: false });
                }
             } else {
                const weightData = [null, null];
@@ -226,9 +230,9 @@ class WeightBase extends Component {
                const newOptions = this.options([this.state.weight]);
                // make a reset object?
                if (onMount) {
-                  this.setState({ data: chartData, options: newOptions, weight: '180', lastDate: '' });
+                  this.setState({ data: chartData, options: newOptions, weight: '180', lastDate: '', loading: false });
                } else {
-                  this.setState({ data: chartData, options: newOptions });
+                  this.setState({ data: chartData, options: newOptions, loading: false });
                }
                localStorage.removeItem('chartData');
             }
@@ -246,7 +250,7 @@ class WeightBase extends Component {
 
    render() {
 
-      const { data, options, loading, invalid, show, weight, error, queryDate } = this.state;
+      const { data, options, invalid, show, weight, error, queryDate } = this.state;
       const now = moment().format('YYYY-MM-DD');
       const nowDateUnix = Number(moment(now).format("x"));
 
@@ -279,6 +283,8 @@ class WeightBase extends Component {
             <Form className="mt-3 px-5">
                <Button block variant="outline-primary" onClick={this.showModal}>Add Weigh In</Button>
             </Form>
+
+            {/* {loading && <Loading />} */}
 
             <Scatter
                data={data}

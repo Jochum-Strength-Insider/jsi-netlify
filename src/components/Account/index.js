@@ -1,10 +1,7 @@
 import React, { Component, useContext } from 'react';
 import { compose } from 'recompose';
 
-// TODO:
 
-// Limit loading previous workouts to loading batches of 5. Only for admin. Users can only see one workout at a time.
-// break the account page into smaller components
 
 import {
    AuthUserContext,
@@ -38,15 +35,20 @@ const SIGN_IN_METHODS = [
 
 const AccountPage = () => {
    const authUser = useContext(AuthUserContext);
+   const style = { width: "100%", maxWidth: "1000px", flex: "1" };
    // console.log(authUser);
 
    return (
       <>
-         <h1 className="color-white">Account</h1>
-         <UserInfo authUser={authUser} />
-         <PasswordChangeForm />
-         <SignOutButton />
-         {/* <LoginManagement authUser={authUser} /> */}
+         <div className="d-flex justify-content-center">
+            <div style={style}>
+               <h1 className="color-white">Account</h1>
+               <UserInfo authUser={authUser} />
+               <PasswordChangeForm />
+               <SignOutButton />
+               {/* <LoginManagement authUser={authUser} /> */}
+            </div>
+         </div>
       </>
    )
 
