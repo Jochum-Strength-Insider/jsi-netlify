@@ -44,7 +44,6 @@ class Autocomplete extends Component {
       const filteredSuggestions = suggestions.filter(
          suggestion =>
             suggestion.e.toLowerCase().indexOf(this.props.initialValue.toLowerCase()) > -1
-         // suggestion.Exercise.toLowerCase().indexOf(userInput.toLowerCase()) > -1
       );
 
       const refsList = filteredSuggestions.reduce((acc, value, idx) => {
@@ -154,6 +153,29 @@ class Autocomplete extends Component {
       }
    };
 
+   shouldComponentUpdate(nextProps, nextState) {
+      // header, initialValue, suggestions
+      if (this.props.initialValue !== nextProps.initialValue) {
+         return true;
+      }
+      if (this.props.header !== nextProps.header) {
+         return true;
+      }
+      if (this.props.suggestions !== nextProps.suggestions) {
+         return true;
+      }
+      if (this.state.showSuggestions !== nextState.showSuggestions) {
+         return true;
+      }
+      if (this.state.activeSuggestion !== nextState.activeSuggestion) {
+         return true;
+      }
+      if (this.state.filteredSuggestions !== nextState.filteredSuggestions) {
+         return true;
+      }
+      return false;
+   }
+
    render() {
       const {
          handleChange,
@@ -172,9 +194,8 @@ class Autocomplete extends Component {
       // const refBoundingClient = this.myRef.current ? this.myRef.current.getBoundingClientRect() : null;
       // The 15px is for the padding from the surrounding container.
       const position = {
-         left: this.myRef.current ? Math.floor(this.myRef.current.getBoundingClientRect().x) - 15 + "px" : null,
+         // left: this.myRef.current ? Math.floor(this.myRef.current.getBoundingClientRect().x) - 15 + "px" : null,
          width: this.myRef.current ? this.myRef.current.getBoundingClientRect().width + "px" : null,
-         // top: this.myRef.current ? this.myRef.current.getBoundingClientRect().y + "px" : null,
       }
 
       let suggestionsListComponent;

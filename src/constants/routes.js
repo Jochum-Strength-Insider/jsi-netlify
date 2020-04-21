@@ -13,9 +13,14 @@ export const ADMIN_MESSAGES = '/admin-messages';
 export const ADMIN_MESSAGES_USER = '/admin-messages/:uid';
 export const ACCOUNT_PROGRAM = '/account/:pid';
 export const ADMIN = '/admin';
+export const ADMIN_MOBILE = '/admin-mobile';
 export const USERPROGRAM = '/program';
 export const ADMIN_DETAILS = '/admin/:id';
-export const WORKOUT_DETAILS = '/admin/:id/:wid';
+export const ADMIN_DETAILS_MOBILE = '/admin-mobile/:id';
+
+export const WORKOUTS = '/admin-user-programs';
+export const WORKOUT_DETAILS = '/admin-user-programs/:id/:pid';
+
 export const PROGRAM_DETAILS = '/admin/:id/:pid';
 export const CREATEPROGRAM = '/create-program';
 export const CREATETASK = '/create-exercise';

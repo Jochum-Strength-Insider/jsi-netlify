@@ -1,0 +1,54 @@
+:root {
+   --js-purple: #412a34;
+   --js-purple-light: #a76884;
+   --js-gray: rgb(26, 26, 26);
+}
+
+label.star {
+   position: relative;
+   float: right;
+   color: gray;
+}
+
+label.star:before {
+   margin: 5px;
+   content: '\2605';
+   font-size: 1.5rem;
+   margin-top: .5rem;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
+input.star:checked~label.star:before {
+   color: var(--js-purple-light);
+}
+
+div.star_rating {
+   float: left;
+}
+
+input.star {
+   border: 0;
+   width: 1px;
+   height: 1px;
+   overflow: hidden;
+   position: absolute !important;
+   clip: rect(1px 1px 1px 1px);
+   clip: rect(1px, 1px, 1px, 1px);
+   opacity: 0;
+   float: right;
+}
+
+label.star:hover~label.star:before {
+   color: var(--js-purple-light);
+}
+
+label.star:hover:before {
+   color: var(--js-purple);
+}
+
+input.star:focus~label.star:before {
+   outline: -webkit-focus-ring-color auto 5px;
+}

@@ -149,7 +149,7 @@ class UserItemBase extends Component {
 
             <div className="d-flex justify-content-center">
                <div style={style}>
-                  <h1 className="color-white">Programs</h1>
+                  <h1>Programs</h1>
                   <ListGroup>
                      <ListGroup.Item>
                         <Button onClick={this.handleOpen} block>Add Program</Button>

@@ -5,15 +5,15 @@ import moment from 'moment';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from '../Modal';
 import Loading from '../Loading';
 import PaginationBasic from '../PaginationBasic';
+import StarRating from '../Rating';
 
-const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "", } };
+const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "" }, rating: "" };
 
 class Diet extends Component {
    constructor(props) {
@@ -22,7 +22,8 @@ class Diet extends Component {
       const currentDate = moment().format('YYYY-MM-DD');
 
       this.state = {
-         diets: JSON.parse(localStorage.getItem('diet')) || [],
+         // diets: JSON.parse(localStorage.getItem('diet')) || [],
+         diets: [],
          lastVisible: "",
          loading: false,
          error: null,
@@ -109,12 +110,12 @@ class Diet extends Component {
             }).sort(compareNumbers);
             // console.log(dietArray);
 
-            localStorage.setItem('diet', JSON.stringify(dietArray));
+            // localStorage.setItem('diet', JSON.stringify(dietArray));
             this.setState({ diets: dietArray, loading: false });
 
          } else {
             // console.log("No diets / First Diet");
-            localStorage.removeItem('diet');
+            // localStorage.removeItem('diet');
             this.setState({ diets: [], loading: false });
          }
       })
@@ -152,7 +153,7 @@ class Diet extends Component {
       const nowDateUnix = Number(moment(now).format("x"));
 
       const paginate = (
-         <div className="d-flex justify-content-center">
+         <div className="py-3 d-flex justify-content-center">
             <div>
                <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={'w'} />
             </div>
@@ -202,9 +203,6 @@ class Diet extends Component {
                   {paginate}
                </ListGroup.Item>
             </ListGroup>
-
-
-
          </>
       )
    }
@@ -212,12 +210,17 @@ class Diet extends Component {
 
 
 class DietSheetPageBase extends Component {
+
+   // the component isn't updating on the first refresh. It reverts back to the previous state.
+   // probably because of local storage not resetting on save.
+
    constructor(props) {
       super(props);
-
       this.timer = null;
 
       const initialDietState = this.props.diet.meals;
+      const initialRating = this.props.diet.rating;
+
       this.state = {
          Breakfast: initialDietState["Breakfast"],
          Lunch: initialDietState["Lunch"],
@@ -225,6 +228,7 @@ class DietSheetPageBase extends Component {
          Snack1: initialDietState["Snack1"],
          Snack2: initialDietState["Snack2"],
          Snack3: initialDietState["Snack3"],
+         rating: initialRating,
          error: null,
          alert: false,
       }
@@ -239,11 +243,11 @@ class DietSheetPageBase extends Component {
 
    onSave = (key) => (e) => {
       e.preventDefault();
-      const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3 } = this.state;
+      const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, rating } = this.state;
       const mealsUpdate = { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3 };
 
       this.props.firebase.usersDiet(this.props.uid, key)
-         .update({ meals: mealsUpdate })
+         .update({ meals: mealsUpdate, rating })
          .then(this.onAlert)
          .catch(error => {
             this.setState({ error });
@@ -263,108 +267,90 @@ class DietSheetPageBase extends Component {
    render() {
       const { createdAt, key } = this.props.diet;
       const { index } = this.props;
-      const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, error, alert } = this.state;
-      const date = moment(createdAt).format('MM-DD-YYYY');
+      const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, error, alert, rating } = this.state;
+      const date = moment(createdAt);
+      const formattedDate = date.format('MM-DD-YYYY');
+      const day = date.format('ddd');
       // const dateString = date.toLocaleDateString("en-US");
       // const pastDate = nowString !== dateString;
       const size = 12;
-      const inputGroupWidth = { width: "6rem" };
 
       return (
          <ListGroup.Item>
+            <h3 className="text-center">{day} {formattedDate}</h3>
             <Form onSubmit={this.onSave(key)}>
-               <Form.Label>{date}</Form.Label>
                <Form.Row>
                   <Form.Group as={Col} xs={12} md={size} className="align-self-center">
-                     <InputGroup className="">
-                        <InputGroup.Prepend>
-                           <InputGroup.Text style={inputGroupWidth} id={`basic-addon-meal-${index + 1}`}>Breakfast</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                           aria-label={"Breakfast-tracking"}
-                           type="text"
-                           value={Breakfast}
-                           name={"Breakfast"}
-                           onChange={this.onChange}
-                           aria-describedby={`basic-addon-meal-${index + 1}`}
-                        />
-                     </InputGroup>
+                     <Form.Label>Breakfast</Form.Label>
+                     <Form.Control
+                        aria-label={"Breakfast-tracking"}
+                        type="text"
+                        value={Breakfast}
+                        name={"Breakfast"}
+                        onChange={this.onChange}
+                     />
                   </Form.Group>
                   <Form.Group as={Col} xs={12} md={size} key={`${index}-lunch`} className="align-self-center">
-                     <InputGroup className="">
-                        <InputGroup.Prepend >
-                           <InputGroup.Text style={inputGroupWidth} id={`basic-addon-meal-${index + 1}`}>Lunch</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                           aria-label={"Lunch-tracking"}
-                           type="text"
-                           value={Lunch}
-                           name={"Lunch"}
-                           onChange={this.onChange}
-                           aria-describedby={`basic-addon-meal-${index + 1}`}
-                        />
-                     </InputGroup>
+                     <Form.Label>Lunch</Form.Label>
+                     <Form.Control
+                        aria-label={"Lunch-tracking"}
+                        type="text"
+                        value={Lunch}
+                        name={"Lunch"}
+                        onChange={this.onChange}
+                     />
+
                   </Form.Group>
                   <Form.Group as={Col} xs={12} md={size} className="align-self-center">
-                     <InputGroup className="">
-                        <InputGroup.Prepend>
-                           <InputGroup.Text style={inputGroupWidth} id={`basic-addon-meal-${index + 1}`}>Dinner</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                           aria-label={"Dinner-tracking"}
-                           type="text"
-                           value={Dinner}
-                           name={"Dinner"}
-                           onChange={this.onChange}
-                           aria-describedby={`basic-addon-meal-${index + 1}`}
-                        />
-                     </InputGroup>
+
+                     <Form.Label>Dinner</Form.Label>
+                     <Form.Control
+                        aria-label={"Dinner-tracking"}
+                        type="text"
+                        value={Dinner}
+                        name={"Dinner"}
+                        onChange={this.onChange}
+                     />
+
                   </Form.Group>
                   <Form.Group as={Col} xs={12} md={size} className="align-self-center">
-                     <InputGroup className="">
-                        <InputGroup.Prepend>
-                           <InputGroup.Text style={inputGroupWidth} id={`basic-addon-meal-${index + 1}`}>Snack 1</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                           aria-label={"Snack1-tracking"}
-                           type="text"
-                           value={Snack1}
-                           name={"Snack1"}
-                           onChange={this.onChange}
-                           aria-describedby={`basic-addon-meal-${index + 1}`}
-                        />
-                     </InputGroup>
+                     <Form.Label>Snack 1</Form.Label>
+                     <Form.Control
+                        aria-label={"Snack1-tracking"}
+                        type="text"
+                        value={Snack1}
+                        name={"Snack1"}
+                        onChange={this.onChange}
+                     />
                   </Form.Group>
                   <Form.Group as={Col} xs={12} md={size} className="align-self-center">
-                     <InputGroup className="">
-                        <InputGroup.Prepend>
-                           <InputGroup.Text style={inputGroupWidth} id={`basic-addon-meal-${index + 1}`}>Snack 2</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                           aria-label={"Snack2-tracking"}
-                           type="text"
-                           value={Snack2}
-                           name={"Snack2"}
-                           onChange={this.onChange}
-                           aria-describedby={`basic-addon-meal-${index + 1}`}
-                        />
-                     </InputGroup>
+                     <Form.Label>Snack 2</Form.Label>
+                     <Form.Control
+                        aria-label={"Snack2-tracking"}
+                        type="text"
+                        value={Snack2}
+                        name={"Snack2"}
+                        onChange={this.onChange}
+                     />
+
                   </Form.Group>
                   <Form.Group as={Col} xs={12} md={size} className="align-self-center">
-                     <InputGroup className="">
-                        <InputGroup.Prepend>
-                           <InputGroup.Text style={inputGroupWidth} id={`basic-addon-meal-${index + 1}`}>Snack 3</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <Form.Control
-                           aria-label={"Snack3-tracking"}
-                           type="text"
-                           value={Snack3}
-                           name={"Snack3"}
-                           onChange={this.onChange}
-                           aria-describedby={`basic-addon-meal-${index + 1}`}
-                        />
-                     </InputGroup>
+                     <Form.Label>Snack 3</Form.Label>
+                     <Form.Control
+                        aria-label={"Snack3-tracking"}
+                        type="text"
+                        value={Snack3}
+                        name={"Snack3"}
+                        onChange={this.onChange}
+                     />
+
                   </Form.Group>
+
+                  <StarRating
+                     rating={rating}
+                     onChange={this.onChange}
+                     size={size}
+                  />
 
                   {
                      // !pastDate && (

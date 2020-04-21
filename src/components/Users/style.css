@@ -1,0 +1,24 @@
+.scrollListContain {
+   height: 70vh;
+   overflow-y: scroll;
+   overscroll-behavior: contain;
+}
+
+.scrollListContain::-webkit-scrollbar {
+   width: 0px;
+   /* Remove scrollbar space */
+   background: transparent;
+   /* Optional: just make scrollbar invisible */
+}
+
+.dropdown-block button {
+   display: block;
+   width: 100%;
+}
+
+.dropdown-block .dropdown-menu {
+   width: 100%;
+}
+
+/* .user-info+.tab-content {
+} */

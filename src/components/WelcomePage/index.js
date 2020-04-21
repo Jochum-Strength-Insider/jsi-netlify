@@ -9,7 +9,7 @@ class WelcomePage extends Component {
    render() {
       return (
          <div>
-            <h1 className="color-white">Home Page</h1>
+            <h1>Home Page</h1>
             <p>WELCOMMMEEEE!</p>
          </div>
       );

@@ -31,10 +31,17 @@ const ChatRoomBase = ({ location, firebase }) => {
    }
 
    const unread = user ? user.adminUnread : 0;
+   const style = { width: "100%", maxWidth: "1000px", flex: "1" };
 
    // let match = useRouteMatch();
    return (
-      <ChatMessages authUser={authUser} roomId={uid} unreadCount={unread} setUnread={"adminUnread"} setPartnerUnread={"unread"} />
+      <>
+         <div className="d-flex justify-content-center">
+            <div style={style}>
+               <ChatMessages authUser={authUser} roomId={uid} unreadCount={unread} setUnread={"adminUnread"} setPartnerUnread={"unread"} />
+            </div>
+         </div>
+      </>
    )
 };
 
@@ -57,3 +64,5 @@ export default compose(
    withEmailVerification,
    withAuthorization(condition),
 )(AdminChatPage);
+
+export { ChatRoom };

@@ -1,72 +1,60 @@
 import React, { useState, useContext } from 'react';
-// import logo from "../../images/logo.png";
+import logo from "../../images/logo.png";
 
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
+import { SignOutButton } from '../SignOut';
+
+
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 // import Badge from 'react-bootstrap/Badge';
 
-const logo = 'https://static.wixstatic.com/media/d44628_dd09c48b517b41fc9d04671db909b022~mv2.png/v1/fill/w_848,h_296,al_c,lg_1,q_85/jochum2%20white.webp';
-
-// To Do:
-// separate users current program from account page
-// Create current program page
-// Edit account page to have user info
-// member since / username / email / etc.
-
-// {/* <Navbar.Brand>
-//    <Link to={ROUTES.HOME} >
-//       <img
-//          src={logo}
-//          width="25%"
-//          height="25%"
-//          className="d-inline-block align-top"
-//          alt="Jochum Strength"
-//       />
-//       Jochum Strength
-//             </Link>
-// </Navbar.Brand> */}
+// const logo = 'https://static.wixstatic.com/media/d44628_dd09c48b517b41fc9d04671db909b022~mv2.png/v1/fill/w_848,h_296,al_c,lg_1,q_85/jochum2%20white.webp';
 
 const Navigation = () => {
    const authUser = useContext(AuthUserContext);
-   return (
-      <Navbar className="navbar" variant="dark" bg="purple" sticky="top" expand="md">
-         <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
-            <img
-               src={logo}
-               width="120"
-               height="40"
-               className="d-inline-block align-top"
-               alt="Jochum Strength"
-            />
-         </Navbar.Brand>
+   const style = { display: "flex", width: "100%", maxWidth: "1000px", flex: "1", justifyContent: "space-between", flexWrap: "wrap", };
 
-         {authUser ? (<NavigationAuth authUser={authUser} />) : (<NavigationNonAuth />)}
+   return (
+      <Navbar className="navbar justify-content-center" variant="dark" bg="purple" sticky="top" expand="md">
+         <div style={style}>
+            <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
+               <img
+                  src={logo}
+                  width="120"
+                  height="40"
+                  className="d-inline-block align-top"
+                  alt="Jochum Strength"
+               />
+            </Navbar.Brand>
+            {authUser ? (<NavigationAuth authUser={authUser} />) : (<NavigationNonAuth />)}
+         </div>
       </Navbar>
    )
 };
 
 const NavigationAuth = ({ authUser }) => (
    <>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
       <Navbar.Collapse id="basic-navbar-nav">
          <Nav className="mr-auto">
-            <Nav.Link href={ROUTES.USERPROGRAM}>Program</Nav.Link>
-            <Nav.Link href={ROUTES.WEIGHIN}>Weight</Nav.Link>
-            <Nav.Link href={ROUTES.DIET}>Diet</Nav.Link>
-            <Nav.Link href={ROUTES.MESSAGES}>
+            <NavLink className="nav-link" to={ROUTES.USERPROGRAM}>Program</NavLink>
+            <NavLink className="nav-link" to={ROUTES.WEIGHIN}>Weight</NavLink>
+            <NavLink className="nav-link" to={ROUTES.DIET}>Diet</NavLink>
+            <NavLink className="nav-link" to={ROUTES.MESSAGES}>
                {/* Messages {authUser.unread && <Badge variant="light">{authUser.unread}</Badge>} */}
                   Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
                <span className="sr-only">unread messages</span>
-            </Nav.Link>
+            </NavLink>
             {authUser.ADMIN && (
                <>
                   <NavDropdown title="Admin" id="basic-nav-dropdown">
@@ -78,15 +66,18 @@ const NavigationAuth = ({ authUser }) => (
                </>
             )}
          </Nav>
+
          <Nav>
-            <Navbar.Text>
-               <span className="material-icons">
-                  Account:
-               </span>
-               {" "}
-               <a href={ROUTES.ACCOUNT}>{authUser.username}</a>
-            </Navbar.Text>
-            {/* <Nav.Link href={ROUTES.ACCOUNT}>{authUser.username}</Nav.Link> */}
+            <Dropdown alignRight>
+               <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
+                  {authUser.username}
+               </Dropdown.Toggle>
+               <Dropdown.Menu>
+                  <Dropdown.Item className="text-center" href={ROUTES.ACCOUNT}>Account</Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item><SignOutButton /></Dropdown.Item>
+               </Dropdown.Menu>
+            </Dropdown>
          </Nav>
       </Navbar.Collapse>
    </>
@@ -96,7 +87,7 @@ const NavigationNonAuth = () => (
    <>
       <Nav className="ml-auto">
          <NavLogin classes={"d-none d-sm-none d-md-none d-lg-inline-flex d-xl-inline-flex"} />
-         <Nav.Link className="d-lg-none d-xl-none" href={ROUTES.SIGN_IN}>Sign In</Nav.Link>
+         <NavLink className="d-lg-none d-xl-none nav-link" to={ROUTES.SIGN_IN}>Sign In</NavLink>
       </Nav>
    </>
 );

@@ -293,7 +293,7 @@ class ExpandableTable extends React.Component {
                         const dayRows = days[key].exercises;
                         const title = days[key].title;
                         const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + title;
-                        const fromUserDetail = this.props.path === ROUTES.PROGRAM_DETAILS;
+                        const fromUserDetail = this.props.path === ROUTES.WORKOUT_DETAILS;
 
                         // const tasksList = Object.keys(this.props.tasks);
 

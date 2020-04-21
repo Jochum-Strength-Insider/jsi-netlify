@@ -8,6 +8,7 @@ import Modal from '../Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import PaginationBasic from '../PaginationBasic';
 import { Scatter } from 'react-chartjs-2';
@@ -60,6 +61,7 @@ class WeightBase extends Component {
          tracking: [],
          loading: false,
          data: JSON.parse(localStorage.getItem('chartData')) || initialData,
+         listData: [],
          show: false,
          options: {},
          weight: "180",
@@ -211,9 +213,9 @@ class WeightBase extends Component {
                const newOptions = this.options(weightData);
 
                if (onMount) {
-                  this.setState({ data: chartData, options: newOptions, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1], loading: false });
+                  this.setState({ data: chartData, listData: dataArray, options: newOptions, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1], loading: false });
                } else {
-                  this.setState({ data: chartData, options: newOptions, loading: false });
+                  this.setState({ data: chartData, listData: dataArray, options: newOptions, loading: false });
                }
             } else {
                const weightData = [null, null];
@@ -230,9 +232,9 @@ class WeightBase extends Component {
                const newOptions = this.options([this.state.weight]);
                // make a reset object?
                if (onMount) {
-                  this.setState({ data: chartData, options: newOptions, weight: '180', lastDate: '', loading: false });
+                  this.setState({ data: chartData, listData: [], options: newOptions, weight: '180', lastDate: '', loading: false });
                } else {
-                  this.setState({ data: chartData, options: newOptions, loading: false });
+                  this.setState({ data: chartData, listData: [], options: newOptions, loading: false });
                }
                localStorage.removeItem('chartData');
             }
@@ -250,7 +252,7 @@ class WeightBase extends Component {
 
    render() {
 
-      const { data, options, invalid, show, weight, error, queryDate } = this.state;
+      const { data, listData, options, invalid, show, weight, error, queryDate } = this.state;
       const now = moment().format('YYYY-MM-DD');
       const nowDateUnix = Number(moment(now).format("x"));
 
@@ -280,23 +282,44 @@ class WeightBase extends Component {
 
             {error && <Alert variant="warning">{error.message}</Alert>}
 
-            <Form className="mt-3 px-5">
-               <Button block variant="outline-primary" onClick={this.showModal}>Add Weigh In</Button>
-            </Form>
-
-            {/* {loading && <Loading />} */}
-
-            <Scatter
-               data={data}
-               options={options}
-            />
-
-            <div className="d-flex justify-content-center">
-               <div>
-                  <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={"months"} />
-               </div>
-            </div>
-
+            <ListGroup>
+               <ListGroup.Item className="py-4">
+                  <Button className="py-2" block variant="primary" onClick={this.showModal}>Add Weigh In</Button>
+               </ListGroup.Item>
+               <ListGroup.Item className="d-none d-sm-block">
+                  <Scatter
+                     data={data}
+                     options={options}
+                  />
+               </ListGroup.Item>
+               {/* <div className="d-block d-sm-none"> */}
+               {listData.length > 0 ?
+                  (listData.map(item => {
+                     const { date, weight } = item;
+                     const momentObject = moment(date);
+                     const formattedDate = momentObject.format('MM-DD-YYYY');
+                     const day = momentObject.format('ddd');
+                     return (
+                        <ListGroup.Item className="d-block d-sm-none d-flex justify-content-between" key={date}>
+                           <p>{day} {formattedDate}</p>
+                           <p>{weight}lbs</p>
+                        </ListGroup.Item>
+                     )
+                  })) : (
+                     <ListGroup.Item>
+                        No Weigh Ins This Month
+                     </ListGroup.Item>
+                  )
+               }
+               {/* </div> */}
+               <ListGroup.Item>
+                  <div className="py-3 d-flex justify-content-center">
+                     <div>
+                        <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={"months"} />
+                     </div>
+                  </div>
+               </ListGroup.Item>
+            </ListGroup>
          </>
       )
    }

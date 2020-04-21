@@ -28,3 +28,58 @@
    border: 1px solid #ced4da;
    border-radius: 0 .25rem .25rem 0;
 }
+
+
+.dth-number {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-description {
+   min-width: 13rem;
+   width: 13rem;
+}
+
+.dth-link {
+   min-width: 10rem;
+   width: 10rem;
+}
+
+.dth-sets {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-reps {
+   min-width: 10rem;
+   width: 10rem;
+}
+
+.dth-tempo {
+   min-width: 10rem;
+   width: 10rem;
+}
+
+.dth-rest {
+   min-width: 6rem;
+   width: 6rem;
+}
+
+.dth-w1 {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-w2 {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-w3 {
+   min-width: 3rem;
+   width: 3rem;
+}
+
+.dth-btn {
+   width: 45px;
+}

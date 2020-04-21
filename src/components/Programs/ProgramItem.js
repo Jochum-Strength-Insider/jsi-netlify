@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { withFirebase } from '../Firebase';
 
-import BreadCrumbs from '../BreadCrumbs';
+// import BreadCrumbs from '../BreadCrumbs';
 import Modal from '../Modal';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
@@ -17,11 +17,13 @@ import * as ROUTES from '../../constants/routes';
 // import Button from 'react-bootstrap/Button';
 // import Form from 'react-bootstrap/Form';
 
+// This should probably be split into two separate components.
+
 class ProgramItemBase extends Component {
    constructor(props) {
       super(props);
 
-      const fromAdminPage = (this.props.match.path === ROUTES.CREATE_DETAILS) || (this.props.match.path === ROUTES.PROGRAM_DETAILS);
+      const fromAdminPage = (this.props.match.path === ROUTES.CREATE_DETAILS) || (this.props.match.path === ROUTES.WORKOUT_DETAILS);
 
       this.state = {
          loading: false,
@@ -255,11 +257,11 @@ class ProgramItemBase extends Component {
 
             {program && (
                <>
-                  <BreadCrumbs />
+                  {/* <BreadCrumbs /> */}
                   {/* <BreadCrumbs history={this.props.history} /> */}
                   <span className="d-flex justify-content-between align-items-center">
-                     <h3 className="color-white">{program.title}</h3>
-                     <Button variant="outline-warning" onClick={this.showTitleModal}>Edit</Button>
+                     <h3 onClick={this.showTitleModal}>{program.title}</h3>
+                     {/* <Button variant="outline-warning" onClick={this.showTitleModal}>Edit</Button> */}
                   </span>
 
                   <ProgramTable showModal={this.showTitleModal} tasks={tasks} program={program} pid={pid} uid={uid} path={this.props.match.path} />

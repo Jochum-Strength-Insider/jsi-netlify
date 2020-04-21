@@ -5,19 +5,18 @@ import { compose } from 'recompose';
 import { withAuthorization } from '../Session';
 
 import Tasks from '../Tasks';
-import Container from 'react-bootstrap/Container';
 
+const style = { width: "100%", maxWidth: "1000px", flex: "1" };
 
 const CreateTask = () => {
    return (
       <>
-         <Container fluid>
-
-            <h3>Exercises</h3>
-
-            <Tasks />
-         </Container>
-
+         <div className="d-flex justify-content-center">
+            <div style={style}>
+               <h3>Exercises</h3>
+               <Tasks />
+            </div>
+         </div>
       </>
    )
 }

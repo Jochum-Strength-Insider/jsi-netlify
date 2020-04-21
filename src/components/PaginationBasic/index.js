@@ -2,6 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import Pagination from 'react-bootstrap/Pagination';
 
+import './style.css';
+
 const PaginationBasic = ({ queryDate, changeQueryDate, now, format, spacing }) => {
    const currentDate = {
       formatted: moment(queryDate).format(format),
@@ -34,19 +36,27 @@ const PaginationBasic = ({ queryDate, changeQueryDate, now, format, spacing }) =
    // const now = Number(moment().format('x'));
 
    const paginationDates = dates.map((date, idx) => {
-      return (
-         <Pagination.Item key={date.unix} active={date.formatted === queryDate} disabled={date.unix > now} onClick={changeQueryDate(date.formatted)}>
-            {date.startOf}
-         </Pagination.Item>
-      )
+      if (idx === 2) {
+         return (
+            <Pagination.Item key={date.unix} active={date.formatted === queryDate} disabled={date.unix > now}>
+               {date.startOf}
+            </Pagination.Item>
+         )
+      } else {
+         return (
+            <Pagination.Item className="d-none d-sm-none d-md-block" key={date.unix} active={date.formatted === queryDate} disabled={date.unix > now} onClick={changeQueryDate(date.formatted)}>
+               {date.startOf}
+            </Pagination.Item>
+         )
+      }
    })
-   const prevWeek = pastDates[0];
+   const prevWeek = pastDates[1];
    const prevWeekButton = <Pagination.Prev disabled={prevWeek.unix > now} onClick={changeQueryDate(prevWeek.formatted)} />
 
    const nextWeek = futureDates[0];
    const nextWeekButton = <Pagination.Next disabled={nextWeek.unix > now} onClick={changeQueryDate(nextWeek.formatted)} />
 
-   return <Pagination className="my-0 py-0">{prevWeekButton}{paginationDates}{nextWeekButton}</Pagination>
+   return <Pagination className="my-0 py-0 flex-wrap">{prevWeekButton}{paginationDates}{nextWeekButton}</Pagination>
 };
 
 export default PaginationBasic;

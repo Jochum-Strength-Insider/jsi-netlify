@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/database'; // If using Firebase database
 import 'firebase/auth';
+import 'firebase/storage';
 
 const app = firebase;
 
@@ -42,6 +43,7 @@ class Firebase {
       this.emailAuthProvider = app.auth.EmailAuthProvider;
       this.auth = app.auth();
       this.db = app.database();
+      this.storage = app.storage();
 
       // this.googleProvider = new app.auth.GoogleAuthProvider();
       // this.facebookProvider = new app.auth.FacebookAuthProvider();
@@ -145,9 +147,11 @@ class Firebase {
 
    users = () => this.db.ref('users');
 
-   workoutIds = uid => this.db.ref(`users/${uid}/workoutids`);
+   // *** WorkoutIds API ***
 
-   workoutId = (uid, wid) => this.db.ref(`users/${uid}/workoutids/${wid}`);
+   workoutIds = uid => this.db.ref(`workoutids/${uid}`);
+
+   workoutId = (uid, wid) => this.db.ref(`workoutids/${uid}/${wid}`);
 
    // *** Message API ***
 
@@ -190,6 +194,25 @@ class Firebase {
 
    // *** Weight Ins API ***
    weighIn = (uid) => this.db.ref(`weighIns/${uid}`);
+
+   // *** Image Storage API ***
+
+   images = () => this.storage.ref('images');
+
+   userImages = (uid) => this.storage.ref(`images/${uid}`);
+
+   userBefore = (uid) => this.storage.ref(`images/${uid}/before`);
+
+   userAfter = (uid) => this.storage.ref(`images/${uid}/after`);
+
+   // userBeforeFile = (uid) => this.storage.ref(`images/${uid}/before`).name;
+   // userAfterFile = (uid) => this.storage.ref(`images/${uid}/after`).name;
+
+   // // Reference's name is the last segment of the full path: 'space.jpg'
+   // // This is analogous to the file name
+   // spaceRef.name;
+
+
 }
 
 export default Firebase;

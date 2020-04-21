@@ -38,9 +38,7 @@ const MessageItem = ({ message, authUser, showDate, showName }) => {
    const dateString = date.toLocaleDateString("en-US");
    const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-
    return (
-
       <>
          <Row>
             <Col className={"d-flex " + end}>

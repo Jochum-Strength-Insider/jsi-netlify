@@ -15,7 +15,7 @@ const DietPage = () => {
       <>
          <div className="d-flex justify-content-center">
             <div style={style}>
-               <h1 className="color-white">Diet Sheet</h1>
+               <h1>Diet Sheet</h1>
                <Diet uid={authUser.uid} />
             </div>
          </div>

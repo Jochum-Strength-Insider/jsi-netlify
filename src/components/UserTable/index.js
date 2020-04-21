@@ -50,7 +50,7 @@ const UserTable = ({ program, saveTracking }) => {
    return (
       <>
 
-         <Tabs fill defaultActiveKey={0} className="dark-tab">
+         <Tabs defaultActiveKey={0} className="dark-tab">
             {phasesList.map((key, index) => {
                const { completed, ...days } = tablesList[key];
 
@@ -97,7 +97,8 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
                      const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
 
                      return (
-                        <ListGroup.Item className="no-top-border" key={daysIndex}>
+                        <ListGroup.Item key={daysIndex}>
+                           {/* <ListGroup.Item className="no-top-border" key={daysIndex}> */}
                            <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
                            <Accordion.Collapse eventKey={daysIndex}>
                               <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />

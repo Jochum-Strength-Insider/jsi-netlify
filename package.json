@@ -12,6 +12,7 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.5.0",
     "formik": "^2.1.4",
+    "lodash.throttle": "^4.1.1",
     "moment": "^2.24.0",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",

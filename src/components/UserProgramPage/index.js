@@ -15,11 +15,17 @@ import { withFirebase } from '../Firebase';
 
 import UserTable from '../UserTable';
 
+const style = { width: "100%", maxWidth: "1000px", flex: "1" };
+
 const ProgramPage = () => {
    const authUser = useContext(AuthUserContext);
 
    return (
-      <ManageUserTables authUser={authUser} />
+      <div className="d-flex justify-content-center">
+         <div style={style}>
+            <ManageUserTables authUser={authUser} />
+         </div>
+      </div>
    )
 };
 
@@ -174,8 +180,8 @@ class ManageUserTablesBase extends Component {
          <>
             {program ? (
                <>
-                  <h1 className="color-white">{program.title}</h1>
-                  <h4 className="color-white">{dateString}</h4>
+                  <h1>{program.title}</h1>
+                  <h4>{dateString}</h4>
                   {/* <div>
                      <button onClick={this.previousWorkout} disabled={index === 0}>←</button>
                      <button onClick={this.nextWorkout} disabled={index === workoutids.length - 1}>→</button>

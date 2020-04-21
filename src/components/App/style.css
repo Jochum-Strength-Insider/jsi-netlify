@@ -27,7 +27,10 @@ body::-webkit-scrollbar {
 
 .list-group {
    color: black;
+   /* border: 1px solid white;
+   border-radius: .25rem; */
 }
+
 
 .modal-content {
    color: black;
@@ -39,6 +42,10 @@ body::-webkit-scrollbar {
 
 .navbar {
    box-shadow: 0 10px 10px -5px rgba(0, 0, 0, .2);
+}
+
+.nav-link:focus {
+   outline: -webkit-focus-ring-color auto 5px;
 }
 
 .bg-purple {
@@ -65,43 +72,6 @@ body::-webkit-scrollbar {
    font-size: calc(.5rem + 1vw);
    font-size: min(calc(.5rem + 1vw), 2rem);
 } */
-
-/* .color-white {
-   color: white;
-} */
-
-/* Inactive tab */
-/* .dark-tab>a {
-   background-color: black;
-   color: white;
-   border: white;
-}
-
-.dark-tab>a:hover {
-   background-color: black;
-   background-color: rgba(125, 125, 125, 0.215);
-   border: 1px solid white;
-} */
-
-
-/* .list-group-item:first-child {
-   border-top-left-radius: 0px;
-   border-top-right-radius: 0px;
-} */
-
-/* .list-group-item:first-child {
-   border-top: 0px;
-} */
-
-.no-top-border:first-child {
-   border-top-left-radius: 0px;
-   border-top-right-radius: 0px;
-   border-top: 0px;
-}
-
-.no-top-border {
-   border-top: 0px;
-}
 
 /* Extra small devices (phones, less than 768px) */
 /* No media query since this is the default in Bootstrap */
@@ -134,111 +104,6 @@ body::-webkit-scrollbar {
 
 table .vertical-align-center {
    vertical-align: middle;
-}
-
-.dth-number {
-   min-width: 3rem;
-   width: 3rem;
-}
-
-.dth-description {
-   min-width: 15rem;
-   width: 15rem;
-}
-
-.dth-link {
-   min-width: 9rem;
-   width: 9rem;
-}
-
-.dth-sets {
-   min-width: 3rem;
-   width: 3rem;
-}
-
-.dth-reps {
-   min-width: 9rem;
-   width: 9rem;
-}
-
-.dth-tempo {
-   min-width: 9rem;
-   width: 9rem;
-}
-
-.dth-rest {
-   min-width: 6rem;
-   width: 6rem;
-}
-
-.dth-w1 {
-   min-width: 3rem;
-   width: 3rem;
-}
-
-.dth-w2 {
-   min-width: 3rem;
-   width: 3rem;
-}
-
-.dth-w3 {
-   min-width: 3rem;
-   width: 3rem;
-}
-
-.dth-btn {
-   width: 45px;
-}
-
-.messageContainer {
-   height: 70vh;
-   overflow-y: scroll;
-}
-
-.messageContainer::-webkit-scrollbar {
-   width: 0px;
-   /* Remove scrollbar space */
-   background: transparent;
-   /* Optional: just make scrollbar invisible */
-}
-
-.message {
-   max-width: 75%;
-   display: inline-block;
-   margin-top: .5rem;
-   color: black;
-}
-
-.messageUsername {
-   color: rgb(126, 126, 126);
-   font-size: 0.75rem;
-}
-
-.messageText {
-   padding: 0.25rem 0.75rem;
-}
-
-.messageDate {
-   color: rgb(126, 126, 126);
-   font-size: 0.75rem;
-}
-
-.messageReceiver .messageText {
-   background-color: rgb(223, 223, 223);
-   border-radius: 1rem 1rem 1rem 1rem;
-}
-
-.messageSender .messageText {
-   background-color: rgb(194, 226, 237);
-   border-radius: 1rem 1rem 1rem 1rem;
-}
-
-.messageReceiver .messageUsername {
-   text-align: left;
-}
-
-.messageSender .messageUsername {
-   text-align: right;
 }
 
 .landingContain {
@@ -355,6 +220,33 @@ height: 75px; */
 }
 
 @media (max-width: 576px) {
+
+   h1,
+   h2,
+   h3,
+   .h1,
+   .h2,
+   .h3 {
+      font-size: 1.5rem;
+   }
+
+   h4,
+   h5,
+   h6,
+   .h4,
+   .h5,
+   .h6 {
+      font-size: 1rem;
+   }
+
+   body {
+      font-size: 0.75rem;
+   }
+
+   a {
+      font-size: 1rem;
+   }
+
    .sm-block {
       width: 100%;
       display: block;

@@ -1,44 +1,31 @@
 # ToDo
 
-###TODAY
-1. diet sheet / weigh in mobile styling
-1. restyle admin exercises page
-1. Messages only load an initial value then add a "load more" button at the top of the messages to load more. Only show load more if the current messages list exceeds a certain size.
+## TODAY
+
+1. Restyle users workouts page.
+
+1. does the program object need to be stored in json???
+1. Look into wix / heroku subdomains
+1. Make the admin page (admin messages/userlist) vertically mobile responsives
+1. separate style sheets
 1. Overall styling
-1. Restyle admin page so it includes everything on one page. More of an admin panel.
-1. Chat
-   1. restyle users page to include
-      1. list of users
-      2. chat component
-      3. users info
-      * how should this be designed on mobile??
-   3. Restyle input form so it expands?
-1. Look into firebase bucket storage for images.
 
-#Fix
-1. add a sign in with email / password link to the email-link sign in page
-1. in the diet page do I need to have a separate diet id's object. Can I just query the createdAt object of diets object?
-1. Should workoutIds be still be apart of the user object or should they be their own object
+## FIX
+1. WorkoutList add default...
 1. Reapply the bootstrap hidden style to the self created ones.
-1. Organize component structure into components / pages
-1. Reorganize the user-program components. i.e. expandable table
-1. Create-program use a forEach on table rows to create listeners??
 
-#TODO
-1. Add loading to all pages
+## TODO
+1. add font aweseme for symbols???
+1. Only mount current tab when it's active. (currently all through mount / load at once)
+1. Enable firebase storage direct download. To do this you'll have to enable cors. https://firebase.google.com/docs/storage/web/download-files
+1. Can messages be more efficient
+1. Reorganize the user-program components. i.e. expandable table
+1. Organize component structure into components / pages
 1. Messages unread count
-1. Add account icon that has a submenu ( account / logout );
 1. use memo more often.
 1. Cut back on as many firebase calls as possible.
-1. Inputs
-   * refactor inputs to be own components / pure components that only update when props change
-1. Look into wix / heroku subdomains
-1. Restyle workouts page.
-1. Make an exercises page for non-admin users?
-1. Diet page
-   * restyle
 
-### Major
+### Security
 1. Secure api key / api key usage. This will be easier once jochum has a domain subdomain.
 https://javebratt.com/hide-firebase-api/
 https://console.developers.google.com/apis/credentials?project=wp-practice-227620&folder=&organizationId=
@@ -47,11 +34,20 @@ https://console.developers.google.com/apis/credentials?project=wp-practice-22762
 1. style footer
 1. fix time to first paint. Aka have items prerendered to dom without dummy data. while the real data is being store. Aka limit { data && <element>} patterns.
 
-### Landing Page:
- 1. Would like to edit this and be able to bring customers that havent signed up yet to this page and show them what they'd be getting if they signed up. I think this will be easier to discuss in person when you get back!
- [Landing Page Info](https://www.jochumstrength.com/program-information)
+### User Program
+For the program page, can we spice this page up design wise, the functionallity is perfect, I'd just love if they could go there and see something that pops and gets them excited for the day, I'll show you an example!
 
-### Before Photos:
-1. This would also be huge on the Tracking page to have the ability for them to upload their photos so it keeps everything in one spot
+For the program page along with the tracking, can we add a check mark thing so they can click and feel accomplished if that makes sense! So they could put in their weight or just click a box that says they did it and it feels good!
 
-As for logos and stuff, I'm going to make you an editor of our current website and in the file storage thing on the website it should have everything you'd need and let me know if you need anything else
+### Editing
+I'd like to edit are the formatting (Pictures/text/ect) on my own
+
+### Paypal Pay and sign-up or pay through app.
+Payment on the site and seemless sign up (they pay and are able to sign in) so if you can continue to look into the best ways to do this that'd be awesome.
+
+### Design
+[Advanced Human Performance](www.Advancedhumanperformance.com)
+
+Sean, that website above is one of the best in the business at their designs just to get a better idea and the photo below which is from the website is how they format their programming. Honestly not in love with the one below but just wanted to give you some ideas or maybe it sparked something.
+
+I’d love if they signed in and all of the days were closed and had a design on them (maybe for an upper body day it was always a generic ripped Upperbody guy on that bar or something along those lines) and when they click on that it opens up into that days work outs.

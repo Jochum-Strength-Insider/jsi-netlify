@@ -9,7 +9,7 @@ import Tab from 'react-bootstrap/Tab'
 // in the program table? or within individaual tables.
 
 // TODO:
-// Separate from create and from specific user into separate components?
+// Separate from create and from specific user into separate components
 
 const ProgramTable = ({ program, pid, uid, path, tasks }) => {
 

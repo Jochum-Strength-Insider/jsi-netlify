@@ -150,9 +150,9 @@ class Tasks extends Component {
       const suggestions = showAll ? filteredSuggestions : filteredSuggestions.slice(0, 10);
       const editOpen = filteredSuggestions.length > 0 ? true : false;
       const AppendButton = editOpen ? (
-         <Button type="submit" variant="outline-secondary">Edit Task</Button>
+         <Button type="submit" variant="secondary">Edit Task</Button>
       ) : (
-            <Button type="submit" variant="outline-secondary">Add Task</Button>
+            <Button type="submit" variant="secondary">Add Task</Button>
          )
       const AppendModal = editOpen ? (
          <TaskForm task={suggestions[0]} onEditTask={this.onEditTask} handleClose={this.handleClose} />
@@ -204,7 +204,7 @@ class Tasks extends Component {
 
                            <Form>
                               <Form.Group controlId="exampleForm">
-                                 <Button onClick={this.onShowAll} variant="outline-primary" block>Load All</Button>
+                                 <Button onClick={this.onShowAll} variant="primary" block>Load All</Button>
                               </Form.Group>
                            </Form>
                         </Col>

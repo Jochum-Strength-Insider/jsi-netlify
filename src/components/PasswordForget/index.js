@@ -14,7 +14,7 @@ import * as ROUTES from '../../constants/routes';
 
 const PasswordForgetPage = () => (
    <div>
-      <h1 className="color-white">Forgot Password?</h1>
+      <h1>Forgot Password?</h1>
       <PasswordForgetForm />
    </div>
 );

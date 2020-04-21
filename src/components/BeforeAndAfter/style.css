@@ -1,0 +1,90 @@
+.aspect-ratio-box {
+   height: 0;
+   overflow: hidden;
+   padding-top: 100%;
+   background: white;
+   position: relative;
+   border-radius: .25rem;
+}
+
+.aspect-ratio-box-inside {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+}
+
+.flexbox-centering {
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+/* .viewport-sizing {
+   font-size: 5vw;
+   height: 100%;
+   width: 100%;
+} */
+
+
+.card-img-bottom {
+   overflow: hidden;
+}
+
+.aspect-image {
+   width: 100%;
+   height: auto;
+}
+
+.aspect-dummy {
+   background-color: gray;
+   min-height: 100%;
+   width: 100%;
+   height: auto;
+}
+
+.aspect-title {
+   position: absolute;
+   top: 15px;
+   left: 15px;
+}
+
+.aspect-form-box {
+   /* display: none !important; */
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   transition: opacity 100ms ease-in;
+   opacity: 0;
+   background-color: rgba(0, 0, 0, 0.187);
+   padding: 10px;
+   /* padding-right: 20px; */
+}
+
+.aspect-form-edit {
+   position: absolute;
+   top: 10px;
+   left: 10px;
+}
+
+.aspect-form-remove {
+   position: absolute;
+   bottom: 10px;
+   left: 10px;
+}
+
+
+
+.aspect-form-box:hover {
+   opacity: 1;
+}
+
+.invalid {
+   width: 100%;
+   margin-top: .25rem;
+   font-size: 80%;
+   color: #dc3545;
+}

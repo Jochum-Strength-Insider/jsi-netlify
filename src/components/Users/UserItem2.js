@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 // import moment from 'moment';
 
@@ -6,7 +6,7 @@ import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import WorkoutList from '../WorkoutList';
 
 import Tabs from 'react-bootstrap/Tabs'
@@ -14,55 +14,57 @@ import Tab from 'react-bootstrap/Tab'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 
-import BreadCrumbs from '../BreadCrumbs';
+// import BreadCrumbs from '../BreadCrumbs';
 
 import { ChatRoom } from '../ChatAdmin';
 
-class UserItemBase extends Component {
+class UserItemBase extends PureComponent {
    constructor(props) {
       super(props);
-
       this.state = {
          loading: false,
          user: null,
-         ...props.location.state,
       };
    }
 
-   componentDidMount() {
-      if (this.state.user) {
-         // console.log(this.state.user);
+   fetchUser = () => {
+      if (this.props.location.state && this.props.location.state.user) {
+         console.log("user from location state");
+         this.setState({ user: this.props.location.state.user });
          return;
       }
 
       this.setState({ loading: true });
-
       this.props.firebase
          .user(this.props.match.params.id)
          .on('value', snapshot => {
+            console.log("user from firebase call");
             const user = snapshot.val();
+            const key = snapshot.key;
+            const userObject = {
+               ...user, uid: key,
+            }
             if (user) {
                this.setState({
-                  user: user,
+                  user: userObject,
                   loading: false,
                });
             } else {
                this.props.history.push(ROUTES.ADMIN);
-               // this.setState({
-               //    user: null,
-               //    loading: false,
-               // })
             }
-
          });
    }
 
-   // handleClose = () => {
-   //    this.setState({ show: false });
-   // }
-   // handleOpen = () => {
-   //    this.setState({ show: true });
-   // }
+   componentDidMount() {
+      this.fetchUser();
+   }
+
+   componentDidUpdate(prevProps) {
+      if (this.props.match.params.id !== prevProps.match.params.id) {
+         this.props.firebase.user(prevProps.match.params.id).off();
+         this.fetchUser();
+      }
+   }
 
    componentWillUnmount() {
       this.props.firebase.user(this.props.match.params.id).off();
@@ -81,20 +83,10 @@ class UserItemBase extends Component {
 
       return (
          <div>
-
             {loading && <div>Loading ...</div>}
-
             {user && (
                <>
-                  <BreadCrumbs />
-                  <h2>User: {user.username}</h2>
-                  {/* <Modal handleClose={this.handleClose} show={show} heading={"Remove " + user.username + "?"}>
-                     <Form className="d-flex justify-content-between align-items-center">
-                        <Button variant="outline-danger" onClick={this.onRemoveUser}>Remove</Button>
-                        <Button variant="primary" onClick={this.handleClose}>Cancel</Button>
-                     </Form>
-                  </Modal> */}
-                  <Tabs fill defaultActiveKey="profile" className="dark-tab">
+                  <Tabs style={{ marginTop: "12px", marginBottom: "12px" }} fill defaultActiveKey="messages" className="dark-tab user-info">
                      <Tab eventKey="profile" title="Profile">
                         <ListGroup className="mb-5">
                            <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
@@ -109,24 +101,16 @@ class UserItemBase extends Component {
                                  Send Password Reset
                               </Button>
                            </ListGroup.Item>
-                           {/* <ListGroup.Item>
-                              <Button
-                                 type="button"
-                                 variant="danger"
-                                 onClick={this.handleOpen}
-                              >
-                                 Delete User
-                              </Button>
-                           </ListGroup.Item> */}
                         </ListGroup>
                      </Tab>
                      <Tab eventKey="workouts" title="Programs">
-                        <Switch>
+                        {/* <Switch>
                            <Route exact path={ROUTES.ADMIN_DETAILS} component={WorkoutList} />
-                        </Switch>
+                        </Switch> */}
+                        <WorkoutList key={user.uid} uid={user.uid} />
                      </Tab>
                      <Tab eventKey="messages" title="Messages">
-                        <ChatRoom user={user} />
+                        <ChatRoom key={user.uid} user={user} />
                      </Tab>
                   </Tabs>
                </>

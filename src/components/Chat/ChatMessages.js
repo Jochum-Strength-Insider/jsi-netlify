@@ -1,4 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext } from 'react';
+import moment from 'moment';
+
+import "./style.css";
 
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -7,7 +10,7 @@ import MessageList from './ChatMessageList';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
+// import InputGroup from 'react-bootstrap/InputGroup';
 import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
@@ -19,145 +22,205 @@ class AdminChatBase extends Component {
       super(props);
       this.scrollContain = React.createRef();
       this.inputRef = React.createRef();
+      this.scrollBottom = React.createRef();
       this.state = {
+         scroll: true,
          loading: false,
          messages: [],
-         limit: 50,
+         limit: 15,
+         firstDate: null,
+         lastDate: null,
       }
    }
 
    scrollToBottom = () => {
-      this.scrollContain.current.scrollTop = this.scrollContain.current.scrollHeight;
-   }
-
-   componentDidMount() {
-      this.onListenForMessages();
+      // this.scrollContain.current.scrollTop = this.scrollContain.current.scrollHeight;
+      // this.scrollContain.current.scrollTop = this.scrollBottom.current.offsetTop;
+      // this.scrollContain.current.scrollTo(0, this.scrollBottom.current.offsetTop);
+      this.scrollBottom.current.scrollIntoView({ behavior: 'smooth', block: "end" });
    }
 
    onListenForMessages() {
-      this.setState({ loading: true });
+      // this.setState({ loading: true });
+
+      // Return items less than or equal to the specified key or value
+      // .endAt(recentDate)
+      // Return items greater than or equal to the specified key or value
+      // .startAt(prevDate)
+      // const now = Number(moment().format("x"));
+
+      this.props.firebase
+         .messages(this.props.roomId).off();
 
       this.props.firebase
          .messages(this.props.roomId)
          .orderByChild('createdAt')
+         // .endAt(now)
          .limitToLast(this.state.limit)
          .on("value", snapshot => {
             const messageObject = snapshot.val();
 
             if (messageObject) {
+               console.log("messageObject", messageObject);
+
                const messageList = Object.keys(messageObject).map(key => ({
                   ...messageObject[key],
                   uid: key,
                }));
 
                this.props.firebase.user(this.props.roomId).update({ [this.props.setUnread]: false });
-               this.setState({ messages: messageList, loading: false });
-               this.scrollToBottom();
+               this.setState({ messages: messageList, loading: false, lastDate: messageList[0].createdAt });
 
             } else {
                this.setState({ messages: [], loading: false })
             }
-
-            this.setState({ loading: false });
          })
    }
 
-   componentWillUnmount() {
-      this.props.firebase.messages(this.props.roomId).off();
-   }
-
-   onChangeText = event => {
-      this.setState({ text: event.target.value });
-   }
-
-   onCreateMessage = (authUser) => (e) => {
-      const text = this.inputRef.current.value.trim();
+   onCreateMessage = (authUser, message) => {
+      const text = message.trim();
       if (text !== "") {
          this.props.firebase.messages(this.props.roomId).push({
-            // text: this.state.text,
             text,
             userId: authUser.uid,
             username: authUser.username,
-            createdAt: this.props.firebase.serverValue.TIMESTAMP,
+            createdAt: Number(moment().format("x")),
          });
 
          this.props.firebase.user(this.props.roomId).update({ [this.props.setPartnerUnread]: true });
-         this.setState(state => ({ text: "", unreadCount: state.unreadCount + 1 }));
-
-         this.inputRef.current.value = "";
+         this.setState(state => ({ scroll: true }));
       }
-      e.preventDefault();
    }
 
    onRemoveMessage = mid => {
       this.props.firebase.message(this.props.roomId, mid).remove();
    };
 
-   // onEditMessage = (message, text) => {
-   //    const { uid, ...messageSnapshot } = message;
-   //    this.props.firebase.message(message.uid).set({
-   //       ...messageSnapshot,
-   //       text,
-   //       editedAt: this.props.firebase.serverValue.TIMESTAMP,
-   //    });
-   // };
+   loadMore = () => {
+      if (!this.state.firstDate) {
+         this.props.firebase.messages(this.props.roomId)
+            .orderByChild('createdAt')
+            .limitToFirst(1)
+            .once("value").then(snapshot => {
+               const messageObject = snapshot.val();
+               if (messageObject) {
+                  const message = Object.keys(messageObject).map(key => ({
+                     ...messageObject[key],
+                     uid: key,
+                  }))[0];
+                  console.log('firstMessage', message);
+                  this.setState(state => ({ limit: state.limit + 15, firstDate: message.createdAt, scroll: false }), () => this.onListenForMessages())
+               }
+            })
+      } else {
+         this.setState(state => ({ limit: state.limit + 15, scroll: false }), () => this.onListenForMessages());
+      }
+   }
 
-   // onNextPage = () => {
-   //    this.setState(
-   //       state => ({ limit: state.limit + 5 }),
-   //       this.onListenForMessages,
-   //    );
-   // };
+   componentDidMount() {
+      console.log("mount");
+      this.props.firebase.messages(this.props.roomId).off();
+      this.onListenForMessages();
+   }
+
+   componentDidUpdate(prevProps, prevState) {
+      if (this.state.scroll === true) {
+         this.scrollToBottom();
+      }
+   }
+
+   componentWillUnmount() {
+      this.props.firebase.messages(this.props.roomId).off();
+   }
 
    render() {
-      const { messages, loading } = this.state;
+      const { messages, loading, firstDate } = this.state;
+
+      const messageDates = messages.map(message => message.createdAt);
+      const firstDateNotIncluded = messageDates.indexOf(firstDate) === -1 ? true : false;
+      const enoughMessages = messages.length === this.state.limit ? true : false;
 
       return (
          <AuthUserContext.Consumer>
             {authUser => (
-               <>
+               <div>
                   <Container ref={this.scrollContain} className="messageContainer" fluid>
-                     {/* {!loading && messages && (
-                     <Button onClick={this.onNextPage}>
-                        More
-                     </Button>
-                  )} */}
 
                      {loading && <div>Loading ...</div>}
+
+                     {firstDateNotIncluded && enoughMessages && <Button variant="outline-primary" className="mt-3 messageLoadMore" block onClick={this.loadMore}>Load More</Button>}
 
                      {(messages.length > 0) ? (
                         <MessageList
                            authUser={authUser}
                            messages={messages}
                            onRemoveMessage={this.onRemoveMessage}
-                        // onEditMessage={this.onEditMessage}
                         />
                      ) : (
                            <div>There are no messages ...</div>
                         )}
-                     {/* <div ref={this.messagesEndRef} /> */}
+                     <div ref={this.scrollBottom}></div>
                   </Container>
-                  <hr />
-                  {/* <Row>
-                     <Col> */}
-                  <Form className="mt-1" onSubmit={this.onCreateMessage(authUser)}>
-                     <InputGroup className="mb-3">
-                        <Form.Control
-                           type="text"
-                           ref={this.inputRef}
-                        />
-                        <InputGroup.Append>
-                           <Button type="submit">Send</Button>
-                        </InputGroup.Append>
-                     </InputGroup>
-                  </Form>
-                  {/* </Col>
-                  </Row> */}
-               </>
+
+                  <SubmitForm onCreateMessage={this.onCreateMessage} />
+
+               </div>
             )}
          </AuthUserContext.Consumer>
       )
    }
+}
+
+const SubmitForm = ({ onCreateMessage }) => {
+   const [message, setMessage] = useState('');
+   const authUser = useContext(AuthUserContext);
+
+   const autoSize = (e) => {
+      const { target } = e;
+      // setTimeout(function () {
+      target.style.cssText = 'height:auto; padding:6px';
+      // for box-sizing other than "content-box" use:
+      // el.style.cssText = '-moz-box-sizing:content-box';
+      target.style.cssText = 'height:' + target.scrollHeight + 'px';
+      // }, 0);
+   }
+
+   const onEnterPress = (e) => {
+      if (e.keyCode === 13) {
+         e.preventDefault();
+         if (message !== "") {
+            handleCreateMessage(e)
+         }
+      }
+   }
+
+   const onChange = (e) => {
+      autoSize(e);
+      setMessage(e.target.value.trim());
+   }
+
+   const handleCreateMessage = (e) => {
+      e.preventDefault();
+      onCreateMessage(authUser, message);
+      setMessage("");
+   }
+
+   return (
+      <Form className="chat-form" onSubmit={handleCreateMessage}>
+         <div className="chat-form-corner"></div>
+         <textarea
+            rows="1"
+            style={{ height: "36px" }}
+            placeholder="Reply..."
+            className="chat-form-input"
+            type="text"
+            onChange={onChange}
+            onKeyDown={onEnterPress}
+            value={message}
+         />
+         <Button className="chat-form-submit" type="submit">Send</Button>
+      </Form>
+   )
 }
 
 const AdminChat = withFirebase(AdminChatBase);

@@ -12,7 +12,7 @@ const UserInfoCard = ({ authUser }) => {
 
    return (
 
-      <Card className="my-3">
+      <Card className="mb-3">
          <Card.Header>Account Info</Card.Header>
          <Card.Body className="px-0 py-2">
             <ListGroup variant="flush">

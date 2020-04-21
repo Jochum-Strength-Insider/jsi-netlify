@@ -9,13 +9,21 @@ import {
    withEmailVerification,
 } from '../Session';
 
+const style = { width: "100%", maxWidth: "1000px", flex: "1" };
 
 const UserChatPage = () => {
    const authUser = useContext(AuthUserContext);
    const unread = authUser.unread;
 
    return (
-      <ChatMessages authUser={authUser} roomId={authUser.uid} unreadCount={unread} setUnread={"unread"} setPartnerUnread={"adminUnread"} />
+      <>
+         <div className="d-flex justify-content-center">
+            <div style={style}>
+               <h1>Messages</h1>
+               <ChatMessages authUser={authUser} roomId={authUser.uid} unreadCount={unread} setUnread={"unread"} setPartnerUnread={"adminUnread"} />
+            </div>
+         </div>
+      </>
    )
 };
 

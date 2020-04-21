@@ -1,14 +1,14 @@
 import React, { Component, useContext } from 'react';
 import { compose } from 'recompose';
 
-
+import BeforeAndAfter from '../BeforeAndAfter';
 
 import {
    AuthUserContext,
    withAuthorization,
    withEmailVerification,
 } from '../Session';
-import SignOutButton from '../SignOut';
+import SignOutForm from '../SignOut';
 
 import { withFirebase } from '../Firebase';
 import UserInfo from '../UserInfo';
@@ -42,10 +42,11 @@ const AccountPage = () => {
       <>
          <div className="d-flex justify-content-center">
             <div style={style}>
-               <h1 className="color-white">Account</h1>
+               <h1>Account</h1>
+               <BeforeAndAfter authUser={authUser} />
                <UserInfo authUser={authUser} />
                <PasswordChangeForm />
-               <SignOutButton />
+               <SignOutForm />
                {/* <LoginManagement authUser={authUser} /> */}
             </div>
          </div>

@@ -25,7 +25,7 @@ class WorkoutListBase extends Component {
 
       this.state = {
          loading: false,
-         workoutIds: [],
+         workoutids: [],
          programIds: { "default": { title: "default", createdAt: props.firebase.serverValue.TIMESTAMP } },
          program: PROGRAM(props.firebase.serverValue.TIMESTAMP),
          user: null,
@@ -62,7 +62,7 @@ class WorkoutListBase extends Component {
 
             this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: timestamp, active: false } });
             this.props.firebase.user(currentUserId).update({ programDate: timestamp });
-            this.props.history.push(`/admin/${currentUserId}/${key}`);
+            this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
          })
          .catch(error => this.setState({ error }));
    }
@@ -78,13 +78,12 @@ class WorkoutListBase extends Component {
 
       console.log("creating new workout");
 
-
       this.props.firebase.workouts(currentUserId).push(programData)
          .then((snap) => {
             const key = snap.key;
             this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programData.title, createdAt: timestamp, active: false } });
             this.props.firebase.user(currentUserId).update({ programDate: timestamp });
-            this.props.history.push(`/admin/${currentUserId}/${key}`);
+            this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
          })
          .catch(error => this.setState({ error }));
    }
@@ -112,7 +111,7 @@ class WorkoutListBase extends Component {
 
    handleSelect = (e) => {
       const key = e.target.value;
-      console.log(key);
+      // console.log(key);
       this.props.firebase.program(key).once("value").then((snap) => {
          const programObject = snap.val();
 
@@ -126,9 +125,9 @@ class WorkoutListBase extends Component {
    // Set program date when it's activated?
    setActive = (wid) => () => {
       const timestamp = this.props.firebase.serverValue.TIMESTAMP;
-      console.log(wid, "setActive");
-      const workoutIdsArray = Object.keys(this.state.workoutIds);
-      workoutIdsArray.forEach(each => {
+      // console.log(wid, "setActive");
+      const workoutidsArray = Object.keys(this.state.workoutids);
+      workoutidsArray.forEach(each => {
          this.props.firebase.workoutId(this.props.match.params.id, each).update({ active: false });
       })
 
@@ -137,38 +136,20 @@ class WorkoutListBase extends Component {
    };
 
    setInactive = (wid) => () => {
-      console.log(wid, "setInactive");
+      // console.log(wid, "setInactive");
       this.props.firebase.workoutId(this.props.match.params.id, wid).update({ active: false });
       this.props.firebase.user(this.props.match.params.id).update({ programDate: null });
    };
 
-   componentDidMount() {
-      //Refactor??? Might have multiple sources of information between workoutIds and user.workouts / etc...
-
-      //listen for update to users workouts
-      this.props.firebase
-         .workoutIds(this.props.match.params.id)
-         .on('value', snapshot => {
-            const workoutsObject = snapshot.val();
-
-            if (workoutsObject) {
-               // const idsArray = Object.keys(workoutsObject);
-
-               this.setState({
-                  workoutIds: workoutsObject,
-               });
-            } else {
-               this.setState({ workoutIds: [] })
-            }
-         });
-
-      // Default program when there are no programs to add.
+   fetchPrograms = () => {
+      //what is this doing???
       this.props.firebase
          .programIds()
          .on('value', snapshot => {
             const idsObject = snapshot.val()
 
             if (idsObject) {
+               console.log("idsObject", idsObject);
                const programId = Object.keys(idsObject)[0];
 
                this.props.firebase.program(programId).once("value").then((snap) => {
@@ -184,20 +165,59 @@ class WorkoutListBase extends Component {
             }
          });
 
-      if (this.state.user) {
+   }
+
+   fetchUser = () => {
+      this.setState({ loading: true });
+
+      this.props.firebase
+         .workoutIds(this.props.match.params.id)
+         .on('value', snapshot => {
+            const workoutIdsObject = snapshot.val();
+            if (workoutIdsObject) {
+               // const idsArray = Object.keys(workoutsObject);
+               this.setState({
+                  workoutids: workoutIdsObject,
+               });
+            } else {
+               this.setState({ workoutids: [] })
+            }
+         });
+
+      if (this.props.location.state && this.props.location.state.user) {
+         console.log("user from location state");
+         this.setState({ user: this.props.location.state.user, loading: false });
          return;
       }
-
-      this.setState({ loading: true });
 
       this.props.firebase
          .user(this.props.match.params.id)
          .on('value', snapshot => {
-            this.setState({
-               user: snapshot.val(),
-               loading: false,
-            });
+            const userObject = snapshot.val();
+            if (userObject) {
+               this.setState({
+                  user: userObject,
+                  loading: false,
+               });
+            } else {
+               this.setState({
+                  user: null,
+                  loading: false,
+               });
+            }
          });
+   }
+
+   componentDidUpdate(prevProps) {
+      if (this.props.match.params.id !== prevProps.match.params.id) {
+         this.props.firebase.user(prevProps.match.params.id).off();
+         this.fetchUser();
+      }
+   }
+
+   componentDidMount() {
+      this.fetchUser();
+      this.fetchPrograms();
    }
 
    onRemoveWorkout = () => {
@@ -214,8 +234,8 @@ class WorkoutListBase extends Component {
    }
 
    render() {
-      const { user, loading, workoutIds, show, programIds, error } = this.state;
-      const workoutIdsArray = Object.keys(workoutIds).reverse();
+      const { user, loading, workoutids, show, programIds, error } = this.state;
+      const workoutidsArray = Object.keys(workoutids).reverse();
 
       return (
 
@@ -275,12 +295,12 @@ class WorkoutListBase extends Component {
                         <Button block onClick={this.handleOpen}>Add Program</Button>
                      </ListGroup.Item>
                      {
-                        (workoutIdsArray.length > 0)
+                        (workoutidsArray.length > 0)
                            ?
                            (
-                              workoutIdsArray.map((workoutId, index) => {
+                              workoutidsArray.map((workoutId, index) => {
 
-                                 const date = new Date(workoutIds[workoutId].createdAt);
+                                 const date = new Date(workoutids[workoutId].createdAt);
                                  const dateString = date.toLocaleDateString("en-US");
 
                                  return (
@@ -288,23 +308,23 @@ class WorkoutListBase extends Component {
                                     <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
                                        <>
                                           <span>
-                                             {/* <strong>Title:</strong> {workoutIds[workoutId].title} */}
+                                             {/* <strong>Title:</strong> {workoutids[workoutId].title} */}
                                              <strong>Title:</strong>
                                              <Link
                                                 className="ml-2 btn btn-link"
                                                 to={{
-                                                   pathname: `${ROUTES.ADMIN}/${this.props.match.params.id}/${workoutId}`,
+                                                   pathname: `${ROUTES.WORKOUTS}/${this.props.match.params.id}/${workoutId}`,
                                                    state: { user },
                                                 }}
                                              >
-                                                {workoutIds[workoutId].title}
+                                                {workoutids[workoutId].title}
                                              </Link>
 
                                              <strong className="ml-2">Date:</strong> {dateString}
                                           </span>
 
                                           <span>
-                                             {!workoutIds[workoutId].active
+                                             {!workoutids[workoutId].active
                                                 ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(workoutId)} />
                                                 : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(workoutId)} />
                                              }

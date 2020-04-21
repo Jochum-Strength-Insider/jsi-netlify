@@ -6,7 +6,7 @@ import { withAuthorization, withEmailVerification } from '../Session';
 
 import { AuthUserContext } from '../Session';
 import Weight from '../WeighIn';
-import Card from 'react-bootstrap/Card';
+// import Card from 'react-bootstrap/Card';
 
 const style = { width: "100%", maxWidth: "1000px", flex: "1" };
 
@@ -16,13 +16,9 @@ const WeighInPage = () => {
    return (
       <>
          <div className="d-flex justify-content-center">
-            <div style={style}>
-               <h1 className="color-white">Weigh In</h1>
-               <Card>
-                  <Card.Body>
-                     <Weight authUser={authUser} />
-                  </Card.Body>
-               </Card>
+            <div style={style} className="mb-5">
+               <h1>Weigh In</h1>
+               <Weight authUser={authUser} />
             </div>
          </div>
       </>
