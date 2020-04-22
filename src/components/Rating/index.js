@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 
 const StarRating = ({ onChange, rating, size, id }) => (
    <Col className="d-flex justify-content-center">
-      {console.log("refresh", rating)}
       <Form.Group className="star_rating" xs={12} md={size}>
          <input type="radio" checked={rating === "5"} onChange={onChange} id={`${id}-star5`} name="rating" className="star" value="5" />
          <label htmlFor={`${id}-star5`} className="star" title="1 stars"></label>
