@@ -61,7 +61,7 @@ class AdminChatBase extends Component {
             const messageObject = snapshot.val();
 
             if (messageObject) {
-               console.log("messageObject", messageObject);
+               // console.log("messageObject", messageObject);
 
                const messageList = Object.keys(messageObject).map(key => ({
                   ...messageObject[key],
@@ -108,7 +108,7 @@ class AdminChatBase extends Component {
                      ...messageObject[key],
                      uid: key,
                   }))[0];
-                  console.log('firstMessage', message);
+                  // console.log('firstMessage', message);
                   this.setState(state => ({ limit: state.limit + 15, firstDate: message.createdAt, scroll: false }), () => this.onListenForMessages())
                }
             })
@@ -118,7 +118,7 @@ class AdminChatBase extends Component {
    }
 
    componentDidMount() {
-      console.log("mount");
+      // console.log("mount");
       this.props.firebase.messages(this.props.roomId).off();
       this.onListenForMessages();
    }

@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
 
 import Modal from "../Modal";
 import YoutubeEmbed from "../YoutubeEmbed";
@@ -14,6 +15,9 @@ import CustomToggle from '../CustomToggle';
 import ExerciseRow from './ExerciseRow';
 
 import "./UserTable.css";
+
+import armGuyImg from '../../images/arm-guy.jpg'
+import legDay from '../../images/legday.jpg'
 
 const UserTable = ({ program, saveTracking }) => {
 
@@ -50,7 +54,7 @@ const UserTable = ({ program, saveTracking }) => {
    return (
       <>
 
-         <Tabs defaultActiveKey={0} className="dark-tab">
+         <Tabs defaultActiveKey={0} className="dark-tab mt-3 mb-4">
             {phasesList.map((key, index) => {
                const { completed, ...days } = tablesList[key];
 
@@ -89,27 +93,49 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
 
    return (
       <>
-         <ListGroup className="mb-5">
-            <Accordion defaultActiveKey={0}>
-               {
-                  daysList.map((key, daysIndex) => {
-                     const day = days[key];
-                     const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
+         {/* <ListGroup > */}
+         <Accordion className="mb-5">
+            {
+               daysList.map((key, daysIndex) => {
+                  const day = days[key];
+                  const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
 
-                     return (
-                        <ListGroup.Item key={daysIndex}>
-                           {/* <ListGroup.Item className="no-top-border" key={daysIndex}> */}
-                           <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
-                           <Accordion.Collapse eventKey={daysIndex}>
-                              <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
-                           </Accordion.Collapse>
-                        </ListGroup.Item>
-                     )
-                  }
+                  return (
+                     // <ListGroup.Item className="mb-5" key={daysIndex}>
+                     //    {/* <ListGroup.Item className="no-top-border" key={daysIndex}> */}
+                     //    <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
+                     //    <Accordion.Collapse eventKey={daysIndex}>
+                     //       <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
+                     //    </Accordion.Collapse>
+                     // </ListGroup.Item>
+
+                     // <Card style={{ border: "none", borderRadius: "0.25rem" }} key={daysIndex} className="my-3">
+                     //    <Card.Img variant="top" src={armGuyImg} />
+                     //    <Card.Body style={{ backgroundColor: "black" }}>
+                     //       <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
+                     //    </Card.Body>
+                     //    <Accordion.Collapse eventKey={daysIndex}>
+                     //       <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
+                     //    </Accordion.Collapse>
+                     // </Card>
+
+                     <Card key={daysIndex} className="my-5 no-border rounded">
+                        <CustomToggle eventKey={daysIndex}>
+                           {daysIndex % 2 === 0 ? (<Card.Img variant="top" src={armGuyImg} />) : (<Card.Img variant="top" src={legDay} />)}
+                           <Card.Body className="bg-purple">
+                              <h3 style={{ color: "white" }}>{dayCapitalized}</h3>
+                           </Card.Body>
+                        </CustomToggle>
+                        <Accordion.Collapse eventKey={daysIndex}>
+                           <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
+                        </Accordion.Collapse>
+                     </Card>
                   )
                }
-            </Accordion>
-         </ListGroup>
+               )
+            }
+         </Accordion>
+         {/* </ListGroup> */}
       </>
    )
 }
@@ -153,7 +179,7 @@ const DayTable = ({ day, dayTitle, updateSaveTracking }) => {
                   <Col xs={12} sm={2}>Reps</Col>
                   <Col xs={12} sm={2}>Tempo</Col>
                   <Col xs={12} sm={1}>Rest</Col>
-                  <Col xs={12} sm={1}>Track</Col>
+                  <Col xs={12} sm={1}></Col>
                </Row>
             </ ListGroup.Item >
 

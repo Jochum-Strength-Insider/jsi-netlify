@@ -1,0 +1,14 @@
+.customToggle {
+   padding: 0px;
+   margin: 0px;
+   border: 0px;
+   cursor: pointer;
+}
+
+.customToggle:focus {
+   outline: -webkit-focus-ring-color auto 5px;
+   border: 1px solid blue;
+   padding: 0px;
+   margin: 0px;
+   border: 0px;
+}

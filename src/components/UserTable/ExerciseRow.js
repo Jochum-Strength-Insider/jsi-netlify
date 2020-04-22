@@ -6,7 +6,6 @@ import Collapse from 'react-bootstrap/Collapse';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 
 const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, setModal }) => {
    const {
@@ -64,7 +63,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
             <Col className="xs-visible" xs={6}>Track</Col>
          </Row> */}
 
-         <Row>
+         <Row className="pb-3">
             <Col className="xs-visible" xs={6}>#</Col>
             <Col xs={6} sm={1}>{Number}</Col>
             <Col className="xs-visible" xs={12}><hr></hr></Col>
@@ -98,19 +97,20 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
 
             {/* <Col className="xs-visible" xs={6}>Track</Col> */}
             <Col xs={12} sm={1}>
-               <Button className="text-center sm-block"
+               <Button
+                  className="text-center sm-block"
                   onClick={() => setOpen(!open)}
                   aria-controls="example-collapse-text"
                   aria-expanded={open}
                   variant="outline-primary"
-               // block
+                  block
                >
-                  {open ? <span>&#9650;</span> : <span>&#9660;</span>}
+                  {open ? <span>&minus;</span> : <span>&#65291;</span>}
                </Button>
             </Col>
          </Row>
 
-         <hr></hr>
+         {/* <hr></hr> */}
 
          <Collapse in={open}>
             {/* <Row> */}
@@ -122,26 +122,23 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                      Object.keys(trackingData).map((week, index) => {
                         return (
 
-                           <Form.Group xs={12} md={3} as={Col} key={week} className="align-self-center">
-                              <InputGroup className="mb-3">
-                                 <InputGroup.Prepend>
-                                    <InputGroup.Text id={`basic-addon-week-${index + 1}`}>{week}</InputGroup.Text>
-                                 </InputGroup.Prepend>
-                                 <Form.Control
-                                    aria-label={`${week} weight tracking`}
-                                    type="text"
-                                    placeholder="10lbs"
-                                    value={trackingData[week]}
-                                    name={week}
-                                    onChange={onChange}
-                                    aria-describedby={`basic-addon-week-${index + 1}`}
-                                 />
-                              </InputGroup>
+                           <Form.Group xs={12} md={3} as={Col} key={week} >
+                              <Form.Label>{week}</Form.Label>
+                              <Form.Control
+                                 className={trackingData[week] ? "entered" : null}
+                                 aria-label={`${week} weight tracking`}
+                                 type="text"
+                                 placeholder="10lbs"
+                                 value={trackingData[week]}
+                                 name={week}
+                                 onChange={onChange}
+                                 aria-describedby={`basic-addon-week-${index + 1}`}
+                              />
                            </Form.Group>
                         )
                      })
                   }
-                  <Form.Group as={Col} xs={12} md={3}>
+                  <Form.Group className="d-flex align-items-end" as={Col} xs={12} md={3}>
                      {
                         alert
                            ? <Button block type="submit" variant="outline-success">Saved!</Button>
