@@ -256,7 +256,7 @@ class DietSheetPageBase extends Component {
 
    onChange = (e) => {
       const { name, value } = e.target;
-      this.setState({ [name]: value })
+      this.setState({ [name]: value }, () => console.log(this.state))
    }
 
    componentWillUnmount() {
@@ -350,6 +350,7 @@ class DietSheetPageBase extends Component {
                      rating={rating}
                      onChange={this.onChange}
                      size={size}
+                     id={index}
                   />
 
                   {
