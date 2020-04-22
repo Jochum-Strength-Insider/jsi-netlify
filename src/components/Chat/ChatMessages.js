@@ -196,7 +196,7 @@ const SubmitForm = ({ onCreateMessage }) => {
 
    const onChange = (e) => {
       autoSize(e);
-      setMessage(e.target.value.trim());
+      setMessage(e.target.value);
    }
 
    const handleCreateMessage = (e) => {

@@ -33,7 +33,7 @@ const AdminPage = ({ isMobile }) => (
                      isMobile ? (
                         <Switch>
                            {/* <Route exact path={ROUTES.ADMIN} component={UserList} /> */}
-                           <Route exact path={ROUTES.ADMIN_DETAILS} component={UserItem2} />
+                           <Route path={ROUTES.ADMIN_DETAILS} component={() => <UserItem2 isMobile={true} />} />
                            {/* <Route exact path={ROUTES.ADMIN_MESSAGES} component={AdminChatPage} /> */}]
                            {/* Move program item to own page */}
                            {/* <Route exact path={ROUTES.PROGRAM_DETAILS} component={ProgramItem} /> */}
@@ -41,7 +41,7 @@ const AdminPage = ({ isMobile }) => (
                         </Switch>
                      ) : (
                            <Switch>
-                              <Route exact path={ROUTES.ADMIN_DETAILS} component={UserItem2} />
+                              <Route path={ROUTES.ADMIN_DETAILS} component={() => <UserItem2 isMobile={false} />} />
                               {/* <Route exact path={ROUTES.PROGRAM_DETAILS} component={ProgramItem} /> */}
                            </Switch>
                         )

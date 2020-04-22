@@ -16,6 +16,9 @@ export const ADMIN = '/admin';
 export const ADMIN_MOBILE = '/admin-mobile';
 export const USERPROGRAM = '/program';
 export const ADMIN_DETAILS = '/admin/:id';
+export const ADMIN_DETAILS_PROFILE = '/admin/:id/profile';
+export const ADMIN_DETAILS_MESSAGES = '/admin/:id/messages';
+export const ADMIN_DETAILS_WORKOUTS = '/admin/:id/workouts';
 export const ADMIN_DETAILS_MOBILE = '/admin-mobile/:id';
 
 export const WORKOUTS = '/admin-user-programs';

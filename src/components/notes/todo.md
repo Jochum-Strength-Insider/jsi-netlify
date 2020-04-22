@@ -4,6 +4,7 @@
 
 1. Users workout page input success / checkbox?
 
+1. Make user program and admin program separate components.
 1. does the program object need to be stored in json???
 1. Look into wix / heroku subdomains
 1. Make the admin page (admin messages/userlist) vertically mobile responsives
@@ -17,6 +18,7 @@
 1. Reapply the bootstrap hidden style to the self created ones.
 
 ## TODO
+1. Activate user program from the program.
 1. add font aweseme for symbols???
 1. Only mount current tab when it's active. (currently all through mount / load at once)
 1. Enable firebase storage direct download. To do this you'll have to enable cors. https://firebase.google.com/docs/storage/web/download-files
