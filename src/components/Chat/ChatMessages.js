@@ -117,8 +117,14 @@ class AdminChatBase extends Component {
       }
    }
 
+   setVerticalHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+   }
+
    componentDidMount() {
       // console.log("mount");
+      this.setVerticalHeight();
       this.props.firebase.messages(this.props.roomId).off();
       this.onListenForMessages();
    }

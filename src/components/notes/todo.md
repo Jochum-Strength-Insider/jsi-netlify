@@ -6,8 +6,6 @@
 
 1. Make user program and admin program separate components.
 1. does the program object need to be stored in json???
-1. Look into wix / heroku subdomains
-1. Make the admin page (admin messages/userlist) vertically mobile responsives
 1. separate style sheets
 1. Overall styling
 
@@ -47,8 +45,3 @@ I'd like to edit are the formatting (Pictures/text/ect) on my own.
 
 ### Paypal Pay and sign-up or pay through app.
 Payment on the site and seemless sign up (they pay and are able to sign in) so if you can continue to look into the best ways to do this that'd be awesome.
-
-### Design
-[Advanced Human Performance](www.Advancedhumanperformance.com)
-
-I’d love if they signed in and all of the days were closed and had a design on them (maybe for an upper body day it was always a generic ripped Upperbody guy on that bar or something along those lines) and when they click on that it opens up into that days work outs.

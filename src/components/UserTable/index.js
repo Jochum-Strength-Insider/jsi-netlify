@@ -119,7 +119,7 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
                      //    </Accordion.Collapse>
                      // </Card>
 
-                     <Card key={daysIndex} className="my-5 no-border rounded">
+                     <Card key={daysIndex} className="user-program-day my-5 no-border rounded">
                         <CustomToggle eventKey={daysIndex}>
                            {daysIndex % 2 === 0 ? (<Card.Img variant="top" src={armGuyImg} />) : (<Card.Img variant="top" src={legDay} />)}
                            <Card.Body className="bg-purple">
@@ -170,16 +170,16 @@ const DayTable = ({ day, dayTitle, updateSaveTracking }) => {
          </Modal>
 
          <ListGroup variant="flush" >
-            <ListGroup.Item>
-               <Row className="sm-visible">
-                  <Col xs={12} sm={1}>#</Col>
-                  <Col xs={12} sm={3}>Description</Col>
-                  <Col xs={12} sm={1}>Link</Col>
-                  <Col xs={12} sm={1}>Sets</Col>
-                  <Col xs={12} sm={2}>Reps</Col>
-                  <Col xs={12} sm={2}>Tempo</Col>
-                  <Col xs={12} sm={1}>Rest</Col>
-                  <Col xs={12} sm={1}></Col>
+            <ListGroup.Item className="d-none d-sm-none d-md-block">
+               <Row>
+                  <Col xs={12} md={1}>#</Col>
+                  <Col xs={12} md={3}>Description</Col>
+                  <Col xs={12} md={1}>Link</Col>
+                  <Col xs={12} md={1}>Sets</Col>
+                  <Col xs={12} md={2}>Reps</Col>
+                  <Col xs={12} md={2}>Tempo</Col>
+                  <Col xs={12} md={1}>Rest</Col>
+                  <Col xs={12} md={1}></Col>
                </Row>
             </ ListGroup.Item >
 

@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from "react";
+import React, { PureComponent } from "react";
 
 // import moment from 'moment';
 
@@ -6,7 +6,7 @@ import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 
-import { withRouter, Switch, Route, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import WorkoutList from '../WorkoutList';
 
 import Tabs from 'react-bootstrap/Tabs'
@@ -76,8 +76,8 @@ class UserItemBase extends PureComponent {
 
    render() {
       const { user, loading } = this.state;
-      const { isMobile } = this.props;
-      const path = isMobile ? ROUTES.ADMIN_MOBILE : ROUTES.ADMIN;
+      // const { isMobile } = this.props;
+      // const path = isMobile ? ROUTES.ADMIN_MOBILE : ROUTES.ADMIN;
 
       return (
          <div>
@@ -99,7 +99,7 @@ class UserItemBase extends PureComponent {
                   </Switch> */}
                   {/* </Tabs> */}
 
-                  <Tabs style={{ marginTop: "12px", marginBottom: "12px" }} fill defaultActiveKey="messages" className="dark-tab user-info">
+                  <Tabs fill defaultActiveKey="messages" className="dark-tab user-info">
                      <Tab eventKey="profile" title="Profile">
                         <Profile user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />
                      </Tab>

@@ -56,7 +56,7 @@ const PaginationBasic = ({ queryDate, changeQueryDate, now, format, spacing }) =
    const nextWeek = futureDates[0];
    const nextWeekButton = <Pagination.Next disabled={nextWeek.unix > now} onClick={changeQueryDate(nextWeek.formatted)} />
 
-   return <Pagination className="my-0 py-0 flex-wrap">{prevWeekButton}{paginationDates}{nextWeekButton}</Pagination>
+   return <Pagination className="flex-wrap">{prevWeekButton}{paginationDates}{nextWeekButton}</Pagination>
 };
 
 export default PaginationBasic;

@@ -64,39 +64,39 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
          </Row> */}
 
          <Row className="pb-3">
-            <Col className="xs-visible" xs={6}>#</Col>
-            <Col xs={6} sm={1}>{Number}</Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block d-md-none" xs={6}>#</Col>
+            <Col xs={6} md={1}>{Number}</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
-            <Col className="xs-visible" xs={6}>Description</Col>
-            <Col xs={6} sm={3}>{Description}</Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={6}>Description</Col>
+            <Col xs={6} md={3}>{Description}</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
-            <Col className="xs-visible" xs={6}>Link</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={6}>Link</Col>
             {/* <Col xs={6} sm={1}><a href={Link}>Link</a></Col> */}
-            <Col xs={6} sm={1}>
+            <Col xs={6} md={1}>
                <Button style={{ padding: 0, margin: 0 }} variant="link" onClick={setModal(Description, Link)}>Link</ Button>
             </Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
-            <Col className="xs-visible" xs={6}>Sets</Col>
-            <Col xs={6} sm={1}>{Sets}</Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={6}>Sets</Col>
+            <Col xs={6} md={1}>{Sets}</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
-            <Col className="xs-visible" xs={6}>Reps</Col>
-            <Col xs={6} sm={2}>{Reps}</Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={6}>Reps</Col>
+            <Col xs={6} md={2}>{Reps}</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
-            <Col className="xs-visible" xs={6}>Tempo</Col>
-            <Col xs={6} sm={2}>{Tempo}</Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={6}>Tempo</Col>
+            <Col xs={6} md={2}>{Tempo}</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
-            <Col className="xs-visible" xs={6}>Rest</Col>
-            <Col xs={6} sm={1}>{Rest}</Col>
-            <Col className="xs-visible" xs={12}><hr></hr></Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={6}>Rest</Col>
+            <Col xs={6} md={1}>{Rest}</Col>
+            <Col className="d-block d-sm-block  d-md-none" xs={12}><hr></hr></Col>
 
             {/* <Col className="xs-visible" xs={6}>Track</Col> */}
-            <Col xs={12} sm={1}>
+            <Col xs={12} md={1}>
                <Button
                   className="text-center sm-block"
                   onClick={() => setOpen(!open)}

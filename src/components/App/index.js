@@ -38,7 +38,7 @@ const App = () => (
    <>
       <Router >
          <Navigation />
-         <Container fluid className="pt-4" style={style}>
+         <Container fluid className="app-container" style={style}>
             <Switch>
                <Route exact path={ROUTES.LANDING} component={LandingPage} />
                {/* <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} /> */}

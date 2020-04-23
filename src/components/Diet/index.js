@@ -153,7 +153,7 @@ class Diet extends Component {
       const nowDateUnix = Number(moment(now).format("x"));
 
       const paginate = (
-         <div className="py-3 d-flex justify-content-center">
+         <div className="d-flex justify-content-center">
             <div>
                <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={'w'} />
             </div>
@@ -183,7 +183,7 @@ class Diet extends Component {
             </Modal>
 
             <ListGroup className="mb-5">
-               <ListGroup.Item className="pt-4 pb-4">
+               <ListGroup.Item className="py-sm-4 py-3">
                   <Button className="py-2" onClick={this.showModal} block>Add Diet Page</Button>
                </ListGroup.Item>
 

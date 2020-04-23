@@ -80,3 +80,17 @@
 .entered {
    border: 1px solid green;
 }
+
+
+@media (max-width: 576px) {
+   /* .user-program-day {} */
+
+   .user-program-day.my-5 {
+      margin-bottom: 2rem !important;
+      margin-top: 2rem !important;
+   }
+
+   .user-program-day h3 {
+      font-size: 1.25rem;
+   }
+}

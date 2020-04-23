@@ -283,7 +283,7 @@ class WeightBase extends Component {
             {error && <Alert variant="warning">{error.message}</Alert>}
 
             <ListGroup>
-               <ListGroup.Item className="py-4">
+               <ListGroup.Item className="py-sm-4 py-3">
                   <Button className="py-2" block variant="primary" onClick={this.showModal}>Add Weigh In</Button>
                </ListGroup.Item>
                <ListGroup.Item className="d-none d-sm-block">
@@ -302,7 +302,7 @@ class WeightBase extends Component {
                      return (
                         <ListGroup.Item className="d-block d-sm-none d-flex justify-content-between" key={date}>
                            <p>{day} {formattedDate}</p>
-                           <p>{weight}lbs</p>
+                           <p><b>{weight}lbs</b></p>
                         </ListGroup.Item>
                      )
                   })) : (
@@ -313,7 +313,7 @@ class WeightBase extends Component {
                }
                {/* </div> */}
                <ListGroup.Item>
-                  <div className="py-3 d-flex justify-content-center">
+                  <div className="d-flex justify-content-center">
                      <div>
                         <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={"months"} />
                      </div>

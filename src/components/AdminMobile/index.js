@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 
@@ -9,7 +9,7 @@ import { UserItem2 } from '../Users';
 // import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 
 import { withAuthorization, withEmailVerification } from '../Session';
 // import { withAuthorization } from '../Session';
@@ -24,10 +24,11 @@ const AdminPageMobile = ({ history }) => (
          <div style={style}>
             <Row>
                <Col>
-                  <Button onClick={history.goBack} >Go back</Button>
+                  {/* <Button onClick={history.goBack} >&#8249;</Button> */}
+                  {/* <a href="#" class="previous round">&#8249;</a> */}
                   <Switch>
                      <Route exact path={ROUTES.ADMIN_DETAILS_MOBILE} component={UserItem2} />
-                     <Redirect from={ROUTES.ADMIN_DETAILS} to={ROUTES.ADMIN_DETAILS_MOBILE} />
+                     {/* <Redirect from={ROUTES.ADMIN_DETAILS} to={ROUTES.ADMIN_DETAILS_MOBILE} /> */}
                   </Switch>
                </Col>
             </Row>

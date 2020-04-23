@@ -21,6 +21,10 @@ body::-webkit-scrollbar {
    /* Optional: just make scrollbar invisible */
 }
 
+.app-container {
+   padding-top: 1.5rem;
+}
+
 .tab-content {
    color: black;
 }
@@ -83,24 +87,6 @@ body::-webkit-scrollbar {
 /* Extra small devices (phones, less than 768px) */
 /* No media query since this is the default in Bootstrap */
 
-
-.xs-visible {
-   display: block;
-}
-
-.sm-visible {
-   display: none;
-}
-
-.md-visible {
-   display: none;
-}
-
-.lg-visible {
-   display: none;
-}
-
-
 .data-grid-control,
 .data-grid-control input {
    background-color: rgba(173, 216, 230, 0);
@@ -108,122 +94,8 @@ body::-webkit-scrollbar {
    width: 100%;
 }
 
-
 table .vertical-align-center {
    vertical-align: middle;
-}
-
-.landingContain {
-   max-width: 700px;
-   font-size: 1.25rem;
-}
-
-.joinTitle {
-   text-align: center;
-   font-size: 1.5rem;
-}
-
-.info {
-   font-size: 1rem;
-   max-width: 700px;
-}
-
-.signUpButton {
-   /* width: 100px;
-height: 75px; */
-   font-size: 2rem;
-   border: 5px solid var(--js-purple-light);
-   color: var(--js-purple-light);
-   padding: 50px 50px;
-   text-align: center;
-   transition: border 0.5s ease-out, color 0.5s ease-out;
-}
-
-.signUpButton:hover {
-   text-decoration: none;
-   border: 5px solid white;
-   color: white;
-
-}
-
-/* .benefitCircleContain {
-   width: 80%;
-} */
-
-
-.whatDoesVideo {
-   /* height: auto;
-   width: 33vw; */
-   /* height: 360px; */
-   /* width: 480px; */
-   max-width: 700px;
-   width: 75%;
-   height: 400px;
-   background-color: black;
-}
-
-.topRow {
-   margin-bottom: -10px;
-}
-
-.benefitCircle {
-   /* background-color: #ffffff00;
-   width: 100px;
-   height: 100px;
-   /* padding: 14px 25px; */
-
-   margin-left: 1vw;
-   margin-right: 1vw;
-   color: white;
-   text-align: center;
-   border-radius: 50%;
-   border: 4px solid #ab919d;
-   width: var(--circle-size);
-   height: var(--circle-size);
-   /* background-color: var(--js-purple); */
-   text-align: center;
-   font-weight: 900;
-}
-
-.benefitsTitle {
-   font-weight: 900;
-   font-size: 3rem;
-}
-
-.benefitCircle span {
-   height: var(--circle-size);
-   display: inline-block;
-   zoom: 1;
-   *display: inline;
-   vertical-align: middle;
-}
-
-.benefitCircle p {
-   max-width: 75%;
-   display: inline-block;
-   zoom: 1;
-   *display: inline;
-   vertical-align: middle;
-   /* color: #fff; */
-   font-size: calc(0.5rem + 1vw);
-   color: white;
-   margin: 0;
-   padding: 0;
-}
-
-.onlineTitle {
-   font-weight: 900;
-   font-size: 4rem;
-   text-align: center;
-}
-
-.whatDoesTitle {
-   font-size: 3rem;
-}
-
-.detailsTitle {
-   font-weight: 900;
-   font-size: 3rem;
 }
 
 @media (max-width: 576px) {
@@ -263,133 +135,8 @@ height: 75px; */
       display: none;
    }
 
-   .landingContain {
-      font-size: 1rem;
+   .app-container {
+      padding-top: 0.5rem;
    }
-
-   .info {
-      font-size: .75rem;
-   }
-
-   .onlineTitle {
-      font-size: 2.5rem;
-   }
-
-   .benefitCircle {
-      width: calc(var(--circle-size) + 4vw);
-      height: calc(var(--circle-size) + 4vw);
-   }
-
-   .benefitsTitle {
-      font-weight: 900;
-      font-size: 2rem;
-   }
-
-   .benefitCircle span {
-      height: calc(var(--circle-size) + 4vw);
-   }
-
-   .benefitCircle p {
-      font-size: calc(0.4rem + 1vw);
-   }
-
-   .whatDoesTitle {
-      font-size: 2rem;
-   }
-
-   .detailsTitle {
-      font-weight: 900;
-      font-size: 2rem;
-   }
-
-}
-
-@media (max-width: 767px) {
-   .md-hide {
-      display: none;
-   }
-}
-
-@media (min-width: 576px) {
-   .xs-visible {
-      display: none;
-   }
-
-
-   .sm-visible {
-      display: flex;
-   }
-
-   .md-visible {
-      display: flex;
-   }
-
-   .lg-visible {
-      display: flex;
-   }
-
-}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-   .xs-visible {
-      display: none;
-   }
-
-   .sm-visible {
-      display: flex;
-   }
-
-   /*
-   .md-visible {
-      display: flex;
-   }
-
-   .lg-visible {
-      display: flex;
-   } */
-}
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-   .xs-visible {
-      display: none;
-   }
-
-   .sm-visible {
-      display: flex;
-   }
-
-   /*
-   .md-visible {
-      display: flex;
-   }
-
-   .lg-visible {
-      display: flex;
-   } */
-
-}
-
-
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-   .xs-visible {
-      display: none;
-   }
-
-   .sm-visible {
-      display: flex;
-   }
-
-   /*
-   .md-visible {
-      display: none;
-   }
-
-   .lg-visible {
-      display: flex;
-   } */
 
 }

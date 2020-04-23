@@ -1,0 +1,19 @@
+.pagination {
+   padding-top: 1rem;
+   padding-bottom: 1rem;
+   margin-bottom: 0rem;
+}
+
+
+@media (max-width: 576px) {
+   .pagination a.page-link {
+      font-size: 0.75rem;
+   }
+
+   .pagination {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0rem;
+   }
+
+}
