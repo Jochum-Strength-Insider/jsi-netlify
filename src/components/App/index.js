@@ -61,8 +61,8 @@ const App = () => (
    </>
 );
 
-// const NoMatch = () => (
-//    <Redirect to="/" />
-// )
+const NoMatch = () => (
+   <Redirect to="/" />
+)
 
 export default withAuthentication(App);
