@@ -18,10 +18,12 @@ import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 //    );
 // }
 
-const CustomToggle = ({ onClick, children, eventKey }) => {
+const CustomToggle = ({ onClick, children, eventKey, scroll = true }) => {
    const scrollToRef = useRef(null);
    const scrollAndClick = () => {
-      scrollToRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (scroll) {
+         scrollToRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
       return onClick;
    }
    const handleClicked = useAccordionToggle(eventKey, scrollAndClick);

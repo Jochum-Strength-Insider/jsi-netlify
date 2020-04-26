@@ -11,7 +11,7 @@ import Tab from 'react-bootstrap/Tab'
 // TODO:
 // Separate from create and from specific user into separate components
 
-const ProgramTable = ({ program, pid, uid, path, tasks }) => {
+const UserProgramTable = ({ program, pid, uid, path, tasks, onSave }) => {
 
    // console.log("programTable", program);
 
@@ -47,14 +47,13 @@ const ProgramTable = ({ program, pid, uid, path, tasks }) => {
 
    return (
       <>
-         {/* <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example"> */}
          <Tabs fill defaultActiveKey={phasesList[0]} className="dark-tab">
             {phasesList.map((key, index) => {
                const { completed, ...days } = tablesList[key];
                const phaseTitle = key.charAt(0).toUpperCase() + key.substring(1);
                return (
                   <Tab eventKey={key} title={phaseTitle} key={key}>
-                     <ExpandableTable tasks={tasks} days={days} phase={key} key={key} pid={pid} uid={uid} path={path} />
+                     <ExpandableTable onSave={onSave} tasks={tasks} days={days} phase={key} key={key} pid={pid} uid={uid} path={path} showTracking={true} />
                   </Tab>
                )
             })}
@@ -63,4 +62,4 @@ const ProgramTable = ({ program, pid, uid, path, tasks }) => {
    )
 };
 
-export default ProgramTable;
+export default UserProgramTable;

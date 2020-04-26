@@ -126,6 +126,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                               <Form.Label>{week}</Form.Label>
                               <Form.Control
                                  className={trackingData[week] ? "entered" : null}
+                                 isValid={trackingData[week].trim() ? true : false}
                                  aria-label={`${week} weight tracking`}
                                  type="text"
                                  placeholder="10lbs"

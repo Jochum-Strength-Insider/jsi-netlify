@@ -3,12 +3,10 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
-// import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 
 import EmailSignInPage from '../EmailSignIn';
 import PasswordForgetPage from '../PasswordForget';
-// import HomePage from '../Home';
 import UserProgramPage from '../UserProgramPage';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
@@ -22,7 +20,6 @@ import AdminChat from '../ChatAdmin';
 import Footer from '../Footer';
 import WelcomePage from '../WelcomePage';
 import AdminUserProgramsPage from '../AdminUserProgramsPage';
-
 
 
 import * as ROUTES from '../../constants/routes';
@@ -41,11 +38,9 @@ const App = () => (
          <Container fluid className="app-container" style={style}>
             <Switch>
                <Route exact path={ROUTES.LANDING} component={LandingPage} />
-               {/* <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} /> */}
                <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
                <Route exact path={ROUTES.SIGN_IN_LINK} component={EmailSignInPage} />
                <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-               {/* <Route exact path={ROUTES.HOME} component={HomePage} /> */}
                <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
                <Route path={ROUTES.ADMIN} component={AdminPage} />
                <Route path={ROUTES.ADMIN_MOBILE} component={AdminMobilePage} />

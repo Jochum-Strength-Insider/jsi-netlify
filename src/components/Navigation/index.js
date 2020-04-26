@@ -9,7 +9,6 @@ import * as ROUTES from '../../constants/routes';
 
 import { SignOutButton } from '../SignOut';
 
-
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -19,13 +18,17 @@ import Button from 'react-bootstrap/Button';
 // import Badge from 'react-bootstrap/Badge';
 
 // const logo = 'https://static.wixstatic.com/media/d44628_dd09c48b517b41fc9d04671db909b022~mv2.png/v1/fill/w_848,h_296,al_c,lg_1,q_85/jochum2%20white.webp';
+const style = { display: "flex", width: "100%", maxWidth: "1000px", flex: "1", justifyContent: "space-between", flexWrap: "wrap", };
 
 const Navigation = () => {
    const authUser = useContext(AuthUserContext);
-   const style = { display: "flex", width: "100%", maxWidth: "1000px", flex: "1", justifyContent: "space-between", flexWrap: "wrap", };
+   const [isExpanded, setIsExpanded] = useState(false);
+
+   const onSelect = () => setIsExpanded(false);
+   const onToggle = () => setIsExpanded(!isExpanded);
 
    return (
-      <Navbar className="navbar justify-content-center" variant="dark" bg="purple" sticky="top" expand="md">
+      <Navbar className="navbar justify-content-center" variant="dark" bg="purple" sticky="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
          <div style={style}>
             <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
                <img
@@ -36,58 +39,58 @@ const Navigation = () => {
                   alt="Jochum Strength"
                />
             </Navbar.Brand>
-            {authUser ? (<NavigationAuth authUser={authUser} />) : (<NavigationNonAuth />)}
+            {authUser ? (<NavigationAuth onToggle={onToggle} onSelect={onSelect} authUser={authUser} />) : (<NavigationNonAuth onSelect={onSelect} />)}
          </div>
       </Navbar>
    )
 };
 
-const NavigationAuth = ({ authUser }) => (
-   <>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
-      <Navbar.Collapse id="basic-navbar-nav">
-         <Nav className="mr-auto">
-            <NavLink className="nav-link" to={ROUTES.USERPROGRAM}>Program</NavLink>
-            <NavLink className="nav-link" to={ROUTES.WEIGHIN}>Weight</NavLink>
-            <NavLink className="nav-link" to={ROUTES.DIET}>Diet</NavLink>
-            <NavLink className="nav-link" to={ROUTES.MESSAGES}>
-               {/* Messages {authUser.unread && <Badge variant="light">{authUser.unread}</Badge>} */}
+const NavigationAuth = ({ authUser, onSelect }) => {
+   return (
+      <>
+         <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
+         <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto" onSelect={onSelect}>
+               <NavLink className="nav-link" to={ROUTES.USERPROGRAM} onClick={onSelect}>Program</NavLink>
+               <NavLink className="nav-link" to={ROUTES.WEIGHIN} onClick={onSelect}>Weight</NavLink>
+               <NavLink className="nav-link" to={ROUTES.DIET} onClick={onSelect}>Diet</NavLink>
+               <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>
                   Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
-               <span className="sr-only">unread messages</span>
-            </NavLink>
-            {authUser.ADMIN && (
-               <>
-                  <NavDropdown title="Admin" id="basic-nav-dropdown">
-                     <NavDropdown.Item href={ROUTES.ADMIN}>Users</NavDropdown.Item>
-                     <NavDropdown.Item href={ROUTES.CREATEPROGRAM}>Programs</NavDropdown.Item>
-                     <NavDropdown.Item href={ROUTES.CREATETASK}>Exercises</NavDropdown.Item>
-                     {/* <NavDropdown.Item href={ROUTES.ADMIN_MESSAGES}>Admin Messages</NavDropdown.Item> */}
-                  </NavDropdown>
-               </>
-            )}
-         </Nav>
+                  <span className="sr-only">unread messages</span>
+               </NavLink>
+               {authUser.ADMIN && (
+                  <>
+                     <NavDropdown title="Admin" id="basic-nav-dropdown">
+                        <NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN} onClick={onSelect}>Users</NavLink>
+                        <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATEPROGRAM} onClick={onSelect}>Programs</NavLink>
+                        <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATETASK} onClick={onSelect}>Exercises</NavLink>
+                     </NavDropdown>
+                  </>
+               )}
+            </Nav>
 
-         <Nav>
-            <Dropdown alignRight>
-               <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
-                  {authUser.username}
-               </Dropdown.Toggle>
-               <Dropdown.Menu>
-                  <Dropdown.Item className="text-center" href={ROUTES.ACCOUNT}>Account</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item><SignOutButton /></Dropdown.Item>
-               </Dropdown.Menu>
-            </Dropdown>
-         </Nav>
-      </Navbar.Collapse>
-   </>
-);
+            <Nav>
+               <Dropdown alignRight>
+                  <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
+                     {authUser.username}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                     <NavLink className="dropdown-item ignore-active" to={ROUTES.ACCOUNT} onClick={onSelect}>Account</NavLink>
+                     <Dropdown.Divider />
+                     <Dropdown.Item><SignOutButton /></Dropdown.Item>
+                  </Dropdown.Menu>
+               </Dropdown>
+            </Nav>
+         </Navbar.Collapse>
+      </>
+   )
+};
 
-const NavigationNonAuth = () => (
+const NavigationNonAuth = ({ onSelect }) => (
    <>
-      <Nav className="ml-auto">
+      <Nav className="ml-auto" onSelect={onSelect}>
          <NavLogin classes={"d-none d-sm-none d-md-none d-lg-inline-flex d-xl-inline-flex"} />
-         <NavLink className="d-lg-none d-xl-none nav-link" to={ROUTES.SIGN_IN}>Sign In</NavLink>
+         <NavLink className="d-lg-none d-xl-none nav-link" to={ROUTES.SIGN_IN} onClick={onSelect}>Sign In</NavLink>
       </Nav>
    </>
 );

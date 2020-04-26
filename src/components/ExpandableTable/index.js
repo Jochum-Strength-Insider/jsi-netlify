@@ -1,8 +1,6 @@
 import React from 'react';
 import "./style.css"
 
-import { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
 import { INITIALJSON } from '../../constants/defaultProgram';
 import Modal from '../Modal';
 
@@ -16,15 +14,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 import Alert from 'react-bootstrap/Alert';
-
-
-// ToDo
-
-// Are these technically out of sync?
-// json / keys toLowerCase on submission. Capitalize first letter on display.
-// handleSave has a similar problem but it isn't as apparent because the state of each day is already store to state.
-// Should I save state on the component and then update the firebase store?
-// Restyle so text is smaller
 
 const TASKSHELL = {
    instruction: {
@@ -44,12 +33,15 @@ class ExpandableTable extends React.Component {
          days: defaultDays,
          // Should completed be here?
          completed: props.completed || false,
-         show: false,
-         modalNumber: "day",
+         showEdit: false,
+         showAdd: false,
+         showRemove: false,
+         modalNumber: null,
          dayTitle: "",
          select: "end",
          alert: false,
          error: null,
+
          //separate into own component
          currentCell: {
             dayIndex: "day 1",
@@ -69,22 +61,17 @@ class ExpandableTable extends React.Component {
 
    handleChange = (idx, day) => e => {
       const { name, value } = e.target;
-      // console.log(day, idx, name, value);
       const days = { ...this.state.days };
-      // console.log(day);
       days[day].exercises[idx][name] = value;
       this.setState({ days });
    };
 
    handleSearchChange = (idx, day, name) => (value, link = false) => {
-      // const { name, value } = e.target;
-      // console.log(day, idx, name, value);
       const days = { ...this.state.days };
       days[day].exercises[idx][name] = value;
       if (link) {
          days[day].exercises[idx].Link = link;
       }
-
       this.setState({ days });
    };
 
@@ -93,25 +80,27 @@ class ExpandableTable extends React.Component {
       this.setState({ dayTitle: dayTitle });
    }
 
-   showModal = (key) => () => {
-      this.setState({ modalNumber: key, show: true });
+   showRemoveModal = (key) => () => {
+      this.setState({ modalNumber: key, showRemove: true });
+   }
+   showAddModal = () => {
+      this.setState({ showAdd: true, dayTitle: "" });
+   }
+   showEditModal = (key, idx) => () => {
+      const dayTitle = this.state.days[key].title;
+      this.setState({ modalNumber: key, dayTitle: dayTitle, showEdit: true });
    }
 
-   hideModal = () => {
-      this.setState({ show: false });
+   hideModal = show => () => {
+      this.setState({ [show]: false });
    }
 
    handleSave = () => {
-      const { firebase } = this.props;
       const { days, completed } = this.state;
-      const { pid, uid, phase } = this.props;
-
-      console.log("updating program", pid, phase);
+      const { pid, phase } = this.props;
 
       const daysListJSON = Object.keys(days).reduce((accumulator, key) => {
-
          const { title, exercises } = days[key];
-
          const day = {
             title: title,
             exercises: JSON.stringify(exercises)
@@ -127,27 +116,11 @@ class ExpandableTable extends React.Component {
          ...daysListJSON
       }
 
-      // console.log(phaseUpdate);
+      console.log("updating program", pid, phase);
 
-      if (this.props.path === ROUTES.CREATE_DETAILS) {
-         firebase
-            .program(pid)
-            .child("instruction")
-            .child(phase)
-            .set(phaseUpdate)
-            .then(this.onAlert)
-            .catch(error => this.setState({ error }));
-      }
-      if (this.props.path === ROUTES.PROGRAM_DETAILS) {
-         firebase
-            .workouts(uid)
-            .child(pid)
-            .child("instruction")
-            .child(phase)
-            .set(phaseUpdate)
-            .then(this.onAlert)
-            .catch(error => this.setState({ error }));
-      }
+      this.props.onSave(phase, phaseUpdate)
+         .then(this.onAlert)
+         .catch(error => this.setState({ error }));
    }
 
    togglePanel = () => {
@@ -179,7 +152,7 @@ class ExpandableTable extends React.Component {
       // const dayArray = [...days[key]];
       const { exercises } = days[key];
 
-      this.resetCurrentCell(idx)();
+      this.resetCurrentCell(idx);
 
       if (exercises.length > 1) {
          exercises.splice(idx, 1);
@@ -197,9 +170,7 @@ class ExpandableTable extends React.Component {
       const daysUpdate = { ...days };
       delete daysUpdate[day]
       // console.log(daysUpdate);
-
-      this.setState({ days: daysUpdate });
-      this.hideModal();
+      this.setState({ days: daysUpdate }, this.hideModal("showRemove"));
    }
 
    handleSelect = (e) => {
@@ -213,7 +184,7 @@ class ExpandableTable extends React.Component {
       this.setState({ currentCell: { dayIndex, rowIndex, name, number } })
    }
 
-   resetCurrentCell = (dayIndex) => () => {
+   resetCurrentCell = (dayIndex) => {
       const day = dayIndex + 1
       this.setState({ currentCell: { dayIndex: "day " + day, rowIndex: 0, name: "Number", number: "1A" } })
    }
@@ -230,22 +201,38 @@ class ExpandableTable extends React.Component {
          exercises: JSON.parse(INITIALJSON),
          title: dayTitle,
       };
-      this.setState({ days: daysUpdate });
-      this.hideModal();
+      this.setState({ days: daysUpdate }, this.hideModal("showAdd"));
+
+   }
+
+   handleChangeDayTitle = (e) => {
+      e.preventDefault();
+      const { days, modalNumber, dayTitle } = this.state;
+      const daysUpdate = { ...days };
+      const dayUpdate = { ...daysUpdate[modalNumber] };
+      dayUpdate["title"] = dayTitle;
+      daysUpdate[modalNumber] = dayUpdate;
+      this.setState({ days: daysUpdate }, this.hideModal("showEdit"));
    }
 
    render() {
-      const { days, show, dayTitle, alert, error, currentCell } = this.state;
+      const { days, showAdd, showEdit, showRemove, dayTitle, alert, error, currentCell, modalNumber } = this.state;
+      const { showTracking } = this.props;
       // const { days, completed, show, dayTitle } = this.state;
       // const completeColor = (completed === "true") ? "green" : "black";
       // const { phase } = this.props;
       const daysList = Object.keys(days);
 
-      let modalForm;
-      if (this.state.modalNumber === "day") {
-         modalForm = (
-            <Modal show={show} handleClose={this.hideModal} heading={"Add Day"}>
+      return (
+         <>
+            <Modal show={showRemove} handleClose={this.hideModal("showRemove")} heading={"Remove " + modalNumber + "?"}>
+               <Form className="d-flex justify-content-between align-items-center">
+                  <Button variant="outline-danger" onClick={this.removeDay(modalNumber)}>Remove</Button>
+                  <Button variant="primary" onClick={this.hideModal("showRemove")}>Cancel</Button>
+               </Form>
+            </Modal>
 
+            <Modal show={showAdd} handleClose={this.hideModal("showAdd")} heading={"Add Day"}>
                <Form onSubmit={this.handleAddDay}>
                   <Form.Group>
                      <Form.Label>Day Title</Form.Label>
@@ -256,27 +243,24 @@ class ExpandableTable extends React.Component {
                         name={"dayTitle"}
                      />
                   </Form.Group>
-
                   <Button type="submit">Add Day</Button>
                </Form>
             </Modal>
-         )
-      } else {
-         const key = this.state.modalNumber;
-         // console.log(key);
-         modalForm = (
-            <Modal show={show} handleClose={this.hideModal} heading={"Remove " + key + "?"}>
-               <Form className="d-flex justify-content-between align-items-center">
-                  <Button variant="outline-danger" onClick={this.removeDay(key)}>Remove</Button>
-                  <Button variant="primary" onClick={this.hideModal}>Cancel</Button>
+
+            <Modal show={showEdit} handleClose={this.hideModal("showEdit")} heading={"Edit " + modalNumber + " title?"}>
+               <Form onSubmit={(e) => this.handleChangeDayTitle(e)}>
+                  <Form.Group>
+                     <Form.Label>Day Title</Form.Label>
+                     <Form.Control
+                        type="text"
+                        onChange={this.handleSetDayTitle}
+                        value={dayTitle}
+                        name={"dayTitle"}
+                     />
+                  </Form.Group>
+                  <Button type="submit">Edit Title</Button>
                </Form>
             </Modal>
-         )
-      }
-
-      return (
-         <>
-            {modalForm}
 
             {error && <Alert variant="modal">{error.message}</Alert>}
 
@@ -284,60 +268,34 @@ class ExpandableTable extends React.Component {
                <Accordion defaultActiveKey={0}>
                   <>
                      {daysList.map((key, idx) => {
-                        // Need to remove tracking from the headers array.
-                        const headers = Object.keys(days[key].exercises[0]);
-
-                        // remove the last object from the headers array. In this case "tracking".
-                        headers.pop();
 
                         const dayRows = days[key].exercises;
                         const title = days[key].title;
                         const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + title;
-                        const fromUserDetail = this.props.path === ROUTES.WORKOUT_DETAILS;
-
-                        // const tasksList = Object.keys(this.props.tasks);
 
                         return (
                            <React.Fragment key={idx}>
 
                               <ListGroup.Item className="overrideBorder no-top-border" key={idx}>
-
-                                 <span className="d-flex justify-content-between align-items-center">
-                                    <CustomToggle onClick={this.resetCurrentCell(idx)} eventKey={idx} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
-                                    <span>
-                                       <Button variant="outline-danger" onClick={this.showModal(key)}>Remove</Button>
-                                    </span>
-                                 </span>
-
+                                 <CustomToggle eventKey={idx} variant={"link"} size={"lg"} scroll={false}><Button onClick={() => this.resetCurrentCell(idx)} style={{ fontSize: "1.25rem" }} variant="link">{dayCapitalized}</Button></CustomToggle>
                                  <Accordion.Collapse eventKey={idx}>
                                     <>
-                                       <Form onSubmit={(e) => e.preventDefault()}>
-                                          <Form.Group>
+                                       {/* Give an edit button that has edit title and delete? */}
+                                       <span className="d-flex justify-content-between align-items-center pb-3">
+                                          <Button variant="outline-warning mx-3" onClick={this.showEditModal(key, idx)}>Edit Title</Button>
+                                          <Button variant="outline-danger" onClick={this.showRemoveModal(key)}>Remove</Button>
+                                       </span>
 
-                                             <div className="lineContainer">
-                                                <div className="cell left input-group-text">
-                                                   <span>{currentCell.number}</span>
-                                                   <span>{currentCell.name}</span>
-                                                </div>
-                                                {currentCell.name === "Description" ? (
-                                                   <SearchBar
-                                                      className="cell"
-                                                      suggestions={this.props.tasks}
-                                                      initialValue={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex]["Description"] : ""}
-                                                      onChange={this.handleSearchChange(currentCell.rowIndex, currentCell.dayIndex, "Description")}
-                                                   />
-                                                ) : (
-                                                      <Form.Control
-                                                         type="text"
-                                                         className="cell right"
-                                                         name={currentCell.name}
-                                                         value={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex][currentCell.name] : ""}
-                                                         onChange={this.handleChange(currentCell.rowIndex, currentCell.dayIndex)}
-                                                      />
-                                                   )}
-                                             </div>
-                                          </Form.Group>
-                                       </Form>
+                                       <EditCellForm
+                                          value={days[currentCell.dayIndex] ? days[currentCell.dayIndex].exercises[currentCell.rowIndex][currentCell.name] : ""}
+                                          tasks={this.props.tasks}
+                                          dayIndex={currentCell.dayIndex}
+                                          rowIndex={currentCell.rowIndex}
+                                          name={currentCell.name}
+                                          number={currentCell.number}
+                                          handleChange={this.handleChange(currentCell.rowIndex, currentCell.dayIndex)}
+                                          handleSearchChange={this.handleSearchChange(currentCell.rowIndex, currentCell.dayIndex, "Description")}
+                                       />
 
                                        <Table responsive bordered striped size="sm" >
                                           <thead>
@@ -349,7 +307,7 @@ class ExpandableTable extends React.Component {
                                                 <th className="text-center  dth-reps">Reps</th>
                                                 <th className="text-center  dth-tempo">Tempo</th>
                                                 <th className="text-center  dth-rest">Rest</th>
-                                                {fromUserDetail && (
+                                                {showTracking && (
                                                    <>
                                                       <th className="text-center  dth-w1">w1</th>
                                                       <th className="text-center  dth-w2">w2</th>
@@ -358,7 +316,7 @@ class ExpandableTable extends React.Component {
                                                 )
                                                 }
 
-                                                <th className="text-center  dth-btn">x</th>
+                                                <th className="text-center  dth-btn"><span role="img" aria-label='Delete'>&#10060;</span></th>
                                              </tr>
                                           </thead>
 
@@ -431,7 +389,7 @@ class ExpandableTable extends React.Component {
                                                       />
                                                    </td>
 
-                                                   {fromUserDetail && (
+                                                   {showTracking && (
                                                       <>
                                                          <td className="vertical-align-center">
                                                             {item["tracking"]["week 1"]}
@@ -451,7 +409,7 @@ class ExpandableTable extends React.Component {
                                                          variant={"outline-danger"}
                                                          onClick={this.handleRemoveSpecificRow(rowIndex, key)}
                                                       >
-                                                         x
+                                                         &#215;
                                              </Button>
                                                    </td>
                                                 </tr>
@@ -475,7 +433,6 @@ class ExpandableTable extends React.Component {
                                              </InputGroup>
                                           </Form.Group>
                                        </Form>
-
                                     </>
                                  </Accordion.Collapse>
                               </ListGroup.Item>
@@ -488,7 +445,7 @@ class ExpandableTable extends React.Component {
                      }
                      <ListGroup.Item>
                         <Form className="d-flex justify-content align-items-center">
-                           <Button size="lg" variant="link" onClick={this.showModal("day")} >Add Day</Button>
+                           <Button size="lg" variant="link" onClick={this.showAddModal}>Add Day</Button>
                         </Form>
                      </ListGroup.Item>
                      <ListGroup.Item>
@@ -511,4 +468,38 @@ class ExpandableTable extends React.Component {
    }
 }
 
-export default withFirebase(ExpandableTable);
+
+const EditCellForm = ({ value, tasks, name, number, handleChange, handleSearchChange }) => {
+   return (
+      <div>
+         <Form onSubmit={(e) => e.preventDefault()}>
+            <Form.Group>
+               <div className="lineContainer">
+                  <div className="cell left input-group-text">
+                     <span>{number}</span>
+                     <span>{name}</span>
+                  </div>
+                  {name === "Description" ? (
+                     <SearchBar
+                        className="cell"
+                        suggestions={tasks}
+                        initialValue={value}
+                        onChange={handleSearchChange}
+                     />
+                  ) : (
+                        <Form.Control
+                           type="text"
+                           className="cell right"
+                           name={name}
+                           value={value}
+                           onChange={handleChange}
+                        />
+                     )}
+               </div>
+            </Form.Group>
+         </Form>
+      </div>
+   )
+}
+
+export default ExpandableTable;

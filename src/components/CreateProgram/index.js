@@ -7,15 +7,15 @@ import { withFirebase } from '../Firebase';
 
 import * as ROUTES from '../../constants/routes';
 
-import { ProgramList, ProgramItem } from '../Programs';
+import CreateProgramList from './CreateProgramList'
+import CreateProgramItem from './CreateProgramItem';
 
 const CreateProgram = () => {
    return (
       <>
-
          <Switch>
-            <Route exact path={ROUTES.CREATEPROGRAM} component={ProgramList} />
-            <Route exact path={ROUTES.CREATE_DETAILS} component={ProgramItem} />
+            <Route exact path={ROUTES.CREATEPROGRAM} component={CreateProgramList} />
+            <Route exact path={ROUTES.CREATE_DETAILS} component={CreateProgramItem} />
          </Switch>
 
       </>
