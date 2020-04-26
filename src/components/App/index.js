@@ -53,7 +53,7 @@ const App = () => (
                <Route path={ROUTES.ADMIN_MESSAGES} component={AdminChat} />
                <Route path={ROUTES.MESSAGES} component={UserChat} />
                <Route path={ROUTES.WELCOME} component={WelcomePage} />
-               {/* <Route path="*" component={NoMatch} /> */}
+               <Route path="*" component={NoMatch} />
             </Switch>
          </Container>
          <Footer />
