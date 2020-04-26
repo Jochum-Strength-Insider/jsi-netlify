@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
-  publish="react-firebase-auth2/build/"
-  base = "react-firebase-auth2/"
+  publish="/build/"
+  base = "/"
 
 [[redirects]]
 from = "/*"
