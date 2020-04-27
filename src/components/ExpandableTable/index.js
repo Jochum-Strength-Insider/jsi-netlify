@@ -84,15 +84,16 @@ class ExpandableTable extends React.Component {
       this.setState({ modalNumber: key, showRemove: true });
    }
    showAddModal = () => {
-      this.setState({ showAdd: true, dayTitle: "" });
+      this.setState({ showAdd: true, dayTitle: "", select: "max-upper" });
    }
    showEditModal = (key, idx) => () => {
       const dayTitle = this.state.days[key].title;
-      this.setState({ modalNumber: key, dayTitle: dayTitle, showEdit: true });
+      const dayImage = this.state.days[key].image;
+      this.setState({ modalNumber: key, dayTitle: dayTitle, showEdit: true, select: dayImage });
    }
 
    hideModal = show => () => {
-      this.setState({ [show]: false });
+      this.setState({ [show]: false, select: "end" });
    }
 
    handleSave = () => {
@@ -100,9 +101,10 @@ class ExpandableTable extends React.Component {
       const { pid, phase } = this.props;
 
       const daysListJSON = Object.keys(days).reduce((accumulator, key) => {
-         const { title, exercises } = days[key];
+         const { title, exercises, image } = days[key];
          const day = {
-            title: title,
+            image,
+            title,
             exercises: JSON.stringify(exercises)
          };
 
@@ -157,7 +159,6 @@ class ExpandableTable extends React.Component {
       if (exercises.length > 1) {
          exercises.splice(idx, 1);
          days[key].exercises = exercises;
-         // console.log("daysObject", days);
          this.setState({ days });
       } else {
          console.log("Can't remove more rows");
@@ -169,8 +170,7 @@ class ExpandableTable extends React.Component {
 
       const daysUpdate = { ...days };
       delete daysUpdate[day]
-      // console.log(daysUpdate);
-      this.setState({ days: daysUpdate }, this.hideModal("showRemove"));
+      this.setState({ days: daysUpdate, select: "end" }, this.hideModal("showRemove"));
    }
 
    handleSelect = (e) => {
@@ -191,26 +191,26 @@ class ExpandableTable extends React.Component {
 
    handleAddDay = (e) => {
       e.preventDefault();
-      const { days, dayTitle } = this.state;
+      const { days, dayTitle, select } = this.state;
 
       const daysUpdate = { ...days };
 
-      // console.log(Object.keys(daysUpdate).length);
       const location = "day " + (Object.keys(daysUpdate).length + 1);
       daysUpdate[location] = {
          exercises: JSON.parse(INITIALJSON),
          title: dayTitle,
+         image: select
       };
       this.setState({ days: daysUpdate }, this.hideModal("showAdd"));
-
    }
 
    handleChangeDayTitle = (e) => {
       e.preventDefault();
-      const { days, modalNumber, dayTitle } = this.state;
+      const { days, modalNumber, dayTitle, select } = this.state;
       const daysUpdate = { ...days };
       const dayUpdate = { ...daysUpdate[modalNumber] };
       dayUpdate["title"] = dayTitle;
+      dayUpdate["image"] = select;
       daysUpdate[modalNumber] = dayUpdate;
       this.setState({ days: daysUpdate }, this.hideModal("showEdit"));
    }
@@ -243,11 +243,22 @@ class ExpandableTable extends React.Component {
                         name={"dayTitle"}
                      />
                   </Form.Group>
+                  <Form.Group>
+                     <Form.Label>Day Image</Form.Label>
+                     <Form.Control as="select" value={this.state.select} onChange={this.handleSelect}>
+                        <option value={"max-upper"}>Max Upper</option>
+                        <option value={"max-lower"}>Max Lower</option>
+                        <option value={"dynamic-upper"}>Dynamic Upper</option>
+                        <option value={"dynamic-lower"}>Dynamic Lower</option>
+                        {/* <option value={"full-body"}>Full Body</option> */}
+                        <option value={"recovery"}>Recovery</option>
+                     </Form.Control>
+                  </Form.Group>
                   <Button type="submit">Add Day</Button>
                </Form>
             </Modal>
 
-            <Modal show={showEdit} handleClose={this.hideModal("showEdit")} heading={"Edit " + modalNumber + " title?"}>
+            <Modal show={showEdit} handleClose={this.hideModal("showEdit")} heading={"Edit " + modalNumber + "?"}>
                <Form onSubmit={(e) => this.handleChangeDayTitle(e)}>
                   <Form.Group>
                      <Form.Label>Day Title</Form.Label>
@@ -258,7 +269,18 @@ class ExpandableTable extends React.Component {
                         name={"dayTitle"}
                      />
                   </Form.Group>
-                  <Button type="submit">Edit Title</Button>
+                  <Form.Group>
+                     <Form.Label>Day Image</Form.Label>
+                     <Form.Control as="select" value={this.state.select} onChange={this.handleSelect}>
+                        <option value={"max-upper"}>Max Upper</option>
+                        <option value={"max-lower"}>Max Lower</option>
+                        <option value={"dynamic-upper"}>Dynamic Upper</option>
+                        <option value={"dynamic-lower"}>Dynamic Lower</option>
+                        {/* <option value={"full-body"}>Full Body</option> */}
+                        <option value={"recovery"}>Recovery</option>
+                     </Form.Control>
+                  </Form.Group>
+                  <Button type="submit">Edit {modalNumber}</Button>
                </Form>
             </Modal>
 

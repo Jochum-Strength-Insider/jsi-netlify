@@ -16,8 +16,22 @@ import ExerciseRow from './ExerciseRow';
 
 import "./UserTable.css";
 
-import armGuyImg from '../../images/arm-guy.jpg'
-import legDay from '../../images/legday.jpg'
+// import armGuyImg from '../../images/arm-guy.jpg'
+// import legDay from '../../images/legday.jpg'
+
+import maxUpper from '../../images/max-upper.jpg'
+import maxLower from '../../images/max-lower.jpg'
+import dynamicUpper from '../../images/dynamic-upper.jpg'
+import dynamicLower from '../../images/dynamic-lower.jpg'
+import recovery from '../../images/recovery.jpg'
+
+const images = {
+   "max-upper": maxUpper,
+   "max-lower": maxLower,
+   "dynamic-upper": dynamicUpper,
+   "dynamic-lower": dynamicLower,
+   "recovery": recovery,
+}
 
 const UserTable = ({ program, saveTracking }) => {
 
@@ -34,10 +48,11 @@ const UserTable = ({ program, saveTracking }) => {
       // reduce days objects back into parsed JSON
       const daysList = daysListArray.reduce((accumulator, key) => {
 
-         const { exercises, title } = table[key];
+         const { exercises, title, image } = table[key];
          const day = {
             exercises: JSON.parse(exercises),
-            title
+            title,
+            image
          }
 
          return (
@@ -98,30 +113,15 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
             {
                daysList.map((key, daysIndex) => {
                   const day = days[key];
+                  const image = images[day.image];
+                  console.log(image);
                   const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
 
                   return (
-                     // <ListGroup.Item className="mb-5" key={daysIndex}>
-                     //    {/* <ListGroup.Item className="no-top-border" key={daysIndex}> */}
-                     //    <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
-                     //    <Accordion.Collapse eventKey={daysIndex}>
-                     //       <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
-                     //    </Accordion.Collapse>
-                     // </ListGroup.Item>
-
-                     // <Card style={{ border: "none", borderRadius: "0.25rem" }} key={daysIndex} className="my-3">
-                     //    <Card.Img variant="top" src={armGuyImg} />
-                     //    <Card.Body style={{ backgroundColor: "black" }}>
-                     //       <CustomToggle eventKey={daysIndex} variant={"link"} size={"lg"}>{dayCapitalized}</CustomToggle>
-                     //    </Card.Body>
-                     //    <Accordion.Collapse eventKey={daysIndex}>
-                     //       <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
-                     //    </Accordion.Collapse>
-                     // </Card>
-
                      <Card key={daysIndex} className="user-program-day my-5 no-border rounded">
                         <CustomToggle eventKey={daysIndex}>
-                           {daysIndex % 2 === 0 ? (<Card.Img variant="top" src={armGuyImg} />) : (<Card.Img variant="top" src={legDay} />)}
+                           {/* {daysIndex % 2 === 0 ? (<Card.Img variant="top" src={armGuyImg} />) : (<Card.Img variant="top" src={legDay} />)} */}
+                           <Card.Img variant="top" src={image} />
                            <Card.Body className="bg-purple">
                               <h3 style={{ color: "white" }}>{dayCapitalized}</h3>
                            </Card.Body>

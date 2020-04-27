@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 
+import moment from 'moment';
+
 import { withFirebase } from '../Firebase';
 
 import Modal from '../Modal';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import HoverButton from '../HoverButton';
 
 import { withRouter } from 'react-router-dom';
 
@@ -17,6 +20,7 @@ class ProgramItemBase extends Component {
       super(props);
 
       this.titleRef = React.createRef();
+      this.timestamp = Number(moment().format("x"));
 
       this.state = {
          loading: false,
@@ -58,6 +62,22 @@ class ProgramItemBase extends Component {
                console.log("no program object");
             }
          });
+
+      if (!this.state.workoutids) {
+         this.props.firebase
+            .workoutIds(this.state.uid)
+            .once('value', snapshot => {
+               const workoutIdsObject = snapshot.val();
+               if (workoutIdsObject) {
+                  // const idsArray = Object.keys(workoutsObject);
+                  this.setState({
+                     workoutids: workoutIdsObject,
+                  });
+               } else {
+                  this.setState({ workoutids: [] })
+               }
+            });
+      }
    }
 
    fetchTasks() {
@@ -108,7 +128,7 @@ class ProgramItemBase extends Component {
       const { firebase } = this.props;
       const { uid, pid } = this.state;
 
-      console.log("updating program", pid, phase);
+      console.log("updating program");
 
       return firebase
          .workouts(uid)
@@ -118,6 +138,33 @@ class ProgramItemBase extends Component {
          .set(phaseUpdate)
    }
 
+   setActive = (wid) => () => {
+      const { workoutids } = this.state;
+      const workoutidsArray = Object.keys(workoutids);
+      workoutidsArray.forEach(each => {
+         this.props.firebase.workoutId(this.props.match.params.id, each).update({ active: false });
+      })
+      this.props.firebase.workoutId(this.props.match.params.id, wid).update({ active: true })
+         .then(() => {
+            const idsUpdate = { ...workoutids };
+            idsUpdate[wid].active = true;
+            this.setState({ workoutids: idsUpdate });
+            this.props.firebase.user(this.props.match.params.id).update({ programDate: this.timestamp });
+         });
+   };
+
+   setInactive = (wid) => () => {
+      const { workoutids } = this.state;
+      this.props.firebase.workoutId(this.props.match.params.id, wid).update({ active: false })
+         .then(() => {
+            const idsUpdate = { ...workoutids };
+            idsUpdate[wid].active = false;
+            this.setState({ workoutids: idsUpdate });
+            this.props.firebase.user(this.props.match.params.id).update({ programDate: null });
+         });
+   };
+
+
    componentDidMount() {
       this.fetchPrograms();
       this.fetchTasks();
@@ -125,14 +172,18 @@ class ProgramItemBase extends Component {
 
    componentWillUnmount() {
       this.props.firebase.program(this.state.pid).off();
+      this.props.firebase.workoutIds(this.props.match.params.id).off();
       this.props.firebase.workouts(this.state.uid).off();
       this.props.firebase.workouts(this.state.uid).child(this.state.pid).off()
       // this.props.firebase.tasks().off();
    }
 
    render() {
-      const { program, loading, pid, uid, tasks, error, showTitle } = this.state;
+      const { program, workoutids, loading, pid, uid, tasks, error, showTitle } = this.state;
       const title = program ? program.title : "";
+      const active = workoutids[pid].active;
+
+      console.log();
 
       return (
          <>
@@ -155,8 +206,13 @@ class ProgramItemBase extends Component {
 
             {program && (
                <>
-                  <span className="d-flex justify-content-between align-items-center">
-                     <h3 onClick={this.showTitleModal}>{program.title}</h3>
+                  <span className="d-flex justify-content-between align-items-center mb-3">
+                     <h3 className="program-title" onClick={this.showTitleModal}>{program.title}</h3>
+
+                     {!active
+                        ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(pid)} />
+                        : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(pid)} />
+                     }
                   </span>
 
                   <UserProgramTable onSave={this.onSave} tasks={tasks} program={program} pid={pid} uid={uid} path={this.props.match.path} />

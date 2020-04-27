@@ -150,7 +150,7 @@ class ProgramItemBase extends Component {
             {program && (
                <>
                   <span className="d-flex justify-content-between align-items-center">
-                     <h3 onClick={this.showTitleModal}>{program.title}</h3>
+                     <h3 className="program-title" onClick={this.showTitleModal}>{program.title}</h3>
                   </span>
                   <CreateProgramTable onSave={this.onSave} tasks={tasks} program={program} pid={pid} uid={uid} />
                </>

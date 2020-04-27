@@ -21,7 +21,6 @@ import Footer from '../Footer';
 import WelcomePage from '../WelcomePage';
 import AdminUserProgramsPage from '../AdminUserProgramsPage';
 
-
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 

@@ -26,8 +26,8 @@ const CreateProgramTable = ({ program, pid, tasks, onSave }) => {
       // reduce days objects back into parsed JSON
       const daysList = daysListArray.reduce((accumulator, key) => {
          // const day = JSON.parse(table[key]);
-         const { exercises, title } = table[key];
-         const day = { exercises: JSON.parse(exercises), title: title };
+         const { exercises, title, image } = table[key];
+         const day = { exercises: JSON.parse(exercises), title, image };
 
          return (
             { ...accumulator, completed: completed, [key]: day }

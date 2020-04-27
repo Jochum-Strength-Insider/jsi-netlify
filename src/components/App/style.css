@@ -108,6 +108,16 @@ table .vertical-align-center {
    vertical-align: middle;
 }
 
+.program-title {
+   cursor: pointer;
+   opacity: 1;
+   transition: opacity 100ms ease-in;
+}
+
+.program-title:hover {
+   opacity: 0.7;
+}
+
 @media (max-width: 576px) {
 
    h1,

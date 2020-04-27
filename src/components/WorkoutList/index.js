@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-// import moment from 'moment';
+import moment from 'moment';
 
 import { withFirebase } from '../Firebase';
 import Modal from '../Modal';
@@ -23,11 +23,13 @@ class WorkoutListBase extends Component {
    constructor(props) {
       super(props);
 
+      this.timestamp = Number(moment().format("x"));
+
       this.state = {
          loading: false,
          workoutids: [],
-         programIds: { "default": { title: "default", createdAt: props.firebase.serverValue.TIMESTAMP } },
-         program: PROGRAM(props.firebase.serverValue.TIMESTAMP),
+         programIds: { "default": { title: "default", createdAt: this.timestamp } },
+         program: PROGRAM(this.timestamp),
          user: null,
          show: false,
          programTitle: "New Program",
@@ -45,9 +47,9 @@ class WorkoutListBase extends Component {
       const currentUserId = this.props.match.params.id;
       // console.log(this.props.match.params.id);
 
-      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+      // const timestamp = this.props.firebase.serverValue.TIMESTAMP;
       const programUpdate = { ...this.state.program };
-      programUpdate["createdAt"] = timestamp;
+      programUpdate["createdAt"] = this.timestamp;
 
       // console.log("program", this.state.program);
       console.log("creating new workout from template");
@@ -60,8 +62,8 @@ class WorkoutListBase extends Component {
             // const title = this.state.programIds[key].title;
             // console.log(this.state.programIds);
 
-            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: timestamp, active: false } });
-            this.props.firebase.user(currentUserId).update({ programDate: timestamp });
+            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: this.timestamp, active: false } });
+            this.props.firebase.user(currentUserId).update({ programDate: this.timestamp });
             this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
          })
          .catch(error => this.setState({ error }));
@@ -72,8 +74,8 @@ class WorkoutListBase extends Component {
       // const currentUserId = this.state.user.uid;
       const currentUserId = this.props.match.params.id;
 
-      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
-      const programData = PROGRAM(timestamp);
+      // const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+      const programData = PROGRAM(this.timestamp);
       programData["title"] = this.state.programTitle;
 
       console.log("creating new workout");
@@ -81,9 +83,10 @@ class WorkoutListBase extends Component {
       this.props.firebase.workouts(currentUserId).push(programData)
          .then((snap) => {
             const key = snap.key;
-            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programData.title, createdAt: timestamp, active: false } });
-            this.props.firebase.user(currentUserId).update({ programDate: timestamp });
-            this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
+            this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programData.title, createdAt: this.timestamp, active: false } });
+            this.props.firebase.user(currentUserId).update({ programDate: this.timestamp });
+            // this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
+            this.handleClose();
          })
          .catch(error => this.setState({ error }));
    }
@@ -124,7 +127,7 @@ class WorkoutListBase extends Component {
    // Should this be a property on the user object or left in the workoutId???
    // Set program date when it's activated?
    setActive = (wid) => () => {
-      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+      // const timestamp = this.props.firebase.serverValue.TIMESTAMP;
       // console.log(wid, "setActive");
       const workoutidsArray = Object.keys(this.state.workoutids);
       workoutidsArray.forEach(each => {
@@ -132,7 +135,7 @@ class WorkoutListBase extends Component {
       })
 
       this.props.firebase.workoutId(this.props.match.params.id, wid).update({ active: true });
-      this.props.firebase.user(this.props.match.params.id).update({ programDate: timestamp });
+      this.props.firebase.user(this.props.match.params.id).update({ programDate: this.timestamp });
    };
 
    setInactive = (wid) => () => {
@@ -149,7 +152,7 @@ class WorkoutListBase extends Component {
             const idsObject = snapshot.val()
 
             if (idsObject) {
-               console.log("idsObject", idsObject);
+               // console.log("idsObject", idsObject);
                const programId = Object.keys(idsObject)[0];
 
                this.props.firebase.program(programId).once("value").then((snap) => {
@@ -164,7 +167,6 @@ class WorkoutListBase extends Component {
                });
             }
          });
-
    }
 
    fetchUser = () => {
@@ -314,7 +316,7 @@ class WorkoutListBase extends Component {
                                                 className="ml-2 btn btn-link"
                                                 to={{
                                                    pathname: `${ROUTES.WORKOUTS}/${this.props.match.params.id}/${workoutId}`,
-                                                   state: { user },
+                                                   state: { user, workoutids },
                                                 }}
                                              >
                                                 {workoutids[workoutId].title}
