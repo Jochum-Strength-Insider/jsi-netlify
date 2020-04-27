@@ -9,6 +9,9 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import EXERCISES from '../../constants/exercisesEmbed2';
+
+
 import { withFirebase } from '../Firebase';
 
 class Tasks extends Component {
@@ -67,7 +70,6 @@ class Tasks extends Component {
 
    onChange = (e) => {
       const { value } = e.currentTarget;
-
       const { tasks } = this.state;
 
       // Filter our suggestions that don't contain the user's input
@@ -122,23 +124,24 @@ class Tasks extends Component {
       });
    }
 
-   componentDidMount() {
-      this.fetchTasks();
+
+   // Add all tasks to firebase
+
+   onCreateTask = (task) => {
+      this.props.firebase
+         .tasks()
+         .push(task)
+         .then(task => {
+            if (task) {
+               console.log("New Task Created");
+            }
+         })
    }
 
-   // import EXERCISES from '../../constants/exercisesEmbed';
-   // Add all tasks to firebase
-   // EXERCISES.forEach(each => this.onCreateTask(each));
-   // onCreateTask = (task) => {
-   //    this.props.firebase
-   //       .tasks()
-   //       .push(task)
-   //       .then(task => {
-   //          if (task) {
-   //             console.log("New Task Created");
-   //          }
-   //       })
-   // }
+   componentDidMount() {
+      EXERCISES.forEach(each => this.onCreateTask(each));
+      this.fetchTasks();
+   }
 
    componentWillUnmount() {
       this.props.firebase.tasks().off();
