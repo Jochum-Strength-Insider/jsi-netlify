@@ -9,7 +9,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import EXERCISES from '../../constants/exercisesEmbed2';
+// import EXERCISES from '../../constants/exercisesEmbed2';
 
 
 import { withFirebase } from '../Firebase';
@@ -126,20 +126,19 @@ class Tasks extends Component {
 
 
    // Add all tasks to firebase
-
-   onCreateTask = (task) => {
-      this.props.firebase
-         .tasks()
-         .push(task)
-         .then(task => {
-            if (task) {
-               console.log("New Task Created");
-            }
-         })
-   }
+   // onCreateTask = (task) => {
+   //    this.props.firebase
+   //       .tasks()
+   //       .push(task)
+   //       .then(task => {
+   //          if (task) {
+   //             console.log("New Task Created");
+   //          }
+   //       })
+   // }
 
    componentDidMount() {
-      EXERCISES.forEach(each => this.onCreateTask(each));
+      // EXERCISES.forEach(each => this.onCreateTask(each));
       this.fetchTasks();
    }
 
