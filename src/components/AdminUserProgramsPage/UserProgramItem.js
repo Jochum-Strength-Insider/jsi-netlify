@@ -181,9 +181,7 @@ class ProgramItemBase extends Component {
    render() {
       const { program, workoutids, loading, pid, uid, tasks, error, showTitle } = this.state;
       const title = program ? program.title : "";
-      const active = workoutids[pid].active;
-
-      console.log();
+      const active = workoutids ? workoutids[pid].active : false;
 
       return (
          <>
