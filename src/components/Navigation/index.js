@@ -10,7 +10,6 @@ import * as ROUTES from '../../constants/routes';
 import { SignOutButton } from '../SignOut';
 
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
@@ -39,13 +38,15 @@ const Navigation = () => {
                   alt="Jochum Strength"
                />
             </Navbar.Brand>
-            {authUser ? (<NavigationAuth onToggle={onToggle} onSelect={onSelect} authUser={authUser} />) : (<NavigationNonAuth onSelect={onSelect} />)}
+            {authUser ? (<NavigationAuth onToggle={onToggle} onSelect={onSelect} isExpanded={isExpanded} authUser={authUser} />) : (<NavigationNonAuth onSelect={onSelect} />)}
          </div>
       </Navbar>
    )
 };
 
 const NavigationAuth = ({ authUser, onSelect }) => {
+
+
    return (
       <>
          <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
@@ -60,11 +61,21 @@ const NavigationAuth = ({ authUser, onSelect }) => {
                </NavLink>
                {authUser.ADMIN && (
                   <>
-                     <NavDropdown title="Admin" id="basic-nav-dropdown">
-                        <NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN} onClick={onSelect}>Users</NavLink>
-                        <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATEPROGRAM} onClick={onSelect}>Programs</NavLink>
-                        <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATETASK} onClick={onSelect}>Exercises</NavLink>
-                     </NavDropdown>
+                     <Nav>
+                        <Dropdown >
+                           <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
+                              Admin
+                           </Dropdown.Toggle>
+                           <Dropdown.Menu>
+                              <NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN} onClick={onSelect}>Users</NavLink>
+                              <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATEPROGRAM} onClick={onSelect}>Programs</NavLink>
+                              <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATETASK} onClick={onSelect}>Exercises</NavLink>
+                              {/* <Dropdown.Item onClick={onSelect}><NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN}>Users</NavLink></Dropdown.Item>
+                              <Dropdown.Item onClick={onSelect} href={ROUTES.CREATEPROGRAM}>Programs</Dropdown.Item>
+                              <Dropdown.Item onClick={onSelect} href={ROUTES.CREATETASK}>Exercises</Dropdown.Item> */}
+                           </Dropdown.Menu>
+                        </Dropdown>
+                     </Nav>
                   </>
                )}
             </Nav>

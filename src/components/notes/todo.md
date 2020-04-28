@@ -2,12 +2,25 @@
 
 ## TODAY
 
-1. Style exercises page.
-1. Style
-1. Overall styling
+1. Style exercises page?
 1. Design landing page.
 
-1. Images for - Max Upper, Dynamic Upper, Hypertrophy Upper, Max Lower, Dynamic Lower, Hypertrophy Lower, Full Body 1, Full Body 2, Full Body 3, Full Body 4, Rest, Recovery Day 1, Recovery Day 2, Recovery Day
+1. Images for -
+Max Upper - Bench Press
+Dynamic Upper - Medball chest Pass or Plyo Push Ups
+Hypertrophy Upper - Db Curls ✓
+Max Lower - Barbell Squat ✓
+Dynamic Lower - Any jump
+Hypertrophy Lower - Reverse Lunge
+Full Body 1 - literally anything full body - purpee, deadlift, push-up, plank,
+Full Body 2 - literally anything full body
+Full Body 3 - literally anything full body
+Full Body 4 - literally anything full body
+Rest - jump ropes, walking, maybe some plank/ab variations ✓
+Recovery Day 1 - jump ropes, walking, maybe some plank/ab variations
+Recovery Day 2 - jump ropes, walking, maybe some plank/ab variations
+Recovery Day - jump ropes, walking, maybe some plank/ab variations
+
 
 ## FIX
 1. Add error handling to userProgramItem
@@ -28,7 +41,6 @@
 1. Messages unread count
 1. use memo more often.
 1. Cut back on as many firebase calls as possible.
-
 
 ### User Program
 For the program page along with the tracking, can we add a check mark thing so they can click and feel accomplished if that makes sense! So they could put in their weight or just click a box that says they did it and it feels good!

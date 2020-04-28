@@ -15,10 +15,6 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 
-// Todo
-
-// add delete confirmation modal
-
 class WorkoutListBase extends Component {
    constructor(props) {
       super(props);
@@ -124,8 +120,6 @@ class WorkoutListBase extends Component {
       })
    }
 
-   // Should this be a property on the user object or left in the workoutId???
-   // Set program date when it's activated?
    setActive = (wid) => () => {
       // const timestamp = this.props.firebase.serverValue.TIMESTAMP;
       // console.log(wid, "setActive");

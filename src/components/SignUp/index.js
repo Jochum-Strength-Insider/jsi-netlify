@@ -6,6 +6,7 @@ import * as ROUTES from '../../constants/routes';
 import { PROGRAM } from '../../constants/defaultProgram';
 import { SignInLink } from '../SignIn';
 
+import moment from 'moment';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -58,6 +59,7 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 
 const SignUpFormBase = ({firebase, history, handleClose}) => {
    const [error, setError] = useState(null);
+   const timestamp = Number(moment().format("x"));
 
    const onSubmit = ( values, {resetForm}) => {
       const { username, email, passwordOne } = values;
@@ -67,7 +69,6 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
          .then(({newUser, secondaryApp}) => {
             newUser.then(authUser => {
                // console.log("authUser", authUser.user);
-               const timestamp = firebase.serverValue.TIMESTAMP;
                firebase.user(authUser.user.uid).set({
                   username,
                   email,
@@ -88,7 +89,6 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
             })
             .then(uid => {
                console.log("uid", uid);
-               const timestamp = firebase.serverValue.TIMESTAMP;
                const programData = PROGRAM(timestamp);
 
                firebase.workouts(uid).push(programData)

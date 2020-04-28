@@ -93,12 +93,13 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
       const dayUpdate = daysUpdate[dayTitle];
       dayUpdate.exercises[rowIndex] = itemUpdate;
 
-      const { exercises, title } = dayUpdate;
+      const { exercises, title, image } = dayUpdate;
       const jsonUpdate = JSON.stringify(exercises);
 
       daysUpdate[dayTitle] = {
          exercises: jsonUpdate,
-         title
+         title,
+         image
       };
 
       return saveTracking(phase, dayTitle, rowIndex, daysUpdate[dayTitle]);

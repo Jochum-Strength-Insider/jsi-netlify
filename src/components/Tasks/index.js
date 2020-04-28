@@ -11,7 +11,6 @@ import Col from 'react-bootstrap/Col';
 
 // import EXERCISES from '../../constants/exercisesEmbed2';
 
-
 import { withFirebase } from '../Firebase';
 
 class Tasks extends Component {
@@ -123,7 +122,6 @@ class Tasks extends Component {
          this.setState({ loading: false });
       });
    }
-
 
    // Add all tasks to firebase
    // onCreateTask = (task) => {
