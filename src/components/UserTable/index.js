@@ -16,9 +16,6 @@ import ExerciseRow from './ExerciseRow';
 
 import "./UserTable.css";
 
-// import armGuyImg from '../../images/arm-guy.jpg'
-// import legDay from '../../images/legday.jpg'
-
 import maxUpper from '../../images/max-upper.jpg'
 import maxLower from '../../images/max-lower.jpg'
 import dynamicUpper from '../../images/dynamic-upper.jpg'
@@ -30,7 +27,12 @@ const images = {
    "max-lower": maxLower,
    "dynamic-upper": dynamicUpper,
    "dynamic-lower": dynamicLower,
+
+   "hypertrophy-upper": recovery,
+   "hypertrophy-lower": recovery,
+   "full-body": recovery,
    "recovery": recovery,
+   "rest": recovery,
 }
 
 const UserTable = ({ program, saveTracking }) => {

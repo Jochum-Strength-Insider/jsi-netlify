@@ -98,7 +98,7 @@ class ExpandableTable extends React.Component {
 
    handleSave = () => {
       const { days, completed } = this.state;
-      const { pid, phase } = this.props;
+      const { phase } = this.props;
 
       const daysListJSON = Object.keys(days).reduce((accumulator, key) => {
          const { title, exercises, image } = days[key];
@@ -250,8 +250,11 @@ class ExpandableTable extends React.Component {
                         <option value={"max-lower"}>Max Lower</option>
                         <option value={"dynamic-upper"}>Dynamic Upper</option>
                         <option value={"dynamic-lower"}>Dynamic Lower</option>
-                        {/* <option value={"full-body"}>Full Body</option> */}
+                        <option value={"hypertrophy-upper"}>Hypertrophy Upper</option>
+                        <option value={"hypertrophy-lower"}>Hypertrophy Lower</option>
+                        <option value={"full-body"}>Full Body</option>
                         <option value={"recovery"}>Recovery</option>
+                        <option value={"rest"}>Rest</option>
                      </Form.Control>
                   </Form.Group>
                   <Button type="submit">Add Day</Button>
@@ -276,8 +279,11 @@ class ExpandableTable extends React.Component {
                         <option value={"max-lower"}>Max Lower</option>
                         <option value={"dynamic-upper"}>Dynamic Upper</option>
                         <option value={"dynamic-lower"}>Dynamic Lower</option>
-                        {/* <option value={"full-body"}>Full Body</option> */}
+                        <option value={"hypertrophy-upper"}>Hypertrophy Upper</option>
+                        <option value={"hypertrophy-lower"}>Hypertrophy Lower</option>
+                        <option value={"full-body"}>Full Body</option>
                         <option value={"recovery"}>Recovery</option>
+                        <option value={"rest"}>Rest</option>
                      </Form.Control>
                   </Form.Group>
                   <Button type="submit">Edit {modalNumber}</Button>

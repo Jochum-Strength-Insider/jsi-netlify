@@ -12,7 +12,7 @@ Hypertrophy Upper - Db Curls ✓
 Max Lower - Barbell Squat ✓
 Dynamic Lower - Any jump
 Hypertrophy Lower - Reverse Lunge
-Full Body 1 - literally anything full body - purpee, deadlift, push-up, plank,
+Full Body 1 - literally anything full body - burpee, deadlift, push-up, plank,
 Full Body 2 - literally anything full body
 Full Body 3 - literally anything full body
 Full Body 4 - literally anything full body
