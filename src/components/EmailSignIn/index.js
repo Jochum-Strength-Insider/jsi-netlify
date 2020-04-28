@@ -69,7 +69,7 @@ const SignInFormBase = ({ firebase, history }) => {
    const onSubmit = (values, { resetForm }) => {
       const { email } = values;
 
-      console.log(email);
+      // console.log(email);
 
       firebase.doSendSignInLinkToEmail(email)
          .then(function () {

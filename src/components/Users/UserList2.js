@@ -73,7 +73,7 @@ class UserListBase extends Component {
    }
 
    componentWillUnmount() {
-      console.log('unmount');
+      // console.log('unmount');
       this.props.firebase.users().off();
    }
 

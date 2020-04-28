@@ -88,7 +88,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                return authUser.user.uid;
             })
             .then(uid => {
-               console.log("uid", uid);
+               // console.log("uid", uid);
                const programData = PROGRAM(timestamp);
 
                firebase.workouts(uid).push(programData)

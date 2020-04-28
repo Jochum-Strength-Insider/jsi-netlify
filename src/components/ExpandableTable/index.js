@@ -118,7 +118,7 @@ class ExpandableTable extends React.Component {
          ...daysListJSON
       }
 
-      console.log("updating program", pid, phase);
+      console.log("updating program");
 
       this.props.onSave(phase, phaseUpdate)
          .then(this.onAlert)

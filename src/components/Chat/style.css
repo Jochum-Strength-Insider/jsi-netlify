@@ -100,6 +100,7 @@
    resize: none;
    /* outline: none; */
    max-height: 58px;
+   font-size: 1rem;
 }
 
 .chat-form-submit {

@@ -101,7 +101,7 @@ class ProgramItemBase extends Component {
       const { firebase } = this.props;
       const { pid } = this.state;
 
-      console.log("updating program", pid, phase);
+      console.log("updating program");
 
       return firebase
          .program(pid)

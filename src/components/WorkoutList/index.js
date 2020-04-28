@@ -181,7 +181,7 @@ class WorkoutListBase extends Component {
          });
 
       if (this.props.location.state && this.props.location.state.user) {
-         console.log("user from location state");
+         // console.log("user from location state");
          this.setState({ user: this.props.location.state.user, loading: false });
          return;
       }

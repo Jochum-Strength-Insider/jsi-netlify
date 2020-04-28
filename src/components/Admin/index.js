@@ -20,7 +20,6 @@ const style = { width: "100%", maxWidth: "1000px", flex: "1" };
 
 const AdminPage = ({ isMobile }) => (
    <>
-      {console.log(isMobile)}
       <div className="d-flex justify-content-center">
          <div style={style}>
             <Row>

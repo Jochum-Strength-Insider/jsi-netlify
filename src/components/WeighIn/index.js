@@ -143,7 +143,7 @@ class WeightBase extends Component {
       if (lastDatestring === nowString) {
          this.setState({ invalid: true })
       } else {
-         console.log("Checked In Added", this.state.weight)
+         // console.log("Checked In Added", this.state.weight)
          this.props.firebase.weighIn(this.props.authUser.uid).push({ date: timestamp, weight: this.state.weight })
             .then(this.hideModal)
             .catch(error => this.setState({ error }))

@@ -54,7 +54,7 @@ class Firebase {
 
    doCreateUserWithEmailAndPassword = (email, password) => {
       // this.auth.createUserWithEmailAndPassword(email, password)
-      console.log(email, password);
+      // console.log(email, password);
 
       const secondaryApp = firebase.initializeApp(config, "Secondary");
       const newUser = secondaryApp.auth().createUserWithEmailAndPassword(email, password)

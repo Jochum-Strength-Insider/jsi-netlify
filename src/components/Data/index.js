@@ -194,7 +194,6 @@ const useDataReducer = (initialUrl, initialData) => {
          dispatch({ type: 'FETCH_INIT' });
 
          try {
-            console.log(url);
             const result = await fetch(url);
             const json = result.json();
             const data = await json.then(data => data);

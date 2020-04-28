@@ -115,7 +115,7 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
                daysList.map((key, daysIndex) => {
                   const day = days[key];
                   const image = images[day.image];
-                  console.log(image);
+                  // console.log(image);
                   const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
 
                   return (
