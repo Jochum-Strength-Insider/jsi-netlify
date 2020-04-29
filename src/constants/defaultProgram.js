@@ -39,9 +39,9 @@ const PROGRAM = (timestamp) => {
             "completed": "false",
          },
          "Recovery Days": {
-            "day 1": { title: "Recovery Day 1", exercises: INITIALJSONRECOVERY, image: "recovery" },
-            "day 2": { title: "Recovery Day 2", exercises: INITIALJSONRECOVERY, image: "recovery" },
-            "day 3": { title: "Recovery Day 3", exercises: INITIALJSONRECOVERY, image: "recovery" },
+            "day 1": { title: "Recovery Day 1", exercises: INITIALJSONRECOVERY, image: "recovery-1" },
+            "day 2": { title: "Recovery Day 2", exercises: INITIALJSONRECOVERY, image: "recovery-2" },
+            "day 3": { title: "Recovery Day 3", exercises: INITIALJSONRECOVERY, image: "recovery-3" },
             "completed": "false",
          },
       },

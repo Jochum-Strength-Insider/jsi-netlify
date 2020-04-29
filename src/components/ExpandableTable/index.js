@@ -252,8 +252,13 @@ class ExpandableTable extends React.Component {
                         <option value={"dynamic-lower"}>Dynamic Lower</option>
                         <option value={"hypertrophy-upper"}>Hypertrophy Upper</option>
                         <option value={"hypertrophy-lower"}>Hypertrophy Lower</option>
-                        <option value={"full-body"}>Full Body</option>
-                        <option value={"recovery"}>Recovery</option>
+                        <option value={"full-1"}>Full Body 1</option>
+                        <option value={"full-2"}>Full Body 2</option>
+                        <option value={"full-3"}>Full Body 3</option>
+                        <option value={"full-4"}>Full Body 4</option>
+                        <option value={"recovery-1"}>Recovery</option>
+                        <option value={"recovery-2"}>Recovery 2</option>
+                        <option value={"recovery-3"}>Recovery 3</option>
                         <option value={"rest"}>Rest</option>
                      </Form.Control>
                   </Form.Group>
@@ -281,8 +286,13 @@ class ExpandableTable extends React.Component {
                         <option value={"dynamic-lower"}>Dynamic Lower</option>
                         <option value={"hypertrophy-upper"}>Hypertrophy Upper</option>
                         <option value={"hypertrophy-lower"}>Hypertrophy Lower</option>
-                        <option value={"full-body"}>Full Body</option>
-                        <option value={"recovery"}>Recovery</option>
+                        <option value={"full-1"}>Full Body 1</option>
+                        <option value={"full-2"}>Full Body 2</option>
+                        <option value={"full-3"}>Full Body 3</option>
+                        <option value={"full-4"}>Full Body 4</option>
+                        <option value={"recovery-1"}>Recovery</option>
+                        <option value={"recovery-2"}>Recovery 2</option>
+                        <option value={"recovery-3"}>Recovery 3</option>
                         <option value={"rest"}>Rest</option>
                      </Form.Control>
                   </Form.Group>

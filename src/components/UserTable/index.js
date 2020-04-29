@@ -20,19 +20,33 @@ import maxUpper from '../../images/max-upper.jpg'
 import maxLower from '../../images/max-lower.jpg'
 import dynamicUpper from '../../images/dynamic-upper.jpg'
 import dynamicLower from '../../images/dynamic-lower.jpg'
-import recovery from '../../images/recovery.jpg'
+import hypertrophyUpper from '../../images/hypertrophy-upper.jpg'
+import hypertrophyLower from '../../images/hypertrophy-lower.jpg'
+import recovery1 from '../../images/recovery-1.jpg'
+import recovery2 from '../../images/recovery-2.jpg'
+import recovery3 from '../../images/recovery-3.jpg'
+import fullBody1 from '../../images/full-1.jpg'
+import fullBody2 from '../../images/full-2.jpg'
+import fullBody3 from '../../images/full-3.jpg'
+import fullBody4 from '../../images/full-4.jpg'
+import rest from '../../images/rest.jpg'
 
 const images = {
    "max-upper": maxUpper,
    "max-lower": maxLower,
    "dynamic-upper": dynamicUpper,
    "dynamic-lower": dynamicLower,
-
-   "hypertrophy-upper": recovery,
-   "hypertrophy-lower": recovery,
-   "full-body": recovery,
-   "recovery": recovery,
-   "rest": recovery,
+   "hypertrophy-upper": hypertrophyUpper,
+   "hypertrophy-lower": hypertrophyLower,
+   "full-body-1": fullBody1,
+   "full-body-2": fullBody2,
+   "full-body-3": fullBody3,
+   "full-body-4": fullBody4,
+   "recovery": recovery1,
+   "recovery-1": recovery1,
+   "recovery-2": recovery2,
+   "recovery-3": recovery3,
+   "rest": rest,
 }
 
 const UserTable = ({ program, saveTracking }) => {

@@ -11,7 +11,7 @@ import Alert from 'react-bootstrap/Alert';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import PaginationBasic from '../PaginationBasic';
-import { Scatter } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import moment from 'moment';
 
 // const data = {
@@ -287,7 +287,7 @@ class WeightBase extends Component {
                   <Button className="py-2" block variant="primary" onClick={this.showModal}>Add Weigh In</Button>
                </ListGroup.Item>
                <ListGroup.Item className="d-none d-sm-block">
-                  <Scatter
+                  <Line
                      data={data}
                      options={options}
                   />
