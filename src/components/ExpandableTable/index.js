@@ -26,6 +26,7 @@ class ExpandableTable extends React.Component {
    constructor(props) {
       super(props);
 
+      this.timer = null;
       const defaultDays = this.props.days ? this.props.days : [];
 
       this.state = {
@@ -39,6 +40,7 @@ class ExpandableTable extends React.Component {
          modalNumber: null,
          dayTitle: "",
          select: "end",
+         selectImage: "max-upper",
          alert: false,
          error: null,
 
@@ -54,7 +56,7 @@ class ExpandableTable extends React.Component {
 
    onAlert = () => {
       this.setState({ alert: true });
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
          this.setState({ alert: false });
       }, 2000);
    }
@@ -83,17 +85,19 @@ class ExpandableTable extends React.Component {
    showRemoveModal = (key) => () => {
       this.setState({ modalNumber: key, showRemove: true });
    }
+
    showAddModal = () => {
-      this.setState({ showAdd: true, dayTitle: "", select: "max-upper" });
+      this.setState({ showAdd: true, dayTitle: "", selectImage: "max-upper" });
    }
+
    showEditModal = (key, idx) => () => {
       const dayTitle = this.state.days[key].title;
       const dayImage = this.state.days[key].image;
-      this.setState({ modalNumber: key, dayTitle: dayTitle, showEdit: true, select: dayImage });
+      this.setState({ modalNumber: key, dayTitle: dayTitle, showEdit: true, selectImage: dayImage });
    }
 
    hideModal = show => () => {
-      this.setState({ [show]: false, select: "end" });
+      this.setState({ [show]: false });
    }
 
    handleSave = () => {
@@ -167,7 +171,6 @@ class ExpandableTable extends React.Component {
 
    removeDay = (day) => () => {
       const { days } = this.state;
-
       const daysUpdate = { ...days };
       delete daysUpdate[day]
       this.setState({ days: daysUpdate, select: "end" }, this.hideModal("showRemove"));
@@ -175,9 +178,12 @@ class ExpandableTable extends React.Component {
 
    handleSelect = (e) => {
       const index = e.target.value;
-      // const currentTask = this.props.tasks[index];
-      // this.setState({ currentTask: currentTask });
       this.setState({ select: index })
+   }
+
+   handleSelectImage = (e) => {
+      const index = e.target.value;
+      this.setState({ selectImage: index })
    }
 
    setCurrentCell = (dayIndex, rowIndex, name, number) => () => {
@@ -191,7 +197,7 @@ class ExpandableTable extends React.Component {
 
    handleAddDay = (e) => {
       e.preventDefault();
-      const { days, dayTitle, select } = this.state;
+      const { days, dayTitle, selectImage } = this.state;
 
       const daysUpdate = { ...days };
 
@@ -199,20 +205,24 @@ class ExpandableTable extends React.Component {
       daysUpdate[location] = {
          exercises: JSON.parse(INITIALJSON),
          title: dayTitle,
-         image: select
+         image: selectImage
       };
       this.setState({ days: daysUpdate }, this.hideModal("showAdd"));
    }
 
    handleChangeDayTitle = (e) => {
       e.preventDefault();
-      const { days, modalNumber, dayTitle, select } = this.state;
+      const { days, modalNumber, dayTitle, selectImage } = this.state;
       const daysUpdate = { ...days };
       const dayUpdate = { ...daysUpdate[modalNumber] };
       dayUpdate["title"] = dayTitle;
-      dayUpdate["image"] = select;
+      dayUpdate["image"] = selectImage;
       daysUpdate[modalNumber] = dayUpdate;
       this.setState({ days: daysUpdate }, this.hideModal("showEdit"));
+   }
+
+   componentWillUnmount() {
+      clearTimeout(this.timer);
    }
 
    render() {
@@ -245,7 +255,7 @@ class ExpandableTable extends React.Component {
                   </Form.Group>
                   <Form.Group>
                      <Form.Label>Day Image</Form.Label>
-                     <Form.Control as="select" value={this.state.select} onChange={this.handleSelect}>
+                     <Form.Control as="select" value={this.state.selectImage} onChange={this.handleSelectImage}>
                         <option value={"max-upper"}>Max Upper</option>
                         <option value={"max-lower"}>Max Lower</option>
                         <option value={"dynamic-upper"}>Dynamic Upper</option>
@@ -256,7 +266,7 @@ class ExpandableTable extends React.Component {
                         <option value={"full-2"}>Full Body 2</option>
                         <option value={"full-3"}>Full Body 3</option>
                         <option value={"full-4"}>Full Body 4</option>
-                        <option value={"recovery-1"}>Recovery</option>
+                        <option value={"recovery-1"}>Recovery 1</option>
                         <option value={"recovery-2"}>Recovery 2</option>
                         <option value={"recovery-3"}>Recovery 3</option>
                         <option value={"rest"}>Rest</option>
@@ -279,7 +289,7 @@ class ExpandableTable extends React.Component {
                   </Form.Group>
                   <Form.Group>
                      <Form.Label>Day Image</Form.Label>
-                     <Form.Control as="select" value={this.state.select} onChange={this.handleSelect}>
+                     <Form.Control as="select" value={this.state.selectImage} onChange={this.handleSelectImage}>
                         <option value={"max-upper"}>Max Upper</option>
                         <option value={"max-lower"}>Max Lower</option>
                         <option value={"dynamic-upper"}>Dynamic Upper</option>
@@ -290,7 +300,7 @@ class ExpandableTable extends React.Component {
                         <option value={"full-2"}>Full Body 2</option>
                         <option value={"full-3"}>Full Body 3</option>
                         <option value={"full-4"}>Full Body 4</option>
-                        <option value={"recovery-1"}>Recovery</option>
+                        <option value={"recovery-1"}>Recovery 1</option>
                         <option value={"recovery-2"}>Recovery 2</option>
                         <option value={"recovery-3"}>Recovery 3</option>
                         <option value={"rest"}>Rest</option>

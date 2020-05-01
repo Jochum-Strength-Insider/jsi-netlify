@@ -160,6 +160,7 @@ class ManageUserTablesBase extends Component {
 
    componentWillUnmount() {
       this.props.firebase.workout(this.props.authUser.uid, this.state.key);
+      this.props.firebase.workout(this.props.authUser.uid, this.state.key).off();
       this.props.firebase.workouts(this.props.authUser.uid).off();
       this.props.firebase.workoutIds(this.props.authUser.uid).off();
    }
