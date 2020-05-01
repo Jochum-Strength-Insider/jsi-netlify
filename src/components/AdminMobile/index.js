@@ -9,6 +9,7 @@ import { UserItem2 } from '../Users';
 // import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 // import Button from 'react-bootstrap/Button';
 
 import { withAuthorization, withEmailVerification } from '../Session';
@@ -16,24 +17,24 @@ import { withAuthorization, withEmailVerification } from '../Session';
 // import * as ROLES from '../../constants/roles';
 import * as ROUTES from '../../constants/routes';
 
-const style = { width: "100%", maxWidth: "1000px", flex: "1" };
-
 const AdminPageMobile = ({ history }) => (
    <>
-      <div className="d-flex justify-content-center">
-         <div style={style}>
-            <Row>
-               <Col>
-                  {/* <Button onClick={history.goBack} >&#8249;</Button> */}
-                  {/* <a href="#" class="previous round">&#8249;</a> */}
-                  <Switch>
-                     <Route exact path={ROUTES.ADMIN_DETAILS_MOBILE} component={UserItem2} />
-                     {/* <Redirect from={ROUTES.ADMIN_DETAILS} to={ROUTES.ADMIN_DETAILS_MOBILE} /> */}
-                  </Switch>
-               </Col>
-            </Row>
+      <Container fluid>
+         <div className="app-top d-flex justify-content-center">
+            <div className="contain-width">
+               <Row>
+                  <Col>
+                     {/* <Button onClick={history.goBack} >&#8249;</Button> */}
+                     {/* <a href="#" class="previous round">&#8249;</a> */}
+                     <Switch>
+                        <Route exact path={ROUTES.ADMIN_DETAILS_MOBILE} component={UserItem2} />
+                        {/* <Redirect from={ROUTES.ADMIN_DETAILS} to={ROUTES.ADMIN_DETAILS_MOBILE} /> */}
+                     </Switch>
+                  </Col>
+               </Row>
+            </div>
          </div>
-      </div>
+      </Container>
    </>
 );
 

@@ -118,8 +118,6 @@ class UserItemBase extends Component {
    render() {
       const { loading, programIds, error } = this.state;
       const idsArray = Object.keys(programIds).reverse();
-      const style = { width: "100%", maxWidth: "1000px", flex: "1" };
-
 
       return (
          <>
@@ -148,7 +146,7 @@ class UserItemBase extends Component {
             </Modal>
 
             <div className="d-flex justify-content-center">
-               <div style={style}>
+               <div className="contain-width">
                   <h1>Programs</h1>
                   <ListGroup>
                      <ListGroup.Item>

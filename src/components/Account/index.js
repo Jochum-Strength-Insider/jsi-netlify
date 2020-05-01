@@ -14,6 +14,8 @@ import { withFirebase } from '../Firebase';
 import UserInfo from '../UserInfo';
 import PasswordChangeForm from '../PasswordChange';
 
+import Container from 'react-bootstrap/Container';
+
 const SIGN_IN_METHODS = [
    {
       id: 'password',
@@ -35,21 +37,22 @@ const SIGN_IN_METHODS = [
 
 const AccountPage = () => {
    const authUser = useContext(AuthUserContext);
-   const style = { width: "100%", maxWidth: "1000px", flex: "1" };
    // console.log(authUser);
 
    return (
       <>
-         <div className="d-flex justify-content-center">
-            <div style={style}>
-               <h1>Account</h1>
-               <BeforeAndAfter authUser={authUser} />
-               <UserInfo authUser={authUser} />
-               <PasswordChangeForm />
-               <SignOutForm />
-               {/* <LoginManagement authUser={authUser} /> */}
+         <Container fluid>
+            <div className="app-top d-flex justify-content-center">
+               <div className="contain-width">
+                  <h1>Account</h1>
+                  <BeforeAndAfter authUser={authUser} />
+                  <UserInfo authUser={authUser} />
+                  <PasswordChangeForm />
+                  <SignOutForm />
+                  {/* <LoginManagement authUser={authUser} /> */}
+               </div>
             </div>
-         </div>
+         </Container>
       </>
    )
 

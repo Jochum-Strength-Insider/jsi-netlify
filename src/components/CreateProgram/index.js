@@ -10,15 +10,19 @@ import * as ROUTES from '../../constants/routes';
 import CreateProgramList from './CreateProgramList'
 import CreateProgramItem from './CreateProgramItem';
 
+import Container from 'react-bootstrap/Container';
+
+
 const CreateProgram = () => {
    return (
-      <>
-         <Switch>
-            <Route exact path={ROUTES.CREATEPROGRAM} component={CreateProgramList} />
-            <Route exact path={ROUTES.CREATE_DETAILS} component={CreateProgramItem} />
-         </Switch>
-
-      </>
+      <Container fluid>
+         <div className="app-top">
+            <Switch>
+               <Route exact path={ROUTES.CREATEPROGRAM} component={CreateProgramList} />
+               <Route exact path={ROUTES.CREATE_DETAILS} component={CreateProgramItem} />
+            </Switch>
+         </div>
+      </Container>
    )
 }
 

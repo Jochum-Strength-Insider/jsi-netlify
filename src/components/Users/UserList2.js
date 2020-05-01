@@ -79,7 +79,6 @@ class UserListBase extends Component {
 
    render() {
       const { users, loading } = this.state;
-      const style = { width: "100%", maxWidth: "1000px", flex: "1" };
       const path = this.props.isMobile ? ROUTES.ADMIN_MOBILE : ROUTES.ADMIN;
 
       return (
@@ -90,7 +89,7 @@ class UserListBase extends Component {
             </Modal>
 
             <div className="d-flex justify-content-center">
-               <div style={style}>
+               <div className="contain-width">
                   {/* <h1>Users List</h1> */}
 
                   <Card className="mb-5">

@@ -52,13 +52,13 @@ const withEmailVerification = Component => {
                                              E-Mail confirmation sent: Check you E-Mails (Spam
                                              folder included) for a confirmation E-Mail.
                                              Refresh this page once you confirmed your E-Mail.
-                        </p>
+                                          </p>
                                        ) : (
                                              <p>
                                                 Verify your E-Mail: Check you E-Mails (Spam folder
                                                 included) for a confirmation E-Mail or send
                                                 another confirmation E-Mail.
-                        </p>
+                                             </p>
                                           )}
                                        <Button disabled={this.state.isSent} block variant="primary" type="submit">
                                           {this.state.isSent ? "Email Confirmation Sent" : "Send confirmation E-Mail"}

@@ -1,15 +1,15 @@
 # ToDo
 
-## TODAY
-
-1. Design landing page.
+1. restyle diet page (expandable, calendar bar on top below cover photo)
+1. Add month view to diet page?
+1. restyle admin panel
+   * add user wiegh-in / user diets
 
 ## FIX
 1. Add error handling to userProgramItem
 1. Admin panel mount tab on click.
 1. Messages show date / username.
 1. WorkoutList add default...
-1. Navbar align-items-center (Sign in isn't vertically aligned well)
 1. Compress before/after images?
 
 ## TODO

@@ -21,9 +21,20 @@ body::-webkit-scrollbar {
    /* Optional: just make scrollbar invisible */
 }
 
-.app-container {
-   padding-top: 1.5rem;
+.app-top {
+   padding-top: 1rem;
 }
+
+.contain {
+   min-height: calc(100vh - 66px);
+}
+
+.contain-width {
+   width: 100%;
+   max-width: 1000px;
+   flex: 1;
+}
+
 
 .tab-content {
    color: black;

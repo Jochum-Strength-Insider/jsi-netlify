@@ -1,16 +1,26 @@
 .landingContain {
-   max-width: 700px;
-   font-size: 1.25rem;
+   display: block;
+   position: relative;
+   width: 100%;
+}
+
+:root {
+   --text-shadow: 0 2px 0 black;
+}
+
+html {
+   scroll-behavior: smooth;
 }
 
 .joinTitle {
    text-align: center;
    font-size: 1.5rem;
+   text-shadow: var(--text-shadow);
 }
 
 .info {
-   font-size: 1rem;
-   max-width: 700px;
+   font-size: .75rem;
+   max-width: 500px;
 }
 
 .signUpButton {
@@ -28,7 +38,6 @@ height: 75px; */
    text-decoration: none;
    border: 5px solid white;
    color: white;
-
 }
 
 /* .benefitCircleContain {
@@ -100,31 +109,295 @@ height: 75px; */
    font-weight: 900;
    font-size: 4rem;
    text-align: center;
+   text-shadow: var(--text-shadow);
+   padding-bottom: 10%;
 }
 
 .whatDoesTitle {
    font-size: 3rem;
 }
 
+.details {
+   padding: 20px;
+}
+
 .detailsTitle {
    font-weight: 900;
    font-size: 3rem;
+   width: 100%;
 }
 
+/* .carousel-item {
+   height: calc(100vh - 66px);
+   background: no-repeat center scroll;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+} */
+
+.carousel-item img {
+   height: calc(100vh - 66px);
+   overflow: hidden;
+   background: no-repeat center center scroll;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   object-fit: cover;
+
+   filter: invert(17%) sepia(6%) saturate(400%) hue-rotate(282deg) brightness(84%) contrast(88%);
+}
+
+.carousel-caption {
+   top: 20%;
+}
+
+.carousel-caption p {
+   text-align: center;
+   font-size: 2rem;
+   text-shadow: var(--text-shadow);
+}
+
+.carousel-learn-button {
+   margin-top: 1rem;
+   font-size: 1.25rem;
+   border: 4px solid white;
+   color: white;
+   background-color: rgba(0, 0, 0, 0.146);
+   /* background-color: var(--js-purple-light); */
+   padding: 10px 20px;
+   text-align: center;
+   transition:
+      border 500ms ease-out,
+      color 0.5s ease-out,
+      background-color 500ms ease-out;
+}
+
+.carousel-learn-button:hover {
+   text-decoration: none;
+   border: 4px solid white;
+   color: var(--js-purple-light);
+   background-color: white;
+}
+
+.carousel-more {
+   position: absolute;
+   right: 15%;
+   bottom: 20px;
+   left: 15%;
+   z-index: 10;
+   padding-top: 20px;
+   padding-bottom: 20px;
+   color: #fff;
+   text-align: center;
+}
+
+.carousel-more p.joinTitle {
+   margin-bottom: 0;
+}
+
+.sign-up {
+   position: relative;
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+}
+
+.sign-up img {
+   height: calc(100vh - 66px);
+   overflow: hidden;
+   background: no-repeat center center scroll;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   object-fit: cover;
+
+   /* filter: invert(17%) sepia(6%) saturate(400%) hue-rotate(282deg) brightness(84%) contrast(88%); */
+}
+
+.sign-up-info-contain {
+   background-color: rgba(0, 0, 0, 0.482);
+   position: absolute;
+   top: 0;
+   width: 50%;
+   height: 100%;
+   padding: 40px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.sign-up-info {
+   max-width: 500px;
+}
+
+.sign-up-title {
+   font-size: 3rem;
+   font-weight: 800;
+   margin-bottom: 1rem;
+}
+
+.sign-up-info p.includes {
+   margin-bottom: .5rem;
+}
+
+.sign-up-button {
+   margin-top: 1rem;
+   font-size: 1.25rem;
+   border: 4px solid white;
+   color: white;
+   background-color: rgba(0, 0, 0, 0.146);
+   /* background-color: var(--js-purple-light); */
+   padding: 10px 20px;
+   text-align: center;
+   transition:
+      border 500ms ease-out,
+      color 0.5s ease-out,
+      background-color 500ms ease-out;
+}
+
+.sign-up-button:hover {
+   text-decoration: none;
+   border: 4px solid white;
+   color: var(--js-purple-light);
+   background-color: white;
+}
+
+/* .carousel-title {
+   position: absolute;
+   right: 15%;
+   top: 50%;
+   left: 15%;
+   z-index: 10;
+   padding-top: 20px;
+   padding-bottom: 20px;
+   color: #fff;
+   text-align: center;
+} */
+
+.row-more {
+   position: relative;
+   bottom: 0;
+   z-index: 10;
+   padding-top: 20px;
+   padding-bottom: 20px;
+   color: #fff;
+   text-align: center;
+}
+
+.more-arrow {
+   text-decoration: none;
+   color: white;
+}
+
+.more-arrow:hover {
+   text-decoration: none;
+   color: rgba(255, 255, 255, 0.571);
+}
+
+.no-padding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.results-contain:hover .results-info {
+   /* background-color: linear-gradient var(--js-purple); */
+   opacity: 1;
+   transition: opacity 500ms ease-in, background-image 500ms ease-in;
+}
+
+.results-contain {
+   border: 3px solid var(--js-purple);
+   padding: 20px;
+   border-radius: .25rem;
+   width: 100%;
+   position: relative;
+   /* margin-top: 2rem; */
+   /* margin-bottom: 2rem; */
+}
+
+.results-contain img {
+   width: 100%;
+   border: 2px solid white;
+   border-radius: 0.25rem;
+}
+
+.results-contain .results-info {
+   opacity: 0;
+   position: absolute;
+   top: 0;
+   /* width: 50%; */
+   height: 100%;
+   padding: 20px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-image: linear-gradient(to right, #412a34, rgba(0, 0, 0, 0.694));
+   transition: opacity 500ms ease-in;
+}
+
+.results-row {
+   background-color: white;
+   border-radius: .5rem;
+   background-color: var(--js-purple);
+   border: 2px solid white;
+   border-radius: .25rem;
+}
+
+.results1 .results-info {
+   width: 50%;
+}
+
+.results2 .results-info {
+   width: 50%;
+}
+
+.results3 .results-info {
+   width: 50%;
+}
+
+.results-info div {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+/* .results-contain p {
+   position: absolute;
+   top: 0;
+} */
 
 @media (max-width: 576px) {
-
 
    .landingContain {
       font-size: 1rem;
    }
 
+   .carousel-caption p {
+      font-size: 1.5rem;
+      padding-bottom: 1rem;
+   }
+
+   .carousel-more .joinTitle {
+      font-size: 1rem;
+   }
+
+   .carousel-learn-button {
+      font-size: 0.75rem;
+      border: 3px solid white;
+      color: var(--js-purple-light);
+      background-color: white;
+   }
+
    .info {
-      font-size: .75rem;
+      font-size: .5rem;
    }
 
    .onlineTitle {
       font-size: 2.5rem;
+      padding-bottom: 1rem;
    }
 
    .benefitCircle {
@@ -149,9 +422,150 @@ height: 75px; */
       font-size: 2rem;
    }
 
+   .details {
+      padding: 20px;
+   }
+
    .detailsTitle {
       font-weight: 900;
       font-size: 2rem;
    }
 
+   .reverse {
+      flex-direction: row;
+   }
+}
+
+@media (max-height: 568px) {
+   .carousel-caption p {
+      display: none;
+   }
+
+   .carousel-learn-button {
+      display: none;
+   }
+}
+
+
+@media (max-width: 992px) {
+
+   .sign-up {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+   }
+
+   .sign-up img {
+      height: calc(100vh - 66px);
+      overflow: hidden;
+      background: no-repeat center center scroll;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      object-fit: cover;
+
+      /* filter: invert(17%) sepia(6%) saturate(400%) hue-rotate(282deg) brightness(84%) contrast(88%); */
+   }
+
+   .sign-up-info-contain {
+      background-color: rgba(0, 0, 0, 0.482);
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
+
+   .sign-up-info {
+      max-width: 500px;
+      width: 100%;
+   }
+
+   .sign-up-info p.once {
+      margin-bottom: 0.5rem;
+   }
+
+   .sign-up-title {
+      font-size: 2rem;
+      font-weight: 800;
+      text-align: center;
+   }
+}
+
+
+
+
+
+
+
+
+
+.results-contain2:hover .results-info2 {
+   /* background-color: linear-gradient var(--js-purple); */
+   opacity: 1;
+   transition: opacity 500ms ease-in, background-image 500ms ease-in;
+   display: none;
+}
+
+.results-contain2 {
+   width: 100%;
+   position: relative;
+}
+
+.results-contain2 img {
+   width: 100%;
+}
+
+.results-contain2 .results-info2 {
+   display: none;
+   opacity: 0;
+   position: absolute;
+   top: 0;
+   /* width: 50%; */
+   height: 100%;
+   padding: 20px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-image: linear-gradient(to right, #412a34, rgba(0, 0, 0, 0.694));
+   transition: opacity 500ms ease-in;
+}
+
+.results-row2 {
+   background-color: var(--js-purple);
+}
+
+.results1 .results-info2 {
+   width: 50%;
+}
+
+.results2 .results-info2 {
+   width: 50%;
+}
+
+.results3 .results-info2 {
+   width: 50%;
+}
+
+.results-info2 div {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.results-person2 {
+   padding: 30px;
+}
+
+.results-person2 p {
+   max-width: 500px;
+}
+
+.reverse {
+   flex-direction: row-reverse;
 }

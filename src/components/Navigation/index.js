@@ -101,7 +101,7 @@ const NavigationNonAuth = ({ onSelect }) => (
    <>
       <Nav className="ml-auto" onSelect={onSelect}>
          <NavLogin classes={"d-none d-sm-none d-md-none d-lg-inline-flex d-xl-inline-flex"} />
-         <NavLink className="d-lg-none d-xl-none nav-link" to={ROUTES.SIGN_IN} onClick={onSelect}>Sign In</NavLink>
+         <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SIGN_IN} onClick={onSelect}>Sign In</NavLink>
       </Nav>
    </>
 );

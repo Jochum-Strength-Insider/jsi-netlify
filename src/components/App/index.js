@@ -18,7 +18,6 @@ import WeighInPage from '../WeighInPage';
 import UserChat from '../ChatUser';
 import AdminChat from '../ChatAdmin';
 import Footer from '../Footer';
-import WelcomePage from '../WelcomePage';
 import AdminUserProgramsPage from '../AdminUserProgramsPage';
 
 import * as ROUTES from '../../constants/routes';
@@ -28,13 +27,11 @@ import Container from 'react-bootstrap/Container';
 
 import "./style.css";
 
-const style = { minHeight: "calc(100vh - 66px)" }
-
 const App = () => (
    <>
       <Router >
          <Navigation />
-         <Container fluid className="app-container" style={style}>
+         <Container fluid className="contain no-padding">
             <Switch>
                <Route exact path={ROUTES.LANDING} component={LandingPage} />
                <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
@@ -51,7 +48,6 @@ const App = () => (
                <Route path={ROUTES.WEIGHIN} component={WeighInPage} />
                <Route path={ROUTES.ADMIN_MESSAGES} component={AdminChat} />
                <Route path={ROUTES.MESSAGES} component={UserChat} />
-               <Route path={ROUTES.WELCOME} component={WelcomePage} />
                <Route path="*" component={NoMatch} />
             </Switch>
          </Container>

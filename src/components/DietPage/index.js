@@ -6,19 +6,20 @@ import { withAuthorization, withEmailVerification } from '../Session';
 
 import { AuthUserContext } from '../Session';
 import Diet from '../Diet';
-
-const style = { width: "100%", maxWidth: "1000px", flex: "1" };
+import Container from 'react-bootstrap/Container';
 
 const DietPage = () => {
    const authUser = useContext(AuthUserContext);
    return (
       <>
-         <div className="d-flex justify-content-center">
-            <div style={style}>
-               <h1>Diet Sheet</h1>
-               <Diet uid={authUser.uid} />
+         <Container fluid>
+            <div className="app-top d-flex justify-content-center">
+               <div className="contain-width">
+                  <h1>Diet Sheet</h1>
+                  <Diet uid={authUser.uid} />
+               </div>
             </div>
-         </div>
+         </Container >
       </>
    )
 }

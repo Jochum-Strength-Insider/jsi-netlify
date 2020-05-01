@@ -5,6 +5,7 @@ import { Switch, Route, useParams } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
 import ChatMessages from '../Chat';
+import Container from 'react-bootstrap/Container';
 
 import {
    AuthUserContext,
@@ -31,16 +32,18 @@ const ChatRoomBase = ({ location, firebase }) => {
    }
 
    const unread = user ? user.adminUnread : 0;
-   const style = { width: "100%", maxWidth: "1000px", flex: "1" };
+
 
    // let match = useRouteMatch();
    return (
       <>
-         <div className="d-flex justify-content-center">
-            <div style={style}>
-               <ChatMessages authUser={authUser} roomId={uid} unreadCount={unread} setUnread={"adminUnread"} setPartnerUnread={"unread"} />
+         <Container fluid>
+            <div className="app-top d-flex justify-content-center">
+               <div className="contain-width">
+                  <ChatMessages authUser={authUser} roomId={uid} unreadCount={unread} setUnread={"adminUnread"} setPartnerUnread={"unread"} />
+               </div>
             </div>
-         </div>
+         </Container>
       </>
    )
 };

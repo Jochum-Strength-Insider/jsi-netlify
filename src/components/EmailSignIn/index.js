@@ -30,7 +30,7 @@ const style = {
 
 const EmailSignInPage = () => (
    <>
-      <Container >
+      <Container fluid className="app-top">
          <Row>
             <Col className="d-flex justify-content-center align-items-center">
                <div style={style}>

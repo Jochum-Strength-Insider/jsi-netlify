@@ -15,17 +15,17 @@ import { withFirebase } from '../Firebase';
 
 import UserTable from '../UserTable';
 
-const style = { width: "100%", maxWidth: "1000px", flex: "1" };
-
 const ProgramPage = () => {
    const authUser = useContext(AuthUserContext);
 
    return (
-      <div className="d-flex justify-content-center">
-         <div style={style}>
-            <ManageUserTables authUser={authUser} />
+      <Container fluid>
+         <div className="d-flex justify-content-center">
+            <div className="contain-width">
+               <ManageUserTables authUser={authUser} />
+            </div>
          </div>
-      </div>
+      </Container>
    )
 };
 
@@ -177,7 +177,7 @@ class ManageUserTablesBase extends Component {
 
       // console.log(program);
       return (
-         <>
+         <div className="app-top">
             {program ? (
                <>
                   <h1>{program.title}</h1>
@@ -189,7 +189,7 @@ class ManageUserTablesBase extends Component {
                   <UserTable program={program} uid={authUser.uid} saveTracking={this.saveTracking(authUser.uid, key)} />
                </>
             ) : (
-                  <Container >
+                  <Container fluid>
                      <Row>
                         <Col className="d-flex justify-content-center align-items-center">
                            <Card style={{ width: "30rem" }}>
@@ -204,7 +204,7 @@ class ManageUserTablesBase extends Component {
                      </Row>
                   </Container>
                )}
-         </>
+         </div>
       )
    }
 }

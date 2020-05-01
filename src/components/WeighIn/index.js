@@ -28,7 +28,7 @@ class WeightBase extends Component {
       this.dataSetOptions = {
          label: 'Weight',
          fill: false,
-         lineTension: .3,
+         lineTension: 0,
          // backgroundColor: 'rgba(765, 42, 52)',
          borderColor: 'rgba(65, 42, 52)',
          // borderCapStyle: 'butt',
