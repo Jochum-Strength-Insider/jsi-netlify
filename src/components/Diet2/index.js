@@ -16,12 +16,11 @@ import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 import Modal from '../Modal';
 // import Loading from '../Loading';
-import StarRating from '../Rating';
 import CustomToggle from '../CustomToggle';
 
 import dietImage from '../../images/diet.jpg'
 
-const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "" }, rating: "" };
+const DIETSHELL = { createdAt: "3/4/2020", meals: { Breakfast: "", Lunch: "", Dinner: "", Snack1: "", Snack2: "", Snack3: "" }, rating: "0" };
 
 class Diet extends Component {
 
@@ -286,7 +285,7 @@ class DietSheetPageBase extends Component {
       this.timer = null;
 
       const initialDietState = this.props.diet.meals;
-      const initialRating = this.props.diet.rating;
+      const initialRating = this.props.diet.rating || 0;
 
       this.state = {
          Breakfast: initialDietState["Breakfast"],
@@ -334,7 +333,6 @@ class DietSheetPageBase extends Component {
    render() {
       // const { createdAt, key } = this.props.diet;
       const { key } = this.props.diet;
-      const { index } = this.props;
       const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, error, alert, rating } = this.state;
       // const date = moment(createdAt);
       // const formattedDate = date.format('MM-DD-YYYY');
@@ -345,9 +343,6 @@ class DietSheetPageBase extends Component {
 
       return (
          <>
-            {/* <h3 className="text-center">{day} {formattedDate}</h3> */}
-            {/* <ListGroup> */}
-            {/* <Form onSubmit={this.onSave(key)}> */}
             <Row>
                <Col xs={12}>
                   <DietFormRow name="Breakfast" value={Breakfast} onChange={this.onChange} label={"Breakfast"} />
@@ -385,14 +380,11 @@ class DietSheetPageBase extends Component {
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
-               {/* <Col xs={12} className="py-3">
-                  <StarRating
-                     rating={rating}
-                     onChange={this.onChange}
-                     size={size}
-                     id={index}
-                  />
-               </Col> */}
+               <Col xs={12}>
+                  <DietFormRatingRow name="rating" value={rating} onChange={this.onChange} label={"Rating"} />
+               </Col>
+
+               <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col className="mt-3" xs={12}>
                   <Form.Group as={Col} xs={12}>
@@ -406,8 +398,6 @@ class DietSheetPageBase extends Component {
 
                {error && <Alert variant="warning">{error.message}</Alert>}
             </Row>
-            {/* </Form> */}
-            {/* </ListGroup> */}
          </>
       )
    }
@@ -431,14 +421,45 @@ const DietFormRow = ({ onChange, value, label, name }) => {
 
          <Collapse in={open}>
             <Form.Group className="align-self-center">
-               {/* <Form.Label>Snack 3</Form.Label> */}
                <Form.Control
-                  aria-label={"Snack3-tracking"}
+                  aria-label={`${name}-tracking`}
                   type="text"
                   value={value}
                   name={name}
                   onChange={onChange}
                />
+            </Form.Group>
+         </Collapse>
+      </>
+   )
+}
+
+const DietFormRatingRow = ({ onChange, value, label, name }) => {
+   const [open, setOpen] = useState(false);
+   return (
+      <>
+         <div
+            className="diet-form-toggle"
+            onClick={() => setOpen(!open)}
+            aria-controls="example-collapse-text"
+            aria-expanded={open}
+         >
+            <div className="d-flex justify-content-between">
+               <div>{label}</div>
+               <div>{open ? <span>&minus;</span> : <span>&#65291;</span>}</div>
+            </div>
+         </div>
+
+         <Collapse in={open}>
+            <Form.Group className="align-self-center">
+               <Form.Control as="select" name="rating" value={value} onChange={onChange}>
+                  <option value={"0"}>0</option>
+                  <option value={"1"}>1</option>
+                  <option value={"2"}>2</option>
+                  <option value={"3"}>3</option>
+                  <option value={"4"}>4</option>
+                  <option value={"5"}>5</option>
+               </Form.Control>
             </Form.Group>
          </Collapse>
       </>

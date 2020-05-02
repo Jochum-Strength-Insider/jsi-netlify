@@ -1,6 +1,6 @@
 # ToDo
 
-1. restyle diet page (expandable, calendar bar on top below cover photo)
+1. Redo star ratings?
 1. Add month view to diet page?
 1. restyle admin panel
    * add user wiegh-in / user diets
