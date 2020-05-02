@@ -82,7 +82,7 @@ class UserListBase extends Component {
 
             <div className="d-flex justify-content-center">
                <div className="contain-width">
-                  <h1>Users List</h1>
+                  <h3>Users List</h3>
 
                   <Card className="mb-5">
                      <ListGroup variant="flush" >

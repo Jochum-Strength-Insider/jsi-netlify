@@ -25,7 +25,7 @@ const SignUpPage = () => (
             <Col className="d-flex justify-content-center align-items-center">
                <Card style={{ width: "30rem" }}>
                   <Card.Header className="text-center">
-                     <h1>Sign Up</h1>
+                     <h3>Sign Up</h3>
                      <SignInLink />
                   </Card.Header>
                   <Card.Body>

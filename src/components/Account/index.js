@@ -44,7 +44,7 @@ const AccountPage = () => {
          <Container fluid>
             <div className="app-top d-flex justify-content-center">
                <div className="contain-width">
-                  <h1>Account</h1>
+                  <h3>Account</h3>
                   <BeforeAndAfter authUser={authUser} />
                   <UserInfo authUser={authUser} />
                   <PasswordChangeForm />

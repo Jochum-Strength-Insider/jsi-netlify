@@ -249,7 +249,7 @@ class Diet extends Component {
                      return (
                         <Card key={diet.key} className="date-card user-program-day my-3 no-border rounded">
                            <CustomToggle eventKey={diet.key} scroll={false}>
-                              <Card.Body className="bg-purple-light" ref={this.state.refsList[formattedDate]}>
+                              <Card.Body className="bg-purple" ref={this.state.refsList[formattedDate]}>
                                  <div className="d-flex justify-content-between">
                                     <h3 className="day-name" style={{ color: "white" }}>{dayName}</h3>
                                     <div className="date d-flex align-items-center justify-content-center">

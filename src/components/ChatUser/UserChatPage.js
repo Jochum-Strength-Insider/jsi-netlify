@@ -19,7 +19,7 @@ const UserChatPage = () => {
          <Container fluid>
             <div className="app-top d-flex justify-content-center">
                <div className="contain-width">
-                  <h1>Messages</h1>
+                  <h3>Messages</h3>
                   <ChatMessages authUser={authUser} roomId={authUser.uid} unreadCount={unread} setUnread={"unread"} setPartnerUnread={"adminUnread"} />
                </div>
             </div>

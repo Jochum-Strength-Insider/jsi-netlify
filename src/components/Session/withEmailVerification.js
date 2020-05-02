@@ -43,7 +43,7 @@ const withEmailVerification = Component => {
                            <Col className="d-flex justify-content-center align-items-center">
                               <Card style={{ width: "30rem" }}>
                                  <Card.Header className="text-center">
-                                    <h1>Email Confirmation</h1>
+                                    <h3>Email Confirmation</h3>
                                  </Card.Header>
                                  <Card.Body>
                                     <Form onSubmit={this.onSendEmailVerification}>
