@@ -45,14 +45,14 @@ const Landing = () => (
          </Col>
       </Row>
 
-      <Spacer link={"details"} />
-      <Row className="d-flex justify-content-center align-items-center no-padding" style={{ minHeight: "calc(100vh - 66px)", width: "100%" }}>
-         <Details />
-      </Row>
-
       <Spacer link={"results"} />
       <Row className="d-flex justify-content-center align-items-center no-padding" style={{ minHeight: "calc(100vh - 66px)", width: "100%" }}>
          <Results2 />
+      </Row>
+
+      <Spacer link={"details"} />
+      <Row className="d-flex justify-content-center align-items-center no-padding" style={{ minHeight: "calc(100vh - 66px)", width: "100%" }}>
+         <Details />
       </Row>
 
       <Spacer link="signUp" />
@@ -67,7 +67,7 @@ const LandingCarousel = () => (
       <Carousel.Item>
          <img
             className="d-block w-100"
-            src={carousel4}
+            src={carousel5}
             alt="First slide"
          />
          <Carousel.Caption>
@@ -81,22 +81,6 @@ const LandingCarousel = () => (
          </div>
       </Carousel.Item>
 
-      <Carousel.Item>
-         <img
-            className="d-block w-100"
-            src={carousel5}
-            alt="Third slide"
-         />
-         <Carousel.Caption>
-            <h2 className="onlineTitle">Jochum Strength Insider</h2>
-            <p>Weekly Exercise, Diet and Program Review</p>
-            <a href="#details" className="carousel-learn-button">Learn more</a>
-         </Carousel.Caption>
-         <div className="carousel-more">
-            <p className="joinTitle">Join Jochum Strength Insider!</p>
-            <a href="#signUp" className="more-arrow">╲╱</a>
-         </div>
-      </Carousel.Item>
 
       <Carousel.Item>
          <img
@@ -109,6 +93,24 @@ const LandingCarousel = () => (
             <h2 className="onlineTitle">Jochum Strength Insider</h2>
             <p>Results!</p>
             <a href="#results" className="carousel-learn-button">Learn more</a>
+         </Carousel.Caption>
+         <div className="carousel-more">
+            <p className="joinTitle">Join Jochum Strength Insider!</p>
+            <a href="#signUp" className="more-arrow">╲╱</a>
+         </div>
+      </Carousel.Item>
+
+
+      <Carousel.Item>
+         <img
+            className="d-block w-100"
+            src={carousel4}
+            alt="Third slide"
+         />
+         <Carousel.Caption>
+            <h2 className="onlineTitle">Jochum Strength Insider</h2>
+            <p>Weekly Exercise, Diet and Program Review</p>
+            <a href="#details" className="carousel-learn-button">Learn more</a>
          </Carousel.Caption>
          <div className="carousel-more">
             <p className="joinTitle">Join Jochum Strength Insider!</p>

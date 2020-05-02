@@ -4,13 +4,14 @@
    --js-gray: rgb(26, 26, 26);
 }
 
-label.star {
+.rating label.star {
    position: relative;
    float: right;
    color: gray;
+   margin-bottom: 0px;
 }
 
-label.star:before {
+.rating label.star:before {
    margin: 5px;
    content: '\2605';
    font-size: 1.5rem;
@@ -21,15 +22,15 @@ label.star:before {
    user-select: none;
 }
 
-input.star:checked~label.star:before {
+.rating input.star:checked~label.star:before {
    color: var(--js-purple-light);
 }
 
-div.star_rating {
+.rating div.star_rating {
    float: left;
 }
 
-input.star {
+.rating input.star {
    border: 0;
    width: 1px;
    height: 1px;
@@ -41,14 +42,14 @@ input.star {
    float: right;
 }
 
-label.star:hover~label.star:before {
+.rating label.star:hover~label.star:before {
    color: var(--js-purple-light);
 }
 
-label.star:hover:before {
+.rating label.star:hover:before {
    color: var(--js-purple);
 }
 
-input.star:focus~label.star:before {
+.rating input.star:focus~label.star:before {
    outline: -webkit-focus-ring-color auto 5px;
 }

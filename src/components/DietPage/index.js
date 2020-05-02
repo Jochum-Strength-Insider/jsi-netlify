@@ -5,7 +5,8 @@ import { compose } from 'recompose';
 import { withAuthorization, withEmailVerification } from '../Session';
 
 import { AuthUserContext } from '../Session';
-import Diet from '../Diet';
+// import Diet from '../Diet';
+import Diet2 from '../Diet2';
 import Container from 'react-bootstrap/Container';
 
 const DietPage = () => {
@@ -16,7 +17,8 @@ const DietPage = () => {
             <div className="app-top d-flex justify-content-center">
                <div className="contain-width">
                   <h1>Diet Sheet</h1>
-                  <Diet uid={authUser.uid} />
+                  {/* <Diet uid={authUser.uid} /> */}
+                  <Diet2 uid={authUser.uid} />
                </div>
             </div>
          </Container >

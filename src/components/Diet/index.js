@@ -122,6 +122,11 @@ class Diet extends Component {
    }
 
    checkDietIdByDate = (createdAt) => {
+
+      if (isNaN(createdAt)) {
+         return console.log('Not a Number!');
+      }
+
       return this.props.firebase
          .dietIds(this.props.uid)
          .orderByValue()
