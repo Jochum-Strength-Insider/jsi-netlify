@@ -6,7 +6,10 @@
    * add user wiegh-in / user diets
 
 
+
 ## FIX
+1. Change add button into + circle
+1. Weigh in - Auto ask on first day?
 1. Add error handling to userProgramItem
 1. Admin panel mount tab on click.
 1. Messages show date / username.

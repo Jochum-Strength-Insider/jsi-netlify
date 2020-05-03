@@ -276,7 +276,7 @@ class WeightBase extends Component {
 
       const { data, listData, options, invalid, show, weight, error, queryDate } = this.state;
       const now = moment().format('YYYY-MM-DD');
-      const chartTitle = moment().format('MMMM YY');
+      const chartTitle = moment().format('MMMM YYYY');
       const nowDateUnix = Number(moment(now).format("x"));
 
       return (

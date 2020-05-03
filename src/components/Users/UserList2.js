@@ -22,6 +22,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from '../Modal';
 import Loading from '../Loading';
 
+
 // import Badge from 'react-bootstrap/Badge';
 
 class UserListBase extends Component {
@@ -117,6 +118,9 @@ class UserListBase extends Component {
                               <Col xs="12" sm="12" md="4" onClick={this.sortUsersBy("programDate")}><strong>Last Program:</strong></Col>
                            </Row>
                         </ListGroup.Item> */}
+                        <ListGroup.Item>
+                           <Button block onClick={this.handleOpen}>Add User</Button>
+                        </ListGroup.Item>
 
                         <div className="scrollListContain">
                            {loading && <ListGroup.Item><Loading /></ListGroup.Item>}
@@ -138,9 +142,6 @@ class UserListBase extends Component {
                               )
                            })}
                         </div>
-                        <ListGroup.Item>
-                           <Button block onClick={this.handleOpen}>Add User</Button>
-                        </ListGroup.Item>
                      </ListGroup>
                   </Card>
                </div>

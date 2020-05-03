@@ -1,8 +1,8 @@
-.scrollListContain {
+/* .scrollListContain {
    height: calc(100vh - 250px);
    overflow-y: scroll;
    overscroll-behavior: contain;
-}
+} */
 
 .scrollListContain::-webkit-scrollbar {
    width: 0px;
