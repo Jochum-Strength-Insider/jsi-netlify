@@ -155,7 +155,7 @@ class WeightBase extends Component {
       this.setState({ [name]: value })
    }
 
-   addWeightIn = (e) => {
+   addWeighIn = (e) => {
       e.preventDefault();
       const timestamp = Number(moment(this.state.date).format("x"));
       const nowString = moment(this.state.date).format("MMM D");
@@ -272,6 +272,10 @@ class WeightBase extends Component {
       this.fetchData((this.state.queryDate), true);
    }
 
+   componentWillUnmount() {
+      this.props.firebase.weighIn(this.props.authUser.uid).off();
+   }
+
    render() {
 
       const { data, listData, options, invalid, show, weight, error, queryDate } = this.state;
@@ -282,7 +286,7 @@ class WeightBase extends Component {
       return (
          <>
             <Modal show={show} handleClose={this.hideModal} heading={"Add Weigh In"}>
-               <Form onSubmit={this.addWeightIn}>
+               <Form onSubmit={this.addWeighIn}>
                   <Form.Group>
                      <Form.Label>Add Weigh In - {now}</Form.Label>
                      <Form.Control

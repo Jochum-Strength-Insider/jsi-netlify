@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+// import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
 import {
@@ -18,31 +18,39 @@ import UserTable from '../UserTable';
 const ProgramPage = () => {
    const authUser = useContext(AuthUserContext);
 
-   return (
-      <Container fluid>
-         <div className="d-flex justify-content-center">
-            <div className="contain-width">
-               <ManageUserTables authUser={authUser} />
+   if (authUser.ACTIVE) {
+
+      return (
+         <Container fluid>
+            <div className="d-flex justify-content-center">
+               <div className="contain-width">
+                  <ManageUserTables authUser={authUser} />
+               </div>
             </div>
-         </div>
-      </Container>
-   )
+         </Container>
+      )
+   } else {
+      return (
+         <Container fluid>
+            <Row className="d-flex justify-content-center mt-5">
+               <Card style={{ width: "30rem" }}>
+                  <Card.Header className="text-center">
+                     <strong>Account Status</strong>
+                  </Card.Header>
+                  <Card.Body className="text-center">
+                     Your Account is currently deactivated. To reactivate your account reapply for Jochum Strength Insider or contact jochumstrength@gmail.com for more information.
+                  </Card.Body>
+               </Card>
+            </Row>
+         </Container>
+      )
+   }
+
 };
 
 class ManageUserTablesBase extends Component {
    constructor(props) {
       super(props);
-
-      // Odd bug where the workoutIds aren't progagated to the authUser object when a user is created.
-      // It's fixed after a refresh but going straight from signup to account causes an error.
-      // const workoutids = !!props.authUser.workoutids
-      //    ? Object.keys(props.authUser.workoutids)
-      //    : Object.keys(props.authUser.workouts[0]);
-
-      // const workoutsList = Object.keys(this.state.workouts[0]).map(key => ({
-      //    ...props.authUser.workouts[0][key],
-      //    workoutId: key
-      // }));
 
       this.state = {
          workoutIndex: 0,
@@ -50,34 +58,8 @@ class ManageUserTablesBase extends Component {
          workoutsList: [],
          program: JSON.parse(localStorage.getItem('program')) || null,
          key: null,
-         // allLoaded: false,
       }
    }
-
-   // previousWorkout = () => {
-   //    if (!this.state.allLoaded) {
-   //       this.props.firebase.workouts(this.props.authUser.uid).on("value", (snapshot) => {
-   //          const workouts = snapshot.val();
-
-   //          if (workouts) {
-   //             const workoutsList = Object.keys(workouts).map(key => ({
-   //                ...workouts[key],
-   //                workoutId: key
-   //             }));
-   //             console.log("loaded Previous workouts:", workoutsList);
-   //             const workoutIndex = workoutsList.length - 1;
-   //             this.setState({ workoutsList: workoutsList, workoutIndex: workoutIndex - 1, allLoaded: true });
-   //          }
-   //       });
-   //    } else {
-   //       this.setState(prevState => { return { workoutIndex: prevState.workoutIndex - 1 } });
-   //    }
-   // }
-
-   // nextWorkout = () => {
-   //    // I don't think you'll need to load more from next... The most current workout is always available in the authUser.
-   //    this.setState(prevState => { return { workoutIndex: prevState.workoutIndex + 1 } })
-   // }
 
    // handleComplete = (workoutId, phase, completed) => {
    //    console.log(workoutId, phase, completed)
@@ -100,34 +82,6 @@ class ManageUserTablesBase extends Component {
    }
 
    componentDidMount() {
-
-      // this.props.firebase.workouts(this.props.authUser.uid)
-      //    .limitToLast(1)
-      //    .on("value", snapshot => {
-      //       const workoutObject = snapshot.val();
-
-      //       if (workoutObject) {
-
-      //          const workoutids = Object.keys(workoutObject)
-
-      //          const workoutsList = workoutids.map(key => ({
-      //             ...workoutObject[key],
-      //             workoutId: key
-      //          }));
-      //          this.setState({ workoutsList: workoutsList })
-      //       }
-      //    });
-
-      // this.props.firebase.workoutIds(this.props.authUser.uid)
-      //    .on("value", snapshot => {
-      //       const workoutIdsObject = snapshot.val();
-
-      //       if (workoutIdsObject) {
-      //          const workoutids = Object.keys(workoutIdsObject)
-      //          this.setState({ workoutids: workoutids })
-      //       }
-      //    });
-
       this.props.firebase
          .workoutIds(this.props.authUser.uid)
          .orderByChild("active")
@@ -137,18 +91,16 @@ class ManageUserTablesBase extends Component {
             const idObject = snap.val();
             if (idObject) {
                const key = Object.keys(idObject)[0];
-
+               this.setState({ key: key });
                this.props.firebase.workout(this.props.authUser.uid, key)
-
-                  .on("value", snapshot => {
+                  .once("value", snapshot => {
                      const workoutObject = snapshot.val();
-
                      if (workoutObject) {
                         localStorage.setItem('program', JSON.stringify(workoutObject));
-                        this.setState({ program: workoutObject, key })
+                        this.setState({ program: workoutObject })
                      } else {
                         localStorage.removeItem('program');
-                        this.setState({ program: null, key: "" })
+                        this.setState({ program: null })
                      }
                   });
             } else {
@@ -159,10 +111,14 @@ class ManageUserTablesBase extends Component {
    }
 
    componentWillUnmount() {
-      this.props.firebase.workout(this.props.authUser.uid, this.state.key);
       this.props.firebase.workout(this.props.authUser.uid, this.state.key).off();
       this.props.firebase.workouts(this.props.authUser.uid).off();
       this.props.firebase.workoutIds(this.props.authUser.uid).off();
+
+      // this.props.firebase.workoutIds(this.props.authUser.uid)
+      //    .orderByChild("active")
+      //    .equalTo(true)
+      //    .limitToLast(1).off();
    }
 
    render() {
@@ -170,11 +126,8 @@ class ManageUserTablesBase extends Component {
 
       const { authUser } = this.props;
       const { program, key } = this.state;
-      // const { workoutIndex, workoutids, workoutsList } = this.state;
-      // const { workoutIndex, workoutsList } = this.state;
-      // const program = workoutsList[workoutIndex] ? workoutsList[workoutIndex] : null;
+
       const dateString = program ? new Date(program.createdAt).toLocaleDateString("en-US") : "";
-      // const index = program ? workoutids.indexOf(program.workoutId) : 0;
 
       // console.log(program);
       return (
@@ -183,25 +136,19 @@ class ManageUserTablesBase extends Component {
                <>
                   <h1>{program.title}</h1>
                   <h4>{dateString}</h4>
-                  {/* <div>
-                     <button onClick={this.previousWorkout} disabled={index === 0}>←</button>
-                     <button onClick={this.nextWorkout} disabled={index === workoutids.length - 1}>→</button>
-                  </div> */}
                   <UserTable program={program} uid={authUser.uid} saveTracking={this.saveTracking(authUser.uid, key)} />
                </>
             ) : (
                   <Container fluid>
-                     <Row>
-                        <Col className="d-flex justify-content-center align-items-center">
-                           <Card style={{ width: "30rem" }}>
-                              <Card.Header className="text-center">
-                                 <strong>No Programs</strong>
-                              </Card.Header>
-                              <Card.Body className="text-center">
-                                 You have no available programs at this time.
-                              </Card.Body>
-                           </Card>
-                        </Col>
+                     <Row className="d-flex justify-content-center mt-5">
+                        <Card>
+                           <Card.Header className="text-center">
+                              <strong>No Programs</strong>
+                           </Card.Header>
+                           <Card.Body className="text-center">
+                              You have no available programs at this time.
+                           </Card.Body>
+                        </Card>
                      </Row>
                   </Container>
                )}

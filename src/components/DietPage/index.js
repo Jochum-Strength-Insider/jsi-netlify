@@ -11,6 +11,11 @@ import Container from 'react-bootstrap/Container';
 
 const DietPage = () => {
    const authUser = useContext(AuthUserContext);
+
+   // if (!authUser.ACTIVE) {
+   //    return null;
+   // }
+
    return (
       <>
          <Container fluid>
@@ -26,7 +31,7 @@ const DietPage = () => {
    )
 }
 
-const condition = authUser => !!authUser;
+const condition = authUser => !!authUser && authUser.ACTIVE;
 
 export default compose(
    withEmailVerification,

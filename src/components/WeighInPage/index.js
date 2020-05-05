@@ -12,6 +12,11 @@ import Container from 'react-bootstrap/Container';
 const WeighInPage = () => {
 
    const authUser = useContext(AuthUserContext);
+
+   // if (!authUser.ACTIVE) { <ListGroup.Item>Member Since: {dateString}</ListGroup.Item>
+   //    return null;
+   // }
+
    return (
       <Container fluid>
          <div className="app-top">
@@ -27,7 +32,7 @@ const WeighInPage = () => {
    )
 }
 
-const condition = authUser => !!authUser;
+const condition = authUser => !!authUser && authUser.ACTIVE;
 
 export default compose(
    withEmailVerification,

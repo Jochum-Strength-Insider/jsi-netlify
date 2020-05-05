@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 import throttle from 'lodash.throttle';
 
-
 import { UserList2, UserItem2 } from '../Users';
 // import AdminChatPage from '../ChatAdmin';
 // import { ProgramItem } from '../Programs';

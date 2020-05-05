@@ -14,6 +14,10 @@ const UserChatPage = () => {
    const authUser = useContext(AuthUserContext);
    const unread = authUser.unread;
 
+   // if (!authUser.ACTIVE) {
+   //    return null;
+   // }
+
    return (
       <>
          <Container fluid>
@@ -28,7 +32,7 @@ const UserChatPage = () => {
    )
 };
 
-const condition = authUser => !!authUser;
+const condition = authUser => !!authUser && authUser.ACTIVE;
 
 export default compose(
    withEmailVerification,

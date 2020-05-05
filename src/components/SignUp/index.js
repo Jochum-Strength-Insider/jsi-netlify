@@ -73,6 +73,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                   username,
                   email,
                   ADMIN: false,
+                  ACTIVE: true,
                   createdAt: timestamp,
                   programDate: null,
                   adminUnread: false,

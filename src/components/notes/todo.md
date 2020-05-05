@@ -1,11 +1,9 @@
 # ToDo
 
-1. Redo star ratings?
 1. Add month view to diet page?
 1. restyle admin panel
    * add user wiegh-in / user diets
-
-
+* User admin panel
 
 ## FIX
 1. Change add button into + circle
@@ -15,7 +13,6 @@
 1. Messages show date / username.
 1. WorkoutList add default...
 1. Compress before/after images?
-
 
 ## TODO
 1. does the program object need to be stored in json???
@@ -29,8 +26,5 @@
 1. use memo more often.
 1. Cut back on as many firebase calls as possible.
 
-
 ### Paypal Pay and sign-up or pay through app.
 Payment on the site and seemless sign up (they pay and are able to sign in) so if you can continue to look into the best ways to do this that'd be awesome.
-
-For Both I'd love a cover photo as well, just like we do with the lifting but a picture of a guy walking on a scale and a picture of a bunch of healthy foods for the diet sheet! Really makes it look nice!

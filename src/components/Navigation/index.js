@@ -53,12 +53,18 @@ const NavigationAuth = ({ authUser, onSelect }) => {
          <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto" onSelect={onSelect}>
                <NavLink className="nav-link" to={ROUTES.USERPROGRAM} onClick={onSelect}>Program</NavLink>
-               <NavLink className="nav-link" to={ROUTES.WEIGHIN} onClick={onSelect}>Weight</NavLink>
-               <NavLink className="nav-link" to={ROUTES.DIET} onClick={onSelect}>Diet</NavLink>
-               <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>
-                  Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
-                  <span className="sr-only">unread messages</span>
-               </NavLink>
+
+               {authUser.ACTIVE && (
+                  <>
+                     <NavLink className="nav-link" to={ROUTES.WEIGHIN} onClick={onSelect}>Weight</NavLink>
+                     <NavLink className="nav-link" to={ROUTES.DIET} onClick={onSelect}>Diet</NavLink>
+                     <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>
+                        Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
+                        <span className="sr-only">unread messages</span>
+                     </NavLink>
+                  </>
+               )}
+
                {authUser.ADMIN && (
                   <>
                      <Nav>

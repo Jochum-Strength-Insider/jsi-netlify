@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, useState, useEffect } from "react";
 
 // import moment from 'moment';
 
@@ -8,21 +8,23 @@ import * as ROUTES from '../../constants/routes';
 
 import { withRouter } from 'react-router-dom';
 import WorkoutList from '../WorkoutList';
+import AdminDiet from '../AdminDiet';
+import AdminWeight from '../AdminWeight';
+import { ChatRoom } from '../ChatAdmin';
 
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
-// import BreadCrumbs from '../BreadCrumbs';
-
-import { ChatRoom } from '../ChatAdmin';
 
 class UserItemBase extends PureComponent {
    constructor(props) {
       super(props);
       this.state = {
          loading: false,
+         tab: "profile",
          user: null,
       };
    }
@@ -55,6 +57,14 @@ class UserItemBase extends PureComponent {
          });
    }
 
+   onSendPasswordResetEmail = () => {
+      this.props.firebase.doPasswordReset(this.state.user.email);
+   };
+
+   setTab = (k) => {
+      this.setState({ tab: k });
+   }
+
    componentDidMount() {
       this.fetchUser();
    }
@@ -70,12 +80,8 @@ class UserItemBase extends PureComponent {
       this.props.firebase.user(this.props.match.params.id).off();
    }
 
-   onSendPasswordResetEmail = () => {
-      this.props.firebase.doPasswordReset(this.state.user.email);
-   };
-
    render() {
-      const { user, loading } = this.state;
+      const { user, loading, tab } = this.state;
       // const { isMobile } = this.props;
       // const path = isMobile ? ROUTES.ADMIN_MOBILE : ROUTES.ADMIN;
 
@@ -84,35 +90,7 @@ class UserItemBase extends PureComponent {
             {loading && <div>Loading ...</div>}
             {user && (
                <>
-                  {/* This is close. Doesn't work out mobile */}
-                  {/* <nav className="dark-tab user-info nav nav-tabs nav-fill" role="tablist" style={{ marginTop: "12px", marginBottom: "12px" }}>
-                     <Link role="tab" data-rb-event-key="profile" aria-selected="false" className="nav-item nav-link" tabIndex="-1" to={`${ROUTES.ADMIN}/${user.uid}/profile`}>Profile</Link>
-                     <Link role="tab" data-rb-event-key="workouts" aria-selected="false" className="nav-item nav-link" tabIndex="-1" to={`${ROUTES.ADMIN}/${user.uid}/workouts`}>Programs</Link>
-                     <Link role="tab" data-rb-event-key="messages" aria-selected="true" className="nav-item nav-link" to={`${ROUTES.ADMIN}/${user.uid}/messages`}>Messages</Link>
-                  </nav> */}
-
-                  {/* <Tabs style={{ marginTop: "12px", marginBottom: "12px" }} fill className="dark-tab user-info"> */}
-                  {/* <Switch>
-                     <Route path={ROUTES.ADMIN_DETAILS_PROFILE} component={() => <Profile user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />} />
-                     <Route path={ROUTES.ADMIN_DETAILS_WORKOUTS} component={() => <WorkoutList key={user.uid} uid={user.uid} />} />
-                     <Route path={ROUTES.ADMIN_DETAILS_MESSAGES} component={() => <ChatRoom key={user.uid} user={user} />} />
-                  </Switch> */}
-                  {/* </Tabs> */}
-
-                  <Tabs fill defaultActiveKey="messages" className="dark-tab user-info">
-                     <Tab eventKey="profile" title="Profile">
-                        <Profile user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />
-                     </Tab>
-                     <Tab eventKey="workouts" title="Programs">
-                        {/* // <Switch>
-                        //    <Route exact path={ROUTES.ADMIN_DETAILS} component={WorkoutList} />
-                        // </Switch> */}
-                        <WorkoutList key={user.uid} uid={user.uid} />
-                     </Tab>
-                     <Tab eventKey="messages" title="Messages">
-                        <ChatRoom key={user.uid} user={user} />
-                     </Tab>
-                  </Tabs>
+                  <UserTabs key={user.uid} tab={tab} setTab={this.setTab} user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />
                </>
             )}
          </div>
@@ -120,15 +98,71 @@ class UserItemBase extends PureComponent {
    }
 }
 
-const Profile = ({ user, onSendPasswordResetEmail }) => {
+const UserTabs = ({ tab, setTab, user, loading, onSendPasswordResetEmail }) => {
+   return (
+      <Tabs
+         fill
+         defaultActiveKey="profile"
+         className="dark-tab user-info"
+         activeKey={tab}
+         onSelect={setTab}
+      >
+         <Tab eventKey="profile" title="Profile">
+            <Profile user={user} loading={loading} onSendPasswordResetEmail={onSendPasswordResetEmail} />
+         </Tab>
+         <Tab eventKey="workouts" title="Programs">
+            <WorkoutList uid={user.uid} />
+         </Tab>
+         <Tab eventKey="messages" title="Messages">
+            <ChatRoom user={user} />
+         </Tab>
+         <Tab eventKey="diet" title="Diet">
+            <AdminDiet uid={user.uid} user={user} />
+         </Tab>
+         <Tab eventKey="weight" title="Weight">
+            <AdminWeight uid={user.uid} user={user} />
+         </Tab>
+      </Tabs>
+   )
+}
+
+const ProfileBase = ({ user, onSendPasswordResetEmail, firebase }) => {
+   const [error, setError] = useState(null);
+   const [active, setActive] = useState(user.ACTIVE);
+
+   useEffect(() => {
+      firebase.active(user.uid)
+         .on("value", snap => {
+            setActive(snap.val());
+         });
+      return () => firebase.active(user.uid).off();
+   }, [firebase, user.uid]);
+
+
    const memberDate = user ? new Date(user.createdAt) : new Date();
    const memberDateString = memberDate.toLocaleDateString("en-US");
    const programDate = (user && user.programDate) ? new Date(user.programDate) : null;
    const programDateString = programDate ? programDate.toLocaleDateString("en-US") : "-";
+
+   const activateUser = () => {
+      console.log("active", user.uid);
+      firebase
+         .activate(user.uid)
+         .then(() => console.log("activated"))
+         .catch(error => setError(error));
+   };
+   const deactivateUser = () => {
+      console.log("inactive");
+      firebase
+         .deactivate(user.uid)
+         .then(() => console.log("deactivated"))
+         .catch(error => setError(error));
+   };
+
    return (
       <ListGroup className="mb-5">
-         <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
          <ListGroup.Item><strong>Username:</strong> {user.username}</ListGroup.Item>
+         <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
          <ListGroup.Item><strong>Member Since:</strong> {memberDateString}</ListGroup.Item>
          <ListGroup.Item><strong>Last Program:</strong> {programDateString}</ListGroup.Item>
          <ListGroup.Item>
@@ -137,11 +171,38 @@ const Profile = ({ user, onSendPasswordResetEmail }) => {
                onClick={onSendPasswordResetEmail}
             >
                Send Password Reset
-                              </Button>
+            </Button>
          </ListGroup.Item>
+         <ListGroup.Item>
+            {active ? (
+               <Button
+                  type="button"
+                  onClick={deactivateUser}
+                  variant="danger"
+               >
+                  Deactivate
+               </Button>
+            ) : (
+                  <Button
+                     type="button"
+                     onClick={activateUser}
+                     variant="success"
+                  >
+                     Activate
+                  </Button>
+               )
+            }
+         </ListGroup.Item>
+         {
+            error && (
+               <ListGroup.Item><Alert variant="warning">{error}</Alert></ListGroup.Item>
+            )
+         }
       </ListGroup>
    )
 }
+
+const Profile = withFirebase(ProfileBase);
 
 const UserItem = withRouter(withFirebase(UserItemBase));
 

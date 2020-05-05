@@ -147,6 +147,14 @@ class Firebase {
 
    users = () => this.db.ref('users');
 
+   // *** Activate User API ***
+
+   active = (uid) => this.db.ref(`users/${uid}`).child("ACTIVE");
+
+   activate = (uid) => this.db.ref(`users/${uid}`).update({ ACTIVE: true });
+
+   deactivate = (uid) => this.db.ref(`users/${uid}`).update({ ACTIVE: false });
+
    // *** WorkoutIds API ***
 
    workoutIds = uid => this.db.ref(`workoutids/${uid}`);
@@ -182,7 +190,6 @@ class Firebase {
    task = (tid) => this.db.ref(`tasks/${tid}`);
 
    // *** Diet API ***
-   //Rename these
 
    usersDiets = (uid) => this.db.ref(`diets/${uid}`);
 
@@ -204,14 +211,6 @@ class Firebase {
    userBefore = (uid) => this.storage.ref(`images/${uid}/before`);
 
    userAfter = (uid) => this.storage.ref(`images/${uid}/after`);
-
-   // userBeforeFile = (uid) => this.storage.ref(`images/${uid}/before`).name;
-   // userAfterFile = (uid) => this.storage.ref(`images/${uid}/after`).name;
-
-   // // Reference's name is the last segment of the full path: 'space.jpg'
-   // // This is analogous to the file name
-   // spaceRef.name;
-
 
 }
 

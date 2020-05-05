@@ -1,4 +1,5 @@
 export const SIGN_UP = '/signup';
+export const INSIDER = '/insider-signup';
 export const SIGN_IN = '/signin';
 export const SIGN_IN_LINK = '/email-signin';
 export const PASSWORD_FORGET = '/pw-forget';

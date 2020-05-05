@@ -20,10 +20,13 @@ const UserInfoCard = ({ authUser }) => {
                <ListGroup.Item>Email: {authUser.email}</ListGroup.Item>
                <ListGroup.Item>Programs: {authUser.workoutids ? Object.keys(authUser.workoutids).length : 0}</ListGroup.Item>
                <ListGroup.Item>Member Since: {dateString}</ListGroup.Item>
+               {!authUser.ACTIVE && (
+                  <ListGroup.Item>Your account is currently inactive</ListGroup.Item>
+               )
+               }
             </ListGroup>
          </Card.Body>
       </Card>
-
    );
 }
 
