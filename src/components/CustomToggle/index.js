@@ -32,8 +32,8 @@ const CustomToggle = ({ onClick, children, eventKey, scroll = true }) => {
       <div
          onClick={handleClicked}
          onKeyPress={handleClicked}
-         role="button"
-         tabIndex="0"
+         // role="button"
+         // tabIndex="0"
          className="customToggle"
          ref={scrollToRef}
       >

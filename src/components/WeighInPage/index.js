@@ -5,8 +5,7 @@ import { compose } from 'recompose';
 import { withAuthorization, withEmailVerification } from '../Session';
 
 import { AuthUserContext } from '../Session';
-// import Weight from '../WeighIn';
-import Weight2 from '../WeighIn2';
+import Weight from '../WeighIn';
 import Container from 'react-bootstrap/Container';
 
 const WeighInPage = () => {
@@ -22,9 +21,7 @@ const WeighInPage = () => {
          <div className="app-top">
             <div className="d-flex justify-content-center ">
                <div className="mb-5 contain-width">
-                  {/* <h3>Weigh In</h3> */}
-                  {/* <Weight authUser={authUser} /> */}
-                  <Weight2 authUser={authUser} />
+                  <Weight authUser={authUser} />
                </div>
             </div>
          </div>

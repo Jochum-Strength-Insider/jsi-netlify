@@ -110,7 +110,7 @@ class Diet extends Component {
                      const dayName = date.format('dddd');
 
                      return (
-                        <Card key={diet.key} className="date-card user-program-day my-3 no-border rounded">
+                        <Card key={diet.key} className="date-card user-program-day my-3 rounded">
                            <CustomToggle eventKey={diet.key} scroll={false}>
                               <Card.Body className="bg-purple" >
                                  <div className="d-flex justify-content-between">

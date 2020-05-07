@@ -357,9 +357,9 @@ class ExpandableTable extends React.Component {
                                                 <th className="text-center  dth-rest">Rest</th>
                                                 {showTracking && (
                                                    <>
-                                                      <th className="text-center  dth-w1">w1</th>
-                                                      <th className="text-center  dth-w2">w2</th>
-                                                      <th className="text-center  dth-w3">w3</th>
+                                                      <th className="text-center dth-w1">w1</th>
+                                                      <th className="text-center dth-w2">w2</th>
+                                                      <th className="text-center dth-w3">w3</th>
                                                    </>
                                                 )
                                                 }

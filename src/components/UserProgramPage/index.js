@@ -114,11 +114,6 @@ class ManageUserTablesBase extends Component {
       this.props.firebase.workout(this.props.authUser.uid, this.state.key).off();
       this.props.firebase.workouts(this.props.authUser.uid).off();
       this.props.firebase.workoutIds(this.props.authUser.uid).off();
-
-      // this.props.firebase.workoutIds(this.props.authUser.uid)
-      //    .orderByChild("active")
-      //    .equalTo(true)
-      //    .limitToLast(1).off();
    }
 
    render() {

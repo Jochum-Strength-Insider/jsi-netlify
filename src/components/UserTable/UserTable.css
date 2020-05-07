@@ -1,17 +1,9 @@
 .dark-tab.nav-tabs {
-   border: 1px solid white;
    margin-bottom: 16px;
-   /* margin-top: 16px; */
-   border-radius: 500px;
    flex-wrap: nowrap;
+   border: 1px solid white;
+   border-radius: 500px;
 }
-
-/* .tab-content {}
-
-.tab-panel {}
-
-.nav-item .nav-link {} */
-
 
 .dark-tab.nav-tabs .nav-link {
    flex: 1 1 0;
@@ -20,16 +12,6 @@
    transition: color 250ms ease-in;
    border: none;
 }
-
-/* .dark-tab.nav.nav-tabs>.nav-item:first-of-type {
-   border-right: 1px solid white;
-   border-radius: 0px;
-}
-
-.dark-tab.nav.nav-tabs>.nav-item:last-of-type {
-   border-left: 1px solid white;
-   border-radius: 0px;
-} */
 
 .dark-tab.nav-tabs>a:first-of-type.nav-link.active {
    border-top-left-radius: 500px;
@@ -45,24 +27,10 @@
    border-bottom-right-radius: 500px;
 }
 
-.dark-tab.nav-tabs>a.nav-link.active {
-   border-top-left-radius: 0rem;
-   border-bottom-left-radius: 0rem;
-   border-top-right-radius: 0rem;
-   border-bottom-right-radius: 0rem;
-}
-
-/* .dark-tab.nav-tabs .nav-item.show .nav-link,
-.dark-tab.nav-tabs .nav-link {
-   background-color: rgba(255, 255, 255, 0);
-   transition: background-color 500ms ease-in-out;
-} */
 
 .dark-tab.nav-tabs .nav-item.show .nav-link,
 .dark-tab.nav-tabs .nav-link.active {
    background-color: rgb(255, 255, 255);
-   /* border-radius: 0rem; */
-   /* border: none; */
    color: #007BFF;
    margin: 0;
 }
@@ -71,20 +39,13 @@
    border: none;
 }
 
-.nav-tabs .nav-link:focus,
-.nav-tabs .nav-link:hover {
+.dark-tab .nav-link:focus,
+.dark-tab .nav-link:hover {
    border-color: rgba(36, 0, 0, 0);
    color: #007BFF;
 }
 
-.entered {
-   border: 1px solid green;
-}
-
-
 @media (max-width: 576px) {
-   /* .user-program-day {} */
-
    .user-program-day.my-5 {
       margin-bottom: 2rem !important;
       margin-top: 2rem !important;
@@ -93,4 +54,33 @@
    .user-program-day h3 {
       font-size: 1.25rem;
    }
+}
+
+
+.user-program-day {
+   border: 1px solid white;
+   border-radius: .25rem;
+}
+
+
+.user-program-day .card-img-top {
+   flex-shrink: 0;
+   width: 100%;
+   border-top-left-radius: .25rem;
+   border-top-right-radius: .25rem;
+}
+
+.user-program-day .card-body {
+   flex: 1 1 auto;
+   min-height: 1px;
+   padding: 1.25rem;
+
+   border-bottom-left-radius: .25rem;
+   border-bottom-right-radius: .25rem;
+}
+
+.user-program-day .card-collapse {
+   border: 2px solid white;
+   /* border-bottom-left-radius: .25rem; */
+   /* border-bottom-right-radius: .25rem; */
 }

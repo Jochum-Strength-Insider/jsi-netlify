@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
+import Footer from '../Footer';
 
 import './style.css';
 
@@ -87,6 +88,8 @@ const Landing = () => (
 
       <Spacer link="signUp" />
       <SignUp />
+
+      <Footer />
    </div >
 );
 

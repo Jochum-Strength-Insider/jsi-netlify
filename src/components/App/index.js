@@ -10,14 +10,14 @@ import PasswordForgetPage from '../PasswordForget';
 import UserProgramPage from '../UserProgramPage';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-import AdminMobilePage from '../AdminMobile';
+// import AdminMobilePage from '../AdminMobile';
 import CreateProgram from '../CreateProgram';
 import CreateTask from '../CreateTask';
 import DietPage from '../DietPage';
 import WeighInPage from '../WeighInPage';
 import UserChat from '../ChatUser';
 import AdminChat from '../ChatAdmin';
-import Footer from '../Footer';
+// import Footer from '../Footer';
 import AdminUserProgramsPage from '../AdminUserProgramsPage';
 
 import * as ROUTES from '../../constants/routes';
@@ -39,7 +39,7 @@ const App = () => (
                <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
                <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
                <Route path={ROUTES.ADMIN} component={AdminPage} />
-               <Route path={ROUTES.ADMIN_MOBILE} component={AdminMobilePage} />
+               {/* <Route path={ROUTES.ADMIN_MOBILE} component={AdminMobilePage} /> */}
                <Route path={ROUTES.CREATEPROGRAM} component={CreateProgram} />
                <Route path={ROUTES.CREATETASK} component={CreateTask} />
                <Route path={ROUTES.USERPROGRAM} component={UserProgramPage} />
@@ -51,7 +51,7 @@ const App = () => (
                <Route path="*" component={NoMatch} />
             </Switch>
          </Container>
-         <Footer />
+         {/* <Footer /> */}
       </Router>
    </>
 );

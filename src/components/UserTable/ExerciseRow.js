@@ -103,7 +103,6 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                   aria-controls="example-collapse-text"
                   aria-expanded={open}
                   variant="outline-primary"
-                  block
                >
                   {open ? <span>&minus;</span> : <span>&#65291;</span>}
                </Button>
@@ -122,7 +121,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                      Object.keys(trackingData).map((week, index) => {
                         return (
 
-                           <Form.Group xs={12} md={3} as={Col} key={week} >
+                           <Form.Group xs={12} md={12} as={Col} key={week} >
                               <Form.Label>{week}</Form.Label>
                               <Form.Control
                                  className={trackingData[week] ? "entered" : null}
@@ -139,7 +138,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                         )
                      })
                   }
-                  <Form.Group className="d-flex align-items-end" as={Col} xs={12} md={3}>
+                  <Form.Group className="d-flex align-items-end" as={Col} xs={12} md={12}>
                      {
                         alert
                            ? <Button block type="submit" variant="outline-success">Saved!</Button>

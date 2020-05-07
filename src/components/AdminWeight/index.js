@@ -189,7 +189,7 @@ class WeightBase extends Component {
                      }
                   ],
                };
-               const newOptions = this.options(month, [this.state.weight]);
+               const newOptions = this.options(month, ["180"]);
                if (onMount) {
                   this.setState({ data: chartData, listData: [], options: newOptions, weight: '180', loading: false });
                } else {
@@ -216,7 +216,7 @@ class WeightBase extends Component {
 
       const { data, listData, options, error, queryDate } = this.state;
       const now = moment().format('YYYY-MM-DD');
-      const chartTitle = moment().format('MMMM YYYY');
+      const chartTitle = moment(queryDate).format('MMMM YYYY');
       const nowDateUnix = Number(moment(now).format("x"));
 
       return (
@@ -333,7 +333,7 @@ const MonthCirlces = ({ queryDate, changeQueryDate }) => {
                            onClick={changeQueryDate(month.formatted)}
                            key={month.unix}
                            disabled={month.unix > nowUnix}
-                           className={`date d-none d-sm-flex align-items-center justify-content-center`}
+                           className={`date d-none d-md-flex align-items-center justify-content-center`}
                         >
                            <div>
                               <div className="month">{month.month}</div>
@@ -363,7 +363,7 @@ const MonthCirlces = ({ queryDate, changeQueryDate }) => {
                            onClick={changeQueryDate(month.formatted)}
                            key={month.unix}
                            disabled={month.unix > nowUnix}
-                           className={`date d-none d-sm-flex align-items-center justify-content-center ${month.unix > nowUnix && "future-date"}`}
+                           className={`date d-none d-md-flex align-items-center justify-content-center ${month.unix > nowUnix && "future-date"}`}
                         >
                            <div>
                               <div className="month">{month.month}</div>
@@ -376,7 +376,7 @@ const MonthCirlces = ({ queryDate, changeQueryDate }) => {
                            onClick={changeQueryDate(month.formatted)}
                            key={month.unix}
                            disabled={month.unix > nowUnix}
-                           className={`date d-none d-md-flex align-items-center justify-content-center ${month.unix > nowUnix && "future-date"}`}
+                           className={`date d-none d-sm-flex align-items-center justify-content-center ${month.unix > nowUnix && "future-date"}`}
                         >
                            <div>
                               <div className="month">{month.month}</div>

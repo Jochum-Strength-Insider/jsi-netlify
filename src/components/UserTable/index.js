@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
 
 import Modal from "../Modal";
 import YoutubeEmbed from "../YoutubeEmbed";
@@ -51,7 +50,6 @@ const images = {
 
 const UserTable = ({ program, saveTracking }) => {
 
-   // console.log("userTable", program);
 
    const { instruction, workoutId } = program;
    const phasesList = Object.keys(instruction);
@@ -80,15 +78,12 @@ const UserTable = ({ program, saveTracking }) => {
          { ...accumulator, [key]: daysList }
       )
    }, {});
-   // console.log("phasesList", tablesList);
 
    return (
       <>
-
          <Tabs defaultActiveKey={0} className="dark-tab mt-3 mb-4">
             {phasesList.map((key, index) => {
                const { completed, ...days } = tablesList[key];
-
                return (
                   <Tab eventKey={index} title={key} key={index}>
                      <PhaseTable days={days} workoutId={workoutId} phase={key} completed={completed} saveTracking={saveTracking} />
@@ -96,7 +91,6 @@ const UserTable = ({ program, saveTracking }) => {
                )
             })}
          </Tabs>
-
       </>
    )
 };
@@ -105,7 +99,6 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
 
    const updateSaveTracking = (dayTitle, rowIndex, itemUpdate) => {
       const daysUpdate = { ...days };
-      // console.log(daysUpdate[dayTitle]);
       const dayUpdate = daysUpdate[dayTitle];
       dayUpdate.exercises[rowIndex] = itemUpdate;
 
@@ -125,34 +118,30 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
 
    return (
       <>
-         {/* <ListGroup > */}
          <Accordion className="mb-5">
             {
                daysList.map((key, daysIndex) => {
                   const day = days[key];
                   const image = images[day.image];
-                  // console.log(image);
                   const dayCapitalized = key.charAt(0).toUpperCase() + key.substring(1) + ": " + day.title;
 
                   return (
-                     <Card key={daysIndex} className="user-program-day my-5 no-border rounded">
+                     <div key={daysIndex} className="user-program-day my-5">
                         <CustomToggle eventKey={daysIndex}>
-                           {/* {daysIndex % 2 === 0 ? (<Card.Img variant="top" src={armGuyImg} />) : (<Card.Img variant="top" src={legDay} />)} */}
-                           <Card.Img variant="top" src={image} />
-                           <Card.Body className="bg-purple">
-                              <h3 style={{ color: "white" }}>{dayCapitalized}</h3>
-                           </Card.Body>
+                           <img className="card-img-top" alt={"Exercise"} src={image} />
+                           <div className="bg-purple card-body">
+                              <h3 className="my-0 focus" tabIndex="0" role="button" style={{ color: "white" }}>{dayCapitalized}</h3>
+                           </div>
                         </CustomToggle>
-                        <Accordion.Collapse eventKey={daysIndex}>
+                        <Accordion.Collapse eventKey={daysIndex} className="card-collapse">
                            <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
                         </Accordion.Collapse>
-                     </Card>
+                     </div>
                   )
                }
                )
             }
          </Accordion>
-         {/* </ListGroup> */}
       </>
    )
 }
@@ -176,12 +165,10 @@ const DayTable = ({ day, dayTitle, updateSaveTracking }) => {
    }
 
    const headers = Object.keys(day.exercises[0]);
-   // const { title, exercises } = day;
    const { exercises } = day;
 
    return (
       <>
-         {/* <h3>{dayTitle + ": " + title}</h3> */}
          <Modal show={show} handleClose={handleClose} heading={heading}>
             <YoutubeEmbed youtubeId={youtubeId} />
          </Modal>

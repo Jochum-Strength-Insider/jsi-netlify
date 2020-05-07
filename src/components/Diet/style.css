@@ -120,14 +120,16 @@
    display: block;
    padding: .75rem 1.25rem;
    background-color: #fff;
-   border: 0px solid rgba(0, 0, 0, 0);
+   /* border: 0px solid rgba(0, 0, 0, 0); */
+   border: none;
 }
 
-.date-card .card-body {
+/* .date-card .card-body {
    padding: 1rem;
-   border: 2px solid white;
+   border: 1px solid white;
+   border: none;
    border-radius: .25rem;
-}
+} */
 
 
 .diet-form-toggle {
@@ -136,11 +138,14 @@
    cursor: pointer;
    padding-top: 1rem;
    padding-bottom: 1rem;
-
    display: block;
    width: 100%;
 }
 
-.date-select-card {
-   border: 2px solid white;
+.date-select-card.card {
+   border: 1px solid white;
+}
+
+.accordion>.date-card.card:not(:last-of-type) {
+   border-bottom: 1px solid white;
 }

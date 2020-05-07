@@ -2,45 +2,44 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 
+import "./style.css";
+
 import Modal from '../Modal';
-// import Loading from '../Loading';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import PaginationBasic from '../PaginationBasic';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment';
-
-// const data = {
-//    "0": { date: "3/1/2020", weight: "180" },
-//    "1": { date: "3/2/2020", weight: "185" },
-//    "2": { date: "3/3/2020", weight: "184" },
-//    "3": { date: "3/4/2020", weight: "182" }
-// }
 
 class WeightBase extends Component {
    constructor(props) {
       super(props);
 
+      this.currentDate = moment();
+
       this.dataSetOptions = {
          label: 'Weight',
-         fill: false,
-         lineTension: 0,
-         // backgroundColor: 'rgba(765, 42, 52)',
-         borderColor: 'rgba(65, 42, 52)',
+         fill: true,
+         lineTension: 0.2,
+         backgroundColor: 'rgb(255,255,255, 0.1)',
+         borderColor: 'white',
+         borderWidth: 2,
+         // borderColor: 'rgba(65, 42, 52)',
          // borderCapStyle: 'butt',
          // borderJoinStyle: 'miter',
-         pointBorderColor: 'rgb(65, 42, 52)',
-         pointBackgroundColor: 'rgba(65, 42, 52)',
+         pointBorderColor: 'white',
+         // pointBorderColor: 'rgb(65, 42, 52)',
+         // pointBackgroundColor: 'white',
+         pointBackgroundColor: '#a76884',
          pointBorderWidth: 1,
          pointHoverRadius: 5,
          // pointHoverBackgroundColor: 'rgba(65, 42, 52)',
          // pointHoverBorderColor: 'rgba(65, 42, 52)',
          pointHoverBorderWidth: 2,
-         pointRadius: 3,
+         pointRadius: 5,
          pointHitRadius: 10,
       }
 
@@ -55,7 +54,6 @@ class WeightBase extends Component {
 
       };
 
-      const currentDate = moment().format('YYYY-MM-DD');
 
       this.state = {
          tracking: [],
@@ -67,73 +65,97 @@ class WeightBase extends Component {
          weight: "180",
          lastDate: "",
          invalid: false,
-         date: currentDate,
-         queryDate: currentDate,
+         date: this.currentDate.format('YYYY-MM-DD'),
+         queryDate: this.currentDate.format('YYYY-MM-DD'),
          error: null,
       }
    }
 
-   options = (weightData) => ({
-      responsive: true,
-      legend: {
-         display: false,
-      },
-      title: {
-         display: true,
-         text: 'Weight'
-      },
-      animation: {
-         animateScale: true
-      },
-      tooltips: {
-         callbacks: {
-            label: function (tooltipItem, data) {
-               const label = data.labels[tooltipItem.index];
-               const toDay = label.format("MMM D");
-               const weight = tooltipItem.yLabel;
-               return toDay + ": " + weight + "lbs";
-            }
-         }
-      },
-      scales: {
-         yAxes: [{
-            ticks: {
-               // beginAtZero: true,
-               callback: function (value) { if (Number.isInteger(value)) { return value; } },
-               stepSize: 1,
-               suggestedMin: Math.min(...weightData) - 5,
-               suggestedMax: Math.max(...weightData) + 5,
-            },
-            scaleLabel: {
-               display: true,
-               labelString: 'lbs'
-            }
-         }],
-         xAxes: [{
-            // time settings
-            type: 'time',
-            time: {
-               unit: 'day',
-               unitStepSize: 1,
-               displayFormats: {
-                  day: 'MMM D'
+   options = (title, weightData) => {
+      const gridColor = "rgba(255, 255, 255, 0.100)";
+      const tickColor = "white";
+
+      return {
+         responsive: true,
+         // maintainAspectRatio: false,
+         legend: {
+            display: false,
+         },
+         title: {
+            display: false,
+            text: title,
+            fontColor: "white",
+         },
+         animation: {
+            animateScale: true
+         },
+         tooltips: {
+            callbacks: {
+               label: function (tooltipItem, data) {
+                  const label = data.labels[tooltipItem.index];
+                  const toDay = label.format("MMM D");
+                  const weight = tooltipItem.yLabel;
+                  return toDay + ": " + weight + "lbs";
                }
-            },
-            scaleLabel: {
-               display: true,
-               labelString: 'Date',
-            },
-            distribution: 'linear',
-         }]
+            }
+         },
+         scales: {
+            yAxes: [{
+               ticks: {
+                  // beginAtZero: true,
+                  callback: function (value) { if (Number.isInteger(value)) { return `${value} `; } },
+                  stepSize: 5,
+                  suggestedMin: Math.min(...weightData) - 20,
+                  suggestedMax: Math.max(...weightData) + 20,
+                  fontColor: tickColor,
+               },
+               scaleLabel: {
+                  display: false,
+                  labelString: 'lbs'
+               },
+               gridLines: {
+                  color: gridColor,
+                  zeroLineColor: gridColor,
+                  // lineWidth: 2,
+                  // zeroLineWidth: 2
+               },
+            }],
+            xAxes: [{
+               // time settings
+               type: 'time',
+               time: {
+                  unit: 'day',
+                  unitStepSize: 1,
+                  displayFormats: {
+                     day: 'D'
+                  }
+               },
+               scaleLabel: {
+                  display: true,
+                  labelString: 'Date',
+                  fontColor: tickColor,
+               },
+               distribution: 'linear',
+               ticks: {
+                  fontColor: tickColor,
+               },
+               gridLines: {
+                  color: gridColor,
+                  zeroLineColor: gridColor,
+                  // lineWidth: 2,
+                  // zeroLineWidth: 2
+               },
+            }]
+         }
       }
-   })
+   }
 
    onChange = (e) => {
       const { name, value } = e.target;
       this.setState({ [name]: value })
    }
 
-   addWeightIn = (e) => {
+   addWeighIn = (e) => {
       e.preventDefault();
       const timestamp = Number(moment(this.state.date).format("x"));
       const nowString = moment(this.state.date).format("MMM D");
@@ -143,17 +165,15 @@ class WeightBase extends Component {
       if (lastDatestring === nowString) {
          this.setState({ invalid: true })
       } else {
-         // console.log("Checked In Added", this.state.weight)
          this.props.firebase.weighIn(this.props.authUser.uid).push({ date: timestamp, weight: this.state.weight })
-            .then(this.hideModal)
+            .then(this.hideAndValidateModal)
             .catch(error => this.setState({ error }))
       }
-
-      // add a changeQuery back to current date?
    }
 
    showModal = () => this.setState({ show: true });
-   hideModal = () => this.setState({ show: false, invalid: false });
+   hideModal = () => this.setState({ show: false });
+   hideAndValidateModal = () => this.setState({ show: false, invalid: true });
 
    fetchData = (date, onMount) => {
       this.setState({ loading: true });
@@ -170,10 +190,10 @@ class WeightBase extends Component {
       // ]
       // quickAdd.map(key => this.props.firebase.weighIn(this.props.authUser.uid).push(key));
 
-
       // const recentDate = Number(moment(date).format("x"));
       // const previousDate = Number(moment(date).subtract(1, "w").format("x"));
 
+      const month = moment(date).format("MMMM");
       const startOf = Number(moment(date).startOf("month").format("x"));
       const endOf = Number(moment(date).endOf("month").format("x"));
 
@@ -210,10 +230,10 @@ class WeightBase extends Component {
                };
                localStorage.setItem('chartData', JSON.stringify(chartData));
 
-               const newOptions = this.options(weightData);
+               const newOptions = this.options(month, weightData);
 
                if (onMount) {
-                  this.setState({ data: chartData, listData: dataArray, options: newOptions, weight: weightData[weightData.length - 1], lastDate: dateLabels[dateLabels.length - 1], loading: false });
+                  this.setState({ data: chartData, listData: dataArray, options: newOptions, weight: weightData[weightData.length - 1], loading: false });
                } else {
                   this.setState({ data: chartData, listData: dataArray, options: newOptions, loading: false });
                }
@@ -229,10 +249,9 @@ class WeightBase extends Component {
                      }
                   ],
                };
-               const newOptions = this.options([this.state.weight]);
-               // make a reset object?
+               const newOptions = this.options(month, [this.state.weight]);
                if (onMount) {
-                  this.setState({ data: chartData, listData: [], options: newOptions, weight: '180', lastDate: '', loading: false });
+                  this.setState({ data: chartData, listData: [], options: newOptions, weight: '180', loading: false });
                } else {
                   this.setState({ data: chartData, listData: [], options: newOptions, loading: false });
                }
@@ -241,27 +260,67 @@ class WeightBase extends Component {
          })
    }
 
+   checkIn = () => {
+      this.props.firebase
+         .weighIn(this.props.authUser.uid)
+         .orderByChild("date")
+         .limitToLast(1)
+         .once("value", (snap) => {
+            const dateObject = snap.val();
+
+            const lastDateObject = Object.keys(dateObject).map(date => dateObject[date])[0];
+            const lastDate = lastDateObject.date;
+
+            const now = moment().format("YYYY-MM-DD");
+            const dateFormatted = moment(lastDate).format("YYYY-MM-DD");
+
+            if (now === dateFormatted) {
+               console.log("yep", now, dateFormatted)
+               this.setState({ lastDate: lastDate, invalid: true })
+            } else {
+               console.log("nope", now, dateFormatted)
+               this.setState({ lastDate: lastDate, show: true })
+            }
+         });
+   }
+
    changeQueryDate = (date) => () => {
       this.setState({ queryDate: date });
       this.fetchData(date, false);
    }
 
    componentDidMount() {
+      this.checkIn();
       this.fetchData((this.state.queryDate), true);
+   }
+
+   componentWillUnmount() {
+      this.props.firebase.weighIn(this.props.authUser.uid).off();
    }
 
    render() {
 
       const { data, listData, options, invalid, show, weight, error, queryDate } = this.state;
-      const now = moment().format('YYYY-MM-DD');
-      const nowDateUnix = Number(moment(now).format("x"));
+      const nowObject = moment();
+      // const now = nowObject.format('YYYY-MM-DD');
+
+      const chartTitle = moment(queryDate).format('MMMM YYYY');
+      const nowDateUnix = Number(nowObject.format("x"));
+
+      const formattedDate = nowObject.format('MM-DD-YYYY');
+      const day = nowObject.format('ddd');
+
+      const startOfMonth = nowObject.startOf("M").format("YYYY-MM-DD");
+      const startOfQuery = moment(queryDate).startOf("M").format("YYYY-MM-DD");
+
+      const currentMonth = startOfMonth === startOfQuery;
 
       return (
          <>
-            <Modal show={show} handleClose={this.hideModal} heading={"Add Weigh In"}>
-               <Form onSubmit={this.addWeightIn}>
+            <Modal show={show} handleClose={this.hideModal} heading={"Add Weigh In?"}>
+               <Form onSubmit={this.addWeighIn}>
                   <Form.Group>
-                     <Form.Label>Add Weigh In - {now}</Form.Label>
+                     <Form.Label>{day} {formattedDate}</Form.Label>
                      <Form.Control
                         type="number"
                         name="weight"
@@ -282,17 +341,20 @@ class WeightBase extends Component {
 
             {error && <Alert variant="warning">{error.message}</Alert>}
 
+
+            <div className="canvas-container mb-3">
+               <h3 className="text-center">{chartTitle}</h3>
+               <Line
+                  data={data}
+                  options={options}
+               />
+            </div>
+
             <ListGroup>
-               <ListGroup.Item className="py-sm-4 py-3">
-                  <Button className="py-2" block variant="primary" onClick={this.showModal}>Add Weigh In</Button>
+               <ListGroup.Item>
+                  <MonthCirlces onDayClicked={this.onDayClicked} queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} />
                </ListGroup.Item>
-               <ListGroup.Item className="d-none d-sm-block">
-                  <Line
-                     data={data}
-                     options={options}
-                  />
-               </ListGroup.Item>
-               {/* <div className="d-block d-sm-none"> */}
+
                {listData.length > 0 ?
                   (listData.map(item => {
                      const { date, weight } = item;
@@ -300,29 +362,171 @@ class WeightBase extends Component {
                      const formattedDate = momentObject.format('MM-DD-YYYY');
                      const day = momentObject.format('ddd');
                      return (
-                        <ListGroup.Item className="d-block d-sm-none d-flex justify-content-between" key={date}>
-                           <p>{day} {formattedDate}</p>
-                           <p><b>{weight}lbs</b></p>
+                        <ListGroup.Item className="d-flex justify-content-between" key={date}>
+                           <div>{day} {formattedDate}</div>
+                           <div><b>{weight}lbs</b></div>
                         </ListGroup.Item>
                      )
                   })) : (
-                     <ListGroup.Item>
-                        No Weigh Ins This Month
-                     </ListGroup.Item>
+                     <>
+                        <ListGroup.Item>
+                           No Weigh Ins This Month
+                        </ListGroup.Item>
+                     </>
                   )
                }
-               {/* </div> */}
-               <ListGroup.Item>
-                  <div className="d-flex justify-content-center">
-                     <div>
-                        <PaginationBasic queryDate={queryDate} changeQueryDate={this.changeQueryDate} now={nowDateUnix} format={'YYYY-MM-DD'} spacing={"months"} />
-                     </div>
-                  </div>
-               </ListGroup.Item>
+
+               {currentMonth && (
+                  <ListGroup.Item className="d-flex justify-content-center">
+                     <button className="py-2 weigh-button btn btn-primary" variant="primary" onClick={this.showModal}>+ Weigh In</button>
+                  </ListGroup.Item>
+               )}
+
             </ListGroup>
+
          </>
       )
    }
+}
+
+const MonthCirlces = ({ queryDate, changeQueryDate }) => {
+   const startOfMonth = moment(queryDate).startOf("M");
+
+   const nowUnix = Number(moment().format("x"));
+
+   const prevMonth = moment(queryDate).subtract(1, "M").format('YYYY-MM-DD');
+   const nextMonth = moment(queryDate).add(1, "M").format('YYYY-MM-DD');
+   const nextMonthUnix = Number(moment(queryDate).add(1, "w").format('x'));
+
+   const pastMonths = [2, 1].map(sub => {
+      const date = moment(startOfMonth).subtract(sub, "M")
+      const formatted = date.format('YYYY-MM-DD');
+      const month = date.format('MMM');
+      const unix = Number(date.format("x"));
+      return {
+         formatted,
+         unix,
+         month
+      }
+   });
+
+   const thisMonth = {
+      formatted: moment(startOfMonth).format('YYYY-MM-DD'),
+      month: moment(startOfMonth).format('MMM'),
+      unix: Number(moment(startOfMonth).format("x")),
+   }
+
+   const futureMonths = [1, 2].map(add => {
+      const date = moment(startOfMonth).add(add, "M")
+      const formatted = date.format('YYYY-MM-DD');
+      const month = date.format('MMM');
+      const unix = Number(date.format("x"));
+      return {
+         formatted,
+         unix,
+         month
+      }
+   });
+
+   const disabled = nextMonthUnix > nowUnix;
+
+   return (
+      <>
+         <div className="d-flex justify-content-between date-circles">
+
+            <button onClick={changeQueryDate(prevMonth)} className="date previous d-flex align-items-center justify-content-center">
+               <div>
+                  <div>&#8249;</div>
+               </div>
+            </button>
+
+            {
+               pastMonths.map((month, index) => {
+                  if (index === 1) {
+                     return (
+                        <button
+                           onClick={changeQueryDate(month.formatted)}
+                           key={month.unix}
+                           disabled={month.unix > nowUnix}
+                           className={`date d-none d-sm-flex align-items-center justify-content-center`}
+                        >
+                           <div>
+                              <div className="month">{month.month}</div>
+                           </div>
+                        </button>
+                     )
+                  } else {
+                     return (
+                        <button
+                           onClick={changeQueryDate(month.formatted)}
+                           key={month.unix}
+                           disabled={month.unix > nowUnix}
+                           className={`date d-none d-md-flex align-items-center justify-content-center`}
+                        >
+                           <div>
+                              <div className="month">{month.month}</div>
+                           </div>
+                        </button>
+                     )
+                  }
+               })
+            }
+
+            <button
+               onClick={changeQueryDate(thisMonth.formatted)}
+               key={thisMonth.unix}
+               disabled={thisMonth.unix > nowUnix}
+               className={`date d-flex align-items-center justify-content-center current-date`}
+            >
+               <div>
+                  <div className="month">{thisMonth.month}</div>
+               </div>
+            </button>
+
+            {
+               futureMonths.map((month, index) => {
+                  if (index === 1) {
+                     return (
+                        <button
+                           onClick={changeQueryDate(month.formatted)}
+                           key={month.unix}
+                           disabled={month.unix > nowUnix}
+                           className={`date d-none d-md-flex align-items-center justify-content-center ${month.unix > nowUnix && "future-date"}`}
+                        >
+                           <div>
+                              <div className="month">{month.month}</div>
+                           </div>
+                        </button>
+                     )
+                  } else {
+                     return (
+                        <button
+                           onClick={changeQueryDate(month.formatted)}
+                           key={month.unix}
+                           disabled={month.unix > nowUnix}
+                           className={`date d-none d-sm-flex align-items-center justify-content-center ${month.unix > nowUnix && "future-date"}`}
+                        >
+                           <div>
+                              <div className="month">{month.month}</div>
+                           </div>
+                        </button>
+                     )
+                  }
+
+               })
+            }
+
+            <button
+               onClick={changeQueryDate(nextMonth)}
+               disabled={disabled}
+               className={`date next d-flex align-items-center justify-content-center ${disabled && "disabled"}`}>
+               <div>
+                  <div>&#8250;</div>
+               </div>
+            </button>
+         </div>
+      </>
+   )
 }
 
 const Weight = withFirebase(WeightBase);

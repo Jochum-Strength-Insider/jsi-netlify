@@ -32,7 +32,7 @@ body::-webkit-scrollbar {
 .contain-width {
    width: 100%;
    max-width: 1000px;
-   flex: 1;
+   /* flex: 1; */
 }
 
 
@@ -86,7 +86,10 @@ body::-webkit-scrollbar {
 
 .bg-black {
    background-color: black;
-   /* color: white; */
+}
+
+.bg-clear {
+   background-color: rgba(0, 0, 0, 0);
 }
 
 .color-black {

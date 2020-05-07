@@ -10,7 +10,7 @@ import Container from 'react-bootstrap/Container';
 import { withAuthorization, withEmailVerification } from '../Session';
 import * as ROUTES from '../../constants/routes';
 
-const style = { width: "100%", flex: "1" };
+const style = { width: "100%" };
 
 const AdminUserProgramsPage = () => (
    <>
