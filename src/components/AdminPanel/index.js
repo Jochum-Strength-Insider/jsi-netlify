@@ -229,7 +229,7 @@ class UserListBase extends Component {
             localStorage.setItem('users', JSON.stringify(usersList));
             this.setState({ users: usersList, sortedUsers: usersList, loading: false, })
 
-            this.props.setCurrentUser(usersList[usersList.length - 1])
+            // this.props.setCurrentUser(usersList[usersList.length - 1])
          } else {
             localStorage.removeItem('users');
             this.setState({ loading: false })

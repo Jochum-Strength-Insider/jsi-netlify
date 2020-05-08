@@ -1,5 +1,7 @@
 import React, { Component, useState } from 'react';
 
+import debounce from 'lodash.debounce';
+
 import "./style.css";
 
 import { withFirebase } from '../Firebase';
@@ -283,6 +285,8 @@ class DietSheetPageBase extends Component {
       super(props);
       this.timer = null;
 
+      this.debounceTest = debounce(this.onSave, 1000);
+
       const initialDietState = this.props.diet.meals;
       const initialRating = this.props.diet.rating || 0;
 
@@ -294,6 +298,7 @@ class DietSheetPageBase extends Component {
          Snack2: initialDietState["Snack2"],
          Snack3: initialDietState["Snack3"],
          rating: initialRating,
+         typing: false,
          error: null,
          alert: false,
       }
@@ -307,7 +312,7 @@ class DietSheetPageBase extends Component {
    }
 
    onSave = (e) => {
-      e.preventDefault();
+      if (e) { e.preventDefault(); }
       const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, rating } = this.state;
       const mealsUpdate = { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3 };
 
@@ -317,11 +322,20 @@ class DietSheetPageBase extends Component {
          .catch(error => {
             this.setState({ error });
          });
+
+      this.setState({ typing: false })
+      console.log("saved");
+   }
+
+   test = () => {
+      console.log("test");
    }
 
    onChange = (e) => {
       const { name, value } = e.target;
-      this.setState({ [name]: value });
+      this.setState({ [name]: value, typing: true });
+
+      this.debounceTest();
    }
 
    componentWillUnmount() {
@@ -331,7 +345,7 @@ class DietSheetPageBase extends Component {
 
    render() {
       // const { createdAt, key } = this.props.diet;
-      const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, error, alert, rating } = this.state;
+      const { Breakfast, Lunch, Dinner, Snack1, Snack2, Snack3, error, alert, rating, typing } = this.state;
       // const date = moment(createdAt);
       // const formattedDate = date.format('MM-DD-YYYY');
       // const day = date.format('ddd');
@@ -343,43 +357,43 @@ class DietSheetPageBase extends Component {
          <>
             <Row>
                <Col xs={12}>
-                  <DietFormRow name="Breakfast" value={Breakfast} onChange={this.onChange} label={"Breakfast"} />
+                  <DietFormRow name="Breakfast" value={Breakfast} onChange={this.onChange} label={"Breakfast"} typing={typing} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col xs={12}>
-                  <DietFormRow name="Lunch" value={Lunch} onChange={this.onChange} label={"Lunch"} />
+                  <DietFormRow name="Lunch" value={Lunch} onChange={this.onChange} label={"Lunch"} typing={typing} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col xs={12}>
-                  <DietFormRow name="Dinner" value={Dinner} onChange={this.onChange} label={"Dinner"} />
+                  <DietFormRow name="Dinner" value={Dinner} onChange={this.onChange} label={"Dinner"} typing={typing} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col xs={12}>
-                  <DietFormRow name="Snack1" value={Snack1} onChange={this.onChange} label={"Snack 1"} />
+                  <DietFormRow name="Snack1" value={Snack1} onChange={this.onChange} label={"Snack 1"} typing={typing} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col xs={12}>
-                  <DietFormRow name="Snack2" value={Snack2} onChange={this.onChange} label={"Snack 2"} />
+                  <DietFormRow name="Snack2" value={Snack2} onChange={this.onChange} label={"Snack 2"} typing={typing} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col xs={12}>
-                  <DietFormRow name="Snack3" value={Snack3} onChange={this.onChange} label={"Snack 3"} />
+                  <DietFormRow name="Snack3" value={Snack3} onChange={this.onChange} label={"Snack 3"} typing={typing} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
 
                <Col xs={12}>
-                  <DietFormRatingRow name="rating" value={rating} onChange={this.onChange} label={"Rating"} />
+                  <DietFormRatingRow name="rating" value={rating} onChange={this.onChange} label={"Rating"} alert={alert} />
                </Col>
 
                <Col xs={12}><hr className="my-0"></hr></Col>
@@ -401,7 +415,7 @@ class DietSheetPageBase extends Component {
    }
 }
 
-const DietFormRow = ({ onChange, value, label, name }) => {
+const DietFormRow = ({ onChange, value, label, name, typing, alert }) => {
    const [open, setOpen] = useState(false);
    return (
       <>
@@ -425,6 +439,7 @@ const DietFormRow = ({ onChange, value, label, name }) => {
                   value={value}
                   name={name}
                   onChange={onChange}
+                  className={`diet-form-input ${typing ? "typing" : ""} ${alert ? "saved" : ""}`}
                />
             </Form.Group>
          </Collapse>
@@ -432,7 +447,7 @@ const DietFormRow = ({ onChange, value, label, name }) => {
    )
 }
 
-const DietFormRatingRow = ({ onChange, value, label, name }) => {
+const DietFormRatingRow = ({ onChange, value, label, name, alert }) => {
    const [open, setOpen] = useState(false);
    return (
       <>
@@ -450,7 +465,7 @@ const DietFormRatingRow = ({ onChange, value, label, name }) => {
 
          <Collapse in={open}>
             <Form.Group className="align-self-center">
-               <Form.Control as="select" name="rating" value={value} onChange={onChange}>
+               <Form.Control className={`diet-form-input ${alert ? "saved" : ""}`} as="select" name="rating" value={value} onChange={onChange}>
                   <option value={"0"}>0</option>
                   <option value={"1"}>1</option>
                   <option value={"2"}>2</option>

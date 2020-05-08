@@ -103,6 +103,7 @@ const ExerciseRow = ({ item, headers, dayTitle, rowIndex, updateSaveTracking, se
                   aria-controls="example-collapse-text"
                   aria-expanded={open}
                   variant="outline-primary"
+                  block
                >
                   {open ? <span>&minus;</span> : <span>&#65291;</span>}
                </Button>

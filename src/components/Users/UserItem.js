@@ -31,11 +31,11 @@ class UserItemBase extends PureComponent {
       };
    }
 
-   fetchUser = () => {
-      if (!this.props.user) {
-         this.props.history.push(ROUTES.ADMIN);
-      }
-   }
+   // fetchUser = () => {
+   //    if (!this.props.user) {
+   //       this.props.history.push(ROUTES.ADMIN);
+   //    }
+   // }
 
    onSendPasswordResetEmail = () => {
       this.props.firebase.doPasswordReset(this.props.user.email);
@@ -45,9 +45,9 @@ class UserItemBase extends PureComponent {
       this.setState({ tab: k });
    }
 
-   componentDidMount() {
-      this.fetchUser();
-   }
+   // componentDidMount() {
+   //    this.fetchUser();
+   // }
 
    render() {
       const { loading, tab } = this.state;
@@ -99,19 +99,19 @@ const UserTabs = ({ tab, setTab, user, loading, onSendPasswordResetEmail }) => {
             setTab={setTab}
          >
             <div label="profile" title="Profile">
-               <Profile user={user} loading={loading} onSendPasswordResetEmail={onSendPasswordResetEmail} />
+               <Profile key={user.uid} user={user} loading={loading} onSendPasswordResetEmail={onSendPasswordResetEmail} />
             </div>
             <div label="workouts" title="Programs">
-               <WorkoutList uid={user.uid} />
+               <WorkoutList key={user.uid} uid={user.uid} />
             </div>
             <div label="messages" title="Messages">
-               <ChatRoom user={user} />
+               <ChatRoom key={user.uid} user={user} />
             </div>
             <div label="diet" title="Diet">
-               <AdminDiet uid={user.uid} user={user} />
+               <AdminDiet key={user.uid} uid={user.uid} user={user} />
             </div>
             <div label="weight" title="Weight">
-               <AdminWeight uid={user.uid} user={user} />
+               <AdminWeight key={user.uid} uid={user.uid} user={user} />
             </div>
          </MyTabs>
       </div>
