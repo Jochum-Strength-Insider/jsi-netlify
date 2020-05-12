@@ -3,8 +3,8 @@ import moment from 'moment';
 
 import "./style.css";
 
-import { AuthUserContext } from '../Session';
-import { withFirebase } from '../Firebase';
+import { AuthUserContext } from '../../Session';
+import { withFirebase } from '../../Firebase';
 
 import MessageList from './ChatMessageList';
 
@@ -68,6 +68,8 @@ class AdminChatBase extends Component {
                   mid: key,
                }));
 
+               console.log(messageList);
+
                this.props.firebase.user(this.props.roomId).update({ [this.props.setUnread]: false });
                this.setState({ messages: messageList, loading: false, lastDate: messageList[0].createdAt });
             } else {
@@ -88,10 +90,10 @@ class AdminChatBase extends Component {
          };
 
          this.props.firebase.messages(this.props.roomId).push(messageObject)
-         // .then((snap) => {
-         //    const key = snap.key;
-         //    this.props.firebase.adminUnreadMessages().update({ [key]: messageObject });
-         // });
+            .then((snap) => {
+               const key = snap.key;
+               this.props.firebase.adminUnread().update({ [key]: messageObject });
+            });
 
          this.props.firebase.user(this.props.roomId).update({ [this.props.setPartnerUnread]: true });
          // this.props.firebase.user(this.props.roomId).update({ lastMessage: text });

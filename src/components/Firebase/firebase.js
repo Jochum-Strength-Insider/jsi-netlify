@@ -167,6 +167,16 @@ class Firebase {
 
    messages = uid => this.db.ref(`messages/${uid}`);
 
+   // *** Admin Unread API ***
+
+   adminUnreadMessages = () => this.db.ref(`adminUnread`);
+
+   adminUnreadMessage = mid => this.db.ref(`adminUnread/${mid}`);
+
+   // *** User Unread API ***
+
+   unreadMessages = uid => this.db.ref(`unread/${uid}`);
+
    // *** Workout API ***
 
    workouts = (uid) => this.db.ref(`workouts/${uid}`);

@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 import WorkoutList from '../WorkoutList';
 import AdminDiet from '../AdminDiet';
 import AdminWeight from '../AdminWeight';
-import { ChatRoom } from '../ChatAdmin';
+import ChatRoom from '../ChatAdmin';
 
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'

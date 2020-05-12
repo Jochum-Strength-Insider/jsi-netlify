@@ -184,7 +184,7 @@ class WorkoutListBase extends Component {
    // }
 
    componentDidMount() {
-      console.log("mount");
+      // console.log("mount");
       this.fetchUserIds();
       this.fetchPrograms();
    }
@@ -208,7 +208,6 @@ class WorkoutListBase extends Component {
 
       return (
          <div>
-            {loading && <div>Loading ...</div>}
             {error && <Alert>{error.message}</Alert>}
 
             <div>
@@ -260,6 +259,13 @@ class WorkoutListBase extends Component {
                   <ListGroup.Item className="no-top-border">
                      <Button block onClick={this.handleOpen}>Add Program</Button>
                   </ListGroup.Item>
+
+                  {
+                     loading && (
+                        <ListGroup.Item className="no-top-border">
+                           Loading...
+                        </ListGroup.Item>)
+                  }
                   {
                      (workoutidsArray.length > 0)
                         ?

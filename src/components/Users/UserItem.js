@@ -1,17 +1,16 @@
-import React, { PureComponent, useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 // import "./style.css";
 
 import { withFirebase } from '../Firebase';
 
-import * as ROUTES from '../../constants/routes';
+// import * as ROUTES from '../../constants/routes';
 
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import WorkoutList from './WorkoutList';
 import AdminDiet from '../AdminDiet';
 import AdminWeight from '../AdminWeight';
-import { ChatRoom } from '../ChatAdmin';
-
+import ChatRoom from '../ChatAdmin';
 
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
@@ -21,104 +20,50 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 
-class UserItemBase extends PureComponent {
-   constructor(props) {
-      super(props);
-      this.state = {
-         loading: false,
-         tab: "profile",
-         user: null,
-      };
-   }
+const UserItem = memo(({ user }) => {
+   const [tab, setTab] = useState('profile');
 
-   // fetchUser = () => {
-   //    if (!this.props.user) {
-   //       this.props.history.push(ROUTES.ADMIN);
-   //    }
-   // }
+   return (
+      <>
+         {
+            user ? (
+               <UserTabs key={user.uid} tab={tab} setTab={setTab} user={user} />
+            ) : null
+         }
+      </>
+   );
+})
 
-   onSendPasswordResetEmail = () => {
-      this.props.firebase.doPasswordReset(this.props.user.email);
-   };
-
-   setTab = (k) => {
-      this.setState({ tab: k });
-   }
-
-   // componentDidMount() {
-   //    this.fetchUser();
-   // }
-
-   render() {
-      const { loading, tab } = this.state;
-      const { user } = this.props;
-
-      return (
-         <div>
-            {user && (
-               <>
-                  <UserTabs key={user.uid} tab={tab} setTab={this.setTab} user={user} loading={loading} onSendPasswordResetEmail={this.onSendPasswordResetEmail} />
-               </>
-            )}
-            {loading && <div>Loading ...</div>}
-         </div>
-      );
-   }
-}
-
-const UserTabs = ({ tab, setTab, user, loading, onSendPasswordResetEmail }) => {
+const UserTabs = memo(({ tab, setTab, user, loading }) => {
+   const { uid } = user;
    return (
       <div className="user-item">
-         {/* <Tabs
-            fill
-            defaultActiveKey="profile"
-            className="dark-tab"
-            activeKey={tab}
-            onSelect={setTab}
-         >
-            <Tab eventKey="profile" title="Profile">
-               <Profile user={user} loading={loading} onSendPasswordResetEmail={onSendPasswordResetEmail} />
-            </Tab>
-            <Tab eventKey="workouts" title="Programs">
-               <WorkoutList uid={user.uid} />
-            </Tab>
-            <Tab eventKey="messages" title="Messages">
-               <ChatRoom user={user} />
-            </Tab>
-            <Tab eventKey="diet" title="Diet">
-               <AdminDiet uid={user.uid} user={user} />
-            </Tab>
-            <Tab eventKey="weight" title="Weight">
-               <AdminWeight uid={user.uid} user={user} />
-            </Tab>
-         </Tabs> */}
-
-         {/* <h5 className="mb-2">{user.username}</h5> */}
          <MyTabs
             tab={tab}
             setTab={setTab}
+            key={user.uid}
          >
             <div label="profile" title="Profile">
-               <Profile key={user.uid} user={user} loading={loading} onSendPasswordResetEmail={onSendPasswordResetEmail} />
+               <Profile key={uid} user={user} loading={loading} />
             </div>
             <div label="workouts" title="Programs">
-               <WorkoutList key={user.uid} uid={user.uid} />
+               <WorkoutList key={uid} uid={uid} />
             </div>
             <div label="messages" title="Messages">
-               <ChatRoom key={user.uid} user={user} />
+               <ChatRoom key={uid} user={user} />
             </div>
             <div label="diet" title="Diet">
-               <AdminDiet key={user.uid} uid={user.uid} user={user} />
+               <AdminDiet key={uid} uid={uid} user={user} />
             </div>
             <div label="weight" title="Weight">
-               <AdminWeight key={user.uid} uid={user.uid} user={user} />
+               <AdminWeight key={uid} uid={uid} user={user} />
             </div>
          </MyTabs>
       </div>
    )
-}
+})
 
-const MyTabs = ({ children, tab, setTab }) => {
+const MyTabs = memo(({ children, tab, setTab }) => {
 
    return (
       <div className="my-tabs pt-3">
@@ -151,15 +96,17 @@ const MyTabs = ({ children, tab, setTab }) => {
             })}
          </nav>
 
-         <DropdownButton className="d-flex d-md-none my-tabs-dropdown mb-3" title={tab}>
+         <DropdownButton className="d-flex d-md-none my-tabs-dropdown mb-3" title={tab} key={`${tab}-dropdown-menu`} >
             {children.map(child => {
                const { title, label } = child.props;
                return (
-                  <Dropdown.Item key={label} onClick={() => setTab(label)}>{title}</Dropdown.Item>
+                  <Dropdown.Item key={`${label}-dropdown`} onClick={() => setTab(label)}>{title}</Dropdown.Item>
                )
             }
             )}
          </DropdownButton>
+
+         {/* <TabsSelect options={children} tab={tab} handleChange={handleChange} /> */}
 
          <div className="my-tabs-content">
             {children.map(child => {
@@ -173,12 +120,28 @@ const MyTabs = ({ children, tab, setTab }) => {
          </div>
       </div>
    )
-}
+})
+
+// const TabsSelect = ({ tab, options, handleChange }) => {
+//    console.log("tabSelect Render")
+//    return (
+//       <select className="d-flex d-md-none my-tabs-dropdown mb-3" key={`${tab}-dropdown-menu`} onChange={handleChange} value={tab} >
+//          {options.map(child => {
+//             const { title, label } = child.props;
+//             return (
+//                <option key={`${label}-dropdown-item`} value={label}>{title}</option>
+//             )
+//          }
+//          )}
+//       </select>
+//    )
+// }
 
 
-const ProfileBase = ({ user, onSendPasswordResetEmail, firebase }) => {
+const ProfileBase = ({ user, firebase }) => {
    const [error, setError] = useState(null);
    const [active, setActive] = useState(user.ACTIVE);
+   const [alert, setAlert] = useState(false);
 
    useEffect(() => {
       firebase.active(user.uid)
@@ -188,19 +151,28 @@ const ProfileBase = ({ user, onSendPasswordResetEmail, firebase }) => {
       return () => firebase.active(user.uid).off();
    }, [firebase, user.uid]);
 
+   const onSendPasswordResetEmail = () => {
+      firebase.doPasswordReset(user.email)
+         .then(() => {
+            onAlert();
+         })
+         .catch(error => setError(error));;
+   };
 
-   const memberDate = user ? new Date(user.createdAt) : new Date();
-   const memberDateString = memberDate.toLocaleDateString("en-US");
-   const programDate = (user && user.programDate) ? new Date(user.programDate) : null;
-   const programDateString = programDate ? programDate.toLocaleDateString("en-US") : "-";
+   const onAlert = () => {
+      setAlert(true)
+      setTimeout(() => {
+         setAlert(false);
+      }, 2000);
+   }
 
    const activateUser = () => {
       console.log("active", user.uid);
       firebase
          .activate(user.uid)
          .then(() => console.log("activated"))
-         .catch(error => setError(error));
    };
+
    const deactivateUser = () => {
       console.log("inactive");
       firebase
@@ -208,6 +180,11 @@ const ProfileBase = ({ user, onSendPasswordResetEmail, firebase }) => {
          .then(() => console.log("deactivated"))
          .catch(error => setError(error));
    };
+
+   const memberDate = user ? new Date(user.createdAt) : new Date();
+   const memberDateString = memberDate.toLocaleDateString("en-US");
+   const programDate = (user && user.programDate) ? new Date(user.programDate) : null;
+   const programDateString = programDate ? programDate.toLocaleDateString("en-US") : "-";
 
    return (
       <ListGroup className="mb-5">
@@ -218,9 +195,10 @@ const ProfileBase = ({ user, onSendPasswordResetEmail, firebase }) => {
          <ListGroup.Item>
             <Button
                type="button"
+               variant={alert ? "success" : "primary"}
                onClick={onSendPasswordResetEmail}
             >
-               Send Password Reset
+               {alert ? "Password Reset Sent" : "Send Password Reset"}
             </Button>
          </ListGroup.Item>
          <ListGroup.Item>
@@ -254,6 +232,5 @@ const ProfileBase = ({ user, onSendPasswordResetEmail, firebase }) => {
 
 const Profile = withFirebase(ProfileBase);
 
-const UserItem = withRouter(withFirebase(UserItemBase));
-
+// const UserItem = withRouter(withFirebase(UserItemBase));
 export default UserItem;

@@ -101,7 +101,20 @@
    transition: background-color 500ms ease-in-out;
 }
 
+.users-list.card .users-list-contain .list-group-item {
+   border-top: 1px solid rgba(0, 0, 0, 0.249);
+}
+
+.users-list.card .users-list-contain .list-group-item:first-of-type {
+   border-top: none;
+}
+
 .users-list.card .users-list-contain .list-group-item:hover {
+   color: var(--js-purple);
+   background-color: rgba(0, 0, 0, 0.249);
+}
+
+.users-list.card .users-list-contain .list-group-item.current {
    color: var(--js-purple);
    background-color: rgba(0, 0, 0, 0.249);
 }

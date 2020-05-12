@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 
-import ChatMessages from '../Chat';
+import ChatMessages from './Chat';
 
 import {
    AuthUserContext,

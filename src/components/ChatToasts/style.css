@@ -1,0 +1,9 @@
+/* .chat-toasts-contain {
+   position: absolute;
+   top: 50px;
+   right: 500px;
+} */
+
+.toast {
+   color: black;
+}
