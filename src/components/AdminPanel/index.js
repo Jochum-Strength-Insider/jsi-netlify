@@ -46,7 +46,7 @@ class UserListBase extends Component {
       this.state = {
          sortedUsers: initialUsersList,
          asc: true,
-         filter: true,
+         filter: false,
          show: false,
          showMessage: false,
          groupMessage: {},
