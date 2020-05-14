@@ -14,6 +14,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+
 class UserItemBase extends Component {
    constructor(props) {
       super(props);
@@ -131,7 +135,7 @@ class UserItemBase extends Component {
                </Form>
             </Modal>
 
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center mb-5">
                <div className="contain-width">
                   <h3>Programs</h3>
                   <ListGroup>
@@ -145,23 +149,28 @@ class UserItemBase extends Component {
                            const dateString = date.toLocaleDateString("en-US");
 
                            return (
-                              <ListGroup.Item className="d-flex justify-content-between align-items-center" key={key}>
+                              <ListGroup.Item key={key}>
                                  <>
-                                    <span>
-                                       <strong> Title: </strong>
-                                       <a href={`${ROUTES.CREATEPROGRAM}/${key}`}>
-                                          {programIds[key].title}
-                                       </a>
-                                       <strong className="ml-2">Date: </strong> {dateString}
-                                    </span>
-                                    <span>
-                                       <Button className="ml-2" variant="outline-danger"
-                                          type="button"
-                                          onClick={() => this.setRemoveKey(key)}
-                                       >
-                                          Delete
-                                 </Button>
-                                    </span>
+                                    <Row>
+                                       <Col xs={12} md={5} className="d-flex align-items-center">
+                                          <strong> Title: </strong>
+                                          <a href={`${ROUTES.CREATEPROGRAM}/${key}`}>
+                                             {programIds[key].title}
+                                          </a>
+                                       </Col>
+                                       <Col xs={12} md={5} className="d-flex align-items-center">
+                                          <strong>Date: </strong> {dateString}
+                                       </Col>
+                                       <Col xs={12} className="d-block d-md-none"><hr /></Col>
+                                       <Col xs={12} md={2} className="d-flex justify-content-end" >
+                                          <Button variant="outline-danger"
+                                             type="button"
+                                             onClick={() => this.setRemoveKey(key)}
+                                          >
+                                             Delete
+                                             </Button>
+                                       </Col>
+                                    </Row>
                                  </>
                               </ListGroup.Item>
                            )

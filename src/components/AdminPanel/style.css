@@ -103,6 +103,7 @@
 
 .users-list.card .users-list-contain .list-group-item {
    border-top: 1px solid rgba(0, 0, 0, 0.249);
+   padding: 0.5rem;
 }
 
 .users-list.card .users-list-contain .list-group-item:first-of-type {
@@ -125,7 +126,7 @@
 
 
 .users-list-contain {
-   height: calc(100vh - 198px);
+   height: calc(100vh - 192px);
    overflow-y: scroll;
 }
 
@@ -292,4 +293,19 @@
 
 .dashboard-menu.open {
    width: 240px;
+}
+
+.check-box {
+   flex: 0 0 20px;
+   border-right: 1px solid rgba(0, 0, 0, 0.1);
+   margin-right: .5rem;
+   padding-right: .5rem;
+}
+
+.check-box input {
+   width: auto;
+}
+
+.user-list-item {
+   flex: 1;
 }

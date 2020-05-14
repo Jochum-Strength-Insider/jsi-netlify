@@ -250,7 +250,7 @@ class Diet extends Component {
                            <CustomToggle eventKey={diet.key} scroll={false}>
                               <Card.Body className="bg-purple" ref={this.state.refsList[formattedDate]}>
                                  <div className="d-flex justify-content-between">
-                                    <h3 className="day-name" style={{ color: "white" }}>{dayName}</h3>
+                                    <h3 className="day-name" tabIndex="0" style={{ color: "white" }}>{dayName}</h3>
                                     <div className="date d-flex align-items-center justify-content-center">
                                        <div>
                                           <div className="day">{dayNumber}</div>
@@ -403,6 +403,14 @@ class DietSheetPageBase extends Component {
 
 const DietFormRow = ({ onChange, value, label, name }) => {
    const [open, setOpen] = useState(false);
+
+   const enterPressed = (e) => {
+      var code = e.keyCode || e.which;
+      if (code === 13) { //13 is the enter keycode
+         setOpen(!open)
+      }
+   }
+
    return (
       <>
          <div
@@ -411,7 +419,7 @@ const DietFormRow = ({ onChange, value, label, name }) => {
             aria-controls="example-collapse-text"
             aria-expanded={open}
          >
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between" tabIndex="0" onKeyPress={enterPressed}>
                <div>{label}</div>
                <div>{open ? <span>&minus;</span> : <span>&#65291;</span>}</div>
             </div>
@@ -434,6 +442,15 @@ const DietFormRow = ({ onChange, value, label, name }) => {
 
 const DietFormRatingRow = ({ onChange, value, label, name }) => {
    const [open, setOpen] = useState(false);
+
+   const enterPressed = (e) => {
+      var code = e.keyCode || e.which;
+      if (code === 13) { //13 is the enter keycode
+         setOpen(!open)
+      }
+   }
+
+
    return (
       <>
          <div
@@ -442,7 +459,7 @@ const DietFormRatingRow = ({ onChange, value, label, name }) => {
             aria-controls="example-collapse-text"
             aria-expanded={open}
          >
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between" tabIndex="0" onKeyPress={enterPressed}>
                <div>{label}</div>
                <div>{open ? <span>&minus;</span> : <span>&#65291;</span>}</div>
             </div>

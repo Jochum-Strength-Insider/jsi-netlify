@@ -11,6 +11,7 @@ body {
    font-family: 'Raleway', Arial, sans-serif;
    /* background-color: rgb(244, 239, 244); */
    background: radial-gradient(var(--js-purple), var(--js-gray));
+   margin-top: 66px;
 
 }
 

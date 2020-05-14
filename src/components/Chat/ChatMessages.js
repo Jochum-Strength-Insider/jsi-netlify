@@ -30,6 +30,7 @@ class AdminChatBase extends Component {
          limit: 15,
          firstDate: null,
          lastDate: null,
+         currentlyMessaging: null,
       }
    }
 
@@ -37,7 +38,7 @@ class AdminChatBase extends Component {
       // this.scrollContain.current.scrollTop = this.scrollContain.current.scrollHeight;
       // this.scrollContain.current.scrollTop = this.scrollBottom.current.offsetTop;
       // this.scrollContain.current.scrollTo(0, this.scrollBottom.current.offsetTop);
-      this.scrollBottom.current.scrollIntoView({ behavior: 'smooth', block: "end" });
+      this.scrollBottom.current.scrollIntoView();
    }
 
    onListenForMessages() {
@@ -76,6 +77,19 @@ class AdminChatBase extends Component {
          })
    }
 
+   onListenToCurrentlyMessaging = () => {
+
+      this.props.firebase.currentlyMessaging().on("value", (snapshot) => {
+         const currentlyObject = snapshot.val();
+         if (currentlyObject) {
+            const { uid } = currentlyObject
+            this.setState({ currentlyMessaging: uid })
+         } else {
+            this.setState({ currentlyMessaging: null })
+         }
+      })
+   }
+
    onCreateMessage = (authUser, message) => {
       const text = message.trim();
       if (text !== "") {
@@ -88,10 +102,17 @@ class AdminChatBase extends Component {
          };
 
          this.props.firebase.messages(this.props.roomId).push(messageObject)
-         // .then((snap) => {
-         //    const key = snap.key;
-         //    this.props.firebase.adminUnreadMessages().update({ [key]: messageObject });
-         // });
+            .then((snap) => {
+               if (this.state.currentlyMessaging !== this.props.roomId) {
+                  const key = snap.key;
+                  this.props.firebase.adminUnreadMessages().update({ [key]: messageObject });
+               }
+            })
+            .catch(error => {
+               if (error) {
+                  console.log(error);
+               }
+            });
 
          this.props.firebase.user(this.props.roomId).update({ [this.props.setPartnerUnread]: true });
          // this.props.firebase.user(this.props.roomId).update({ lastMessage: text });
@@ -133,16 +154,18 @@ class AdminChatBase extends Component {
       // console.log("mount");
       // this.setVerticalHeight();
       this.props.firebase.messages(this.props.roomId).off();
+      this.onListenToCurrentlyMessaging();
       this.onListenForMessages();
    }
 
    componentDidUpdate(prevProps, prevState) {
-      if (this.state.scroll === true) {
+      if (this.state.scroll === true && this.state.currentlyMessaging === prevState.currentlyMessaging) {
          this.scrollToBottom();
       }
    }
 
    componentWillUnmount() {
+      this.props.firebase.currentlyMessaging().off();
       this.props.firebase.messages(this.props.roomId).off();
    }
 

@@ -91,12 +91,21 @@ class WeightBase extends Component {
          },
          tooltips: {
             callbacks: {
+               // label: function (tooltipItem, data) {
+               //    const label = data.labels[tooltipItem.index];
+               //    const toDay = label.format("MMM D");
+               //    const weight = tooltipItem.yLabel;
+               //    return toDay + ": " + weight + "lbs";
+               // },
+               title: function (tooltipItem, data) {
+                  const label = data.labels[tooltipItem[0].index];
+                  const toDay = label.format("MMM D YYYY");
+                  return toDay;
+               },
                label: function (tooltipItem, data) {
-                  const label = data.labels[tooltipItem.index];
-                  const toDay = label.format("MMM D");
                   const weight = tooltipItem.yLabel;
-                  return toDay + ": " + weight + "lbs";
-               }
+                  return weight + "lbs";
+               },
             }
          },
          scales: {
@@ -267,19 +276,22 @@ class WeightBase extends Component {
          .limitToLast(1)
          .once("value", (snap) => {
             const dateObject = snap.val();
+            if (dateObject) {
+               const lastDateObject = Object.keys(dateObject).map(date => dateObject[date])[0];
+               const lastDate = lastDateObject.date;
 
-            const lastDateObject = Object.keys(dateObject).map(date => dateObject[date])[0];
-            const lastDate = lastDateObject.date;
+               const now = moment().format("YYYY-MM-DD");
+               const dateFormatted = moment(lastDate).format("YYYY-MM-DD");
 
-            const now = moment().format("YYYY-MM-DD");
-            const dateFormatted = moment(lastDate).format("YYYY-MM-DD");
-
-            if (now === dateFormatted) {
-               console.log("yep", now, dateFormatted)
-               this.setState({ lastDate: lastDate, invalid: true })
+               if (now === dateFormatted) {
+                  console.log("yep", now, dateFormatted)
+                  this.setState({ lastDate: lastDate, invalid: true })
+               } else {
+                  console.log("nope", now, dateFormatted)
+                  this.setState({ lastDate: lastDate, show: true })
+               }
             } else {
-               console.log("nope", now, dateFormatted)
-               this.setState({ lastDate: lastDate, show: true })
+               this.setState({ show: true })
             }
          });
    }
@@ -396,7 +408,7 @@ const MonthCirlces = ({ queryDate, changeQueryDate }) => {
 
    const prevMonth = moment(queryDate).subtract(1, "M").format('YYYY-MM-DD');
    const nextMonth = moment(queryDate).add(1, "M").format('YYYY-MM-DD');
-   const nextMonthUnix = Number(moment(queryDate).add(1, "w").format('x'));
+   const nextMonthUnix = Number(moment(queryDate).add(1, "M").format('x'));
 
    const pastMonths = [2, 1].map(sub => {
       const date = moment(startOfMonth).subtract(sub, "M")

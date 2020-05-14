@@ -57,7 +57,6 @@ const MessageToastBase = ({ message, onRemoveMessage, messageId }) => {
 
    return (
       <Toast onClose={handleClose} show={true} delay={3000} autohide>
-         {/* <Toast onClose={handleClose} show={show}> */}
          <Toast.Header>
             <strong className="mr-auto"><Link
                className="btn btn-link px-0 py-0"

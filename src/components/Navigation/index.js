@@ -14,7 +14,41 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-// import Badge from 'react-bootstrap/Badge';
+
+import AdminUnreadMessages from '../AdminUnread';
+
+
+// eslint-disable-next-line
+const dummyMessages = [
+   {
+      createdAt: 1589315829256,
+      mid: "-M79ajroLCJgrXC4AEnk",
+      text: "test 1",
+      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
+      username: "speedy",
+   },
+   {
+      createdAt: 1589315829256,
+      mid: "-M79ajroLCJgrXC4AEnk",
+      text: "test 2",
+      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
+      username: "speedy",
+   },
+   {
+      createdAt: 1589315829256,
+      mid: "-M79ajroLCJgrXC4AEnk",
+      text: "test 3",
+      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
+      username: "speedy",
+   },
+   {
+      createdAt: 1589315829256,
+      mid: "-M79ajroLCJgrXC4AEnk",
+      text: "test 4",
+      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
+      username: "speedy",
+   },
+];
 
 // const logo = 'https://static.wixstatic.com/media/d44628_dd09c48b517b41fc9d04671db909b022~mv2.png/v1/fill/w_848,h_296,al_c,lg_1,q_85/jochum2%20white.webp';
 const style = { display: "flex", width: "100%", maxWidth: "1000px", flex: "1", justifyContent: "space-between", flexWrap: "wrap", };
@@ -27,7 +61,7 @@ const Navigation = () => {
    const onToggle = () => setIsExpanded(!isExpanded);
 
    return (
-      <Navbar className="navbar justify-content-center" variant="dark" bg="purple" sticky="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
+      <Navbar className="navbar justify-content-center" variant="dark" bg="purple" fixed="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
          <div style={style}>
             <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
                <img
@@ -45,7 +79,6 @@ const Navigation = () => {
 };
 
 const NavigationAuth = ({ authUser, onSelect }) => {
-
 
    return (
       <>
@@ -87,6 +120,10 @@ const NavigationAuth = ({ authUser, onSelect }) => {
             </Nav>
 
             <Nav>
+               {
+                  authUser.ADMIN && <AdminUnreadMessages />
+               }
+
                <Dropdown alignRight>
                   <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
                      {authUser.username}
@@ -111,6 +148,7 @@ const NavigationNonAuth = ({ onSelect }) => (
       </Nav>
    </>
 );
+
 
 const NavLoginFormBase = ({ firebase, history, classes }) => {
    const emailRef = React.createRef();

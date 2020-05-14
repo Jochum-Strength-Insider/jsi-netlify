@@ -58,7 +58,7 @@ class WorkoutListBase extends Component {
 
             this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: this.timestamp, active: false } });
             this.props.firebase.user(currentUserId).update({ programDate: this.timestamp });
-            this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
+            // this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
          })
          .catch(error => this.setState({ error }));
    }

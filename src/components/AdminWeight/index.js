@@ -76,12 +76,21 @@ class WeightBase extends Component {
          },
          tooltips: {
             callbacks: {
+               // label: function (tooltipItem, data) {
+               //    const label = data.labels[tooltipItem.index];
+               //    const toDay = label.format("MMM D");
+               //    const weight = tooltipItem.yLabel;
+               //    return toDay + ": " + weight + "lbs";
+               // },
+               title: function (tooltipItem, data) {
+                  const label = data.labels[tooltipItem[0].index];
+                  const toDay = label.format("MMM D YYYY");
+                  return toDay;
+               },
                label: function (tooltipItem, data) {
-                  const label = data.labels[tooltipItem.index];
-                  const toDay = label.format("MMM D");
                   const weight = tooltipItem.yLabel;
-                  return toDay + ": " + weight + "lbs";
-               }
+                  return weight + "lbs";
+               },
             }
          },
          scales: {
@@ -268,7 +277,7 @@ const MonthCirlces = ({ queryDate, changeQueryDate }) => {
 
    const prevMonth = moment(queryDate).subtract(1, "M").format('YYYY-MM-DD');
    const nextMonth = moment(queryDate).add(1, "M").format('YYYY-MM-DD');
-   const nextMonthUnix = Number(moment(queryDate).add(1, "w").format('x'));
+   const nextMonthUnix = Number(moment(queryDate).add(1, "M").format('x'));
 
    const pastMonths = [2, 1].map(sub => {
       const date = moment(startOfMonth).subtract(sub, "M")

@@ -1,0 +1,84 @@
+.admin-unread-btn {
+   position: relative;
+   background-color: rgb(0, 0, 0, 0);
+   border: none;
+   color: white;
+}
+
+.admin-unread-btn .badge {
+   position: absolute;
+   background-color: var(--js-purple-light);
+   top: 0;
+   right: 0;
+   border-radius: 50px;
+}
+
+
+
+.admin-unread-icon {
+   fill: rgb(255, 255, 255, 0.5);
+   transition: fill 150ms;
+}
+
+.admin-unread-icon:hover,
+.admin-unread:focus .admin-unread-icon {
+   fill: rgb(255, 255, 255, 0.75);
+}
+
+.admin-unread-container {
+   background-color: blue;
+}
+
+.admin-unread-list.list-group {
+   border: none;
+   height: auto;
+   max-height: 240px;
+   overflow-y: scroll;
+   width: 250px;
+   border-radius: .25rem;
+}
+
+.admin-unread-list.list-group .list-group-item {
+   border: none;
+   border-bottom: 1px solid rgba(0, 0, 0, .125);
+   padding: 0px;
+   margin: 0px;
+}
+
+/* .admin-unread-list.list-group .list-group-item:first-of-type {
+   border-bottom: none;
+} */
+
+.admin-unread-list.list-group .list-group-item:last-of-type {
+   border-bottom: none;
+   /* border-radius: .25rem; */
+}
+
+.admin-unread-list .popover-body {
+   padding: 0px;
+   margin: 0px;
+}
+
+.admin-unread-popover.popover .popover-body {
+   padding: 0px;
+   border-radius: 0.25rem;
+}
+
+.admin-unread-list.list-group::-webkit-scrollbar {
+   width: 6px;
+}
+
+.admin-unread-list.list-group {
+   scrollbar-width: thin;
+   scrollbar-color: white rgba(255, 255, 255, 0);
+}
+
+.admin-unread-list.list-group::-webkit-scrollbar-track {
+   background: rgba(255, 255, 255, 0);
+
+}
+
+.admin-unread-list.list-group::-webkit-scrollbar-thumb {
+   background-color: var(--js-purple);
+   border-radius: 6px;
+}

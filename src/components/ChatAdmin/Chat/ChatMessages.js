@@ -37,7 +37,7 @@ class AdminChatBase extends Component {
       // this.scrollContain.current.scrollTop = this.scrollContain.current.scrollHeight;
       // this.scrollContain.current.scrollTop = this.scrollBottom.current.offsetTop;
       // this.scrollContain.current.scrollTo(0, this.scrollBottom.current.offsetTop);
-      this.scrollBottom.current.scrollIntoView({ behavior: 'smooth', block: "end" });
+      this.scrollBottom.current.scrollIntoView();
    }
 
    onListenForMessages() {
@@ -68,7 +68,7 @@ class AdminChatBase extends Component {
                   mid: key,
                }));
 
-               console.log(messageList);
+               // console.log(messageList);
 
                this.props.firebase.user(this.props.roomId).update({ [this.props.setUnread]: false });
                this.setState({ messages: messageList, loading: false, lastDate: messageList[0].createdAt });
@@ -90,10 +90,10 @@ class AdminChatBase extends Component {
          };
 
          this.props.firebase.messages(this.props.roomId).push(messageObject)
-            .then((snap) => {
-               const key = snap.key;
-               this.props.firebase.adminUnread().update({ [key]: messageObject });
-            });
+         // .then((snap) => {
+         //    const key = snap.key;
+         //    this.props.firebase.adminUnread().update({ [key]: messageObject });
+         // });
 
          this.props.firebase.user(this.props.roomId).update({ [this.props.setPartnerUnread]: true });
          // this.props.firebase.user(this.props.roomId).update({ lastMessage: text });
@@ -131,11 +131,31 @@ class AdminChatBase extends Component {
    //    document.documentElement.style.setProperty('--vh', `${vh}px`);
    // }
 
+   setCurrentlyMessaging = () => {
+      this.props.firebase.info().on('value', (snapshot) => {
+         const infoObject = snapshot.val();
+         if (infoObject === false) {
+            return;
+         };
+
+         const userStatusDatabaseRef = this.props.firebase.currentlyMessaging();
+
+         userStatusDatabaseRef
+            .onDisconnect()
+            .set({})
+            .then(() => {
+               userStatusDatabaseRef.set({ uid: this.props.roomId })
+            })
+      })
+   }
+
    componentDidMount() {
       // console.log("mount");
       // this.setVerticalHeight();
+
       this.props.firebase.messages(this.props.roomId).off();
       this.onListenForMessages();
+      this.setCurrentlyMessaging();
    }
 
    componentDidUpdate(prevProps, prevState) {
@@ -146,6 +166,8 @@ class AdminChatBase extends Component {
 
    componentWillUnmount() {
       this.props.firebase.messages(this.props.roomId).off();
+      this.props.firebase.info().off();
+      this.props.firebase.currentlyMessaging().remove();
    }
 
    render() {

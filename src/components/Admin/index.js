@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { compose } from 'recompose';
 import { Switch, Route } from 'react-router-dom';
 
-import ChatToasts from '../ChatToasts';
+// import ChatToasts from '../ChatToasts';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -14,7 +14,7 @@ import { withFirebase } from '../Firebase';
 const AdminPage = ({ firebase }) => {
    const usersInit = JSON.parse(localStorage.getItem('users')) || [];
    const [usersList, setUsersList] = useState(usersInit);
-   const [unread, setUnread] = useState([]);
+   // const [unread, setUnread] = useState([]);
    const [loading, setLoading] = useState(false);
 
    useEffect(() => {
@@ -64,8 +64,8 @@ const AdminPage = ({ firebase }) => {
       <>
          {/* <ChatToasts unread={unread} /> */}
          <Switch>
-            <Route path={ROUTES.ADMIN_DETAILS} children={<AdminPanel usersList={usersList} loading={loading} unread={unread} />} />
-            <Route exact path={ROUTES.ADMIN} children={<AdminPanel usersList={usersList} loading={loading} unread={unread} />} />
+            <Route path={ROUTES.ADMIN_DETAILS} children={<AdminPanel usersList={usersList} loading={loading} />} />
+            <Route exact path={ROUTES.ADMIN} children={<AdminPanel usersList={usersList} loading={loading} />} />
          </Switch>
       </>
    )
