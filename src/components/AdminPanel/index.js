@@ -194,8 +194,8 @@ class UserListBase extends Component {
 
                   <div className="users-list-contain">
                      {loading && <ListGroup.Item><Loading /></ListGroup.Item>}
+                     {/* {dummyUsers.map(user => { */}
                      {sortedUsers.map(user => {
-                        // {dummyUsers.map(user => {
                         return (
                            <UserSelect
                               key={user.uid}

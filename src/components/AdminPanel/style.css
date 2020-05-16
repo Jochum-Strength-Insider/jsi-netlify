@@ -146,7 +146,6 @@
    padding-bottom: 30px;
 }
 
-
 .drawer main {
    height: calc(100vh - 66px);
    flex: 1 1 0;
@@ -308,4 +307,5 @@
 
 .user-list-item {
    flex: 1;
+   word-break: break-all;
 }

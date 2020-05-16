@@ -196,7 +196,7 @@ class AdminChatBase extends Component {
                      ) : (
                            <div>There are no messages ...</div>
                         )}
-                     <div ref={this.scrollBottom}></div>
+                     <div className="mb-3" ref={this.scrollBottom}></div>
                   </Container>
 
                   <SubmitForm onCreateMessage={this.onCreateMessage} />

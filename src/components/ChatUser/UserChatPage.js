@@ -13,17 +13,23 @@ import {
 const UserChatPage = () => {
    const authUser = useContext(AuthUserContext);
    const unread = authUser.unread;
+   // const [safari, setSafari] = useState(false);
 
    // if (!authUser.ACTIVE) {
    //    return null;
    // }
+
+   // useEffect(() => {
+   //    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+   //    setSafari(isSafari);
+   // }, [])
 
    return (
       <>
          <Container fluid>
             <div className="app-top d-flex justify-content-center">
                <div className="contain-width">
-                  <h3>Messages</h3>
+                  {/* <h3>Messages</h3> */}
                   <ChatMessages authUser={authUser} roomId={authUser.uid} unreadCount={unread} setUnread={"unread"} setPartnerUnread={"adminUnread"} />
                </div>
             </div>

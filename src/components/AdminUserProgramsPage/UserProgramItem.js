@@ -27,6 +27,7 @@ class ProgramItemBase extends Component {
          program: null,
          uid: this.props.match.params.id || null,
          pid: this.props.match.params.pid || null,
+         username: null,
          tasks: [
             {
                instruction: {
@@ -100,6 +101,15 @@ class ProgramItemBase extends Component {
       }
    }
 
+   fetchUsername() {
+      this.props.firebase.user(this.state.uid).child("username").once("value").then(snap => {
+         const usernameObject = snap.val();
+         if (usernameObject) {
+            this.setState({ username: usernameObject })
+         }
+      })
+   }
+
    showTitleModal = () => {
       this.setState({ showTitle: true });
    }
@@ -168,6 +178,7 @@ class ProgramItemBase extends Component {
    componentDidMount() {
       this.fetchPrograms();
       this.fetchTasks();
+      this.fetchUsername();
    }
 
    componentWillUnmount() {
@@ -179,7 +190,7 @@ class ProgramItemBase extends Component {
    }
 
    render() {
-      const { program, workoutids, loading, pid, uid, tasks, error, showTitle } = this.state;
+      const { program, workoutids, loading, pid, uid, tasks, error, showTitle, username } = this.state;
       const title = program ? program.title : "";
       const active = workoutids ? workoutids[pid].active : false;
 
@@ -204,14 +215,15 @@ class ProgramItemBase extends Component {
 
             {program && (
                <>
-                  <span className="d-flex justify-content-between align-items-center mb-3">
-                     <h3 className="program-title" onClick={this.showTitleModal}>{program.title}</h3>
+                  <span className="d-flex justify-content-between align-items-center mb-2">
+                     <h3 className="program-title mb-0" onClick={this.showTitleModal}>{program.title}</h3>
 
                      {!active
                         ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(pid)} />
                         : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(pid)} />
                      }
                   </span>
+                  {username && (<Button variant="link" onClick={this.handleGoBack} className="mx-0 px-0 py-0 mb-3">{username}</Button>)}
 
                   <UserProgramTable onSave={this.onSave} tasks={tasks} program={program} pid={pid} uid={uid} path={this.props.match.path} />
                </>

@@ -29,7 +29,7 @@ const dummyUsers = [
       programDate: "",
       username: "test4",
       adminUnread: false,
-      email: "test4@email.com",
+      email: "testreallyreallyreallylong4@email.com",
    },
    {
       ACTIVE: false,

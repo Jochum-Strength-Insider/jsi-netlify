@@ -179,7 +179,7 @@ class AdminChatBase extends Component {
       return (
          <AuthUserContext.Consumer>
             {authUser => (
-               <div>
+               <div className="messages">
                   <Container ref={this.scrollContain} className="messageContainer" fluid>
 
                      {loading && <div>Loading ...</div>}
@@ -195,11 +195,10 @@ class AdminChatBase extends Component {
                      ) : (
                            <div>There are no messages ...</div>
                         )}
-                     <div ref={this.scrollBottom}></div>
+                     <div className="mb-3" ref={this.scrollBottom}></div>
                   </Container>
 
                   <SubmitForm onCreateMessage={this.onCreateMessage} />
-
                </div>
             )}
          </AuthUserContext.Consumer>

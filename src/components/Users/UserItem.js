@@ -15,10 +15,10 @@ import ChatRoom from '../ChatAdmin';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
+import Modal from '../Modal';
 
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
-
 
 const UserItem = memo(({ user }) => {
    const [tab, setTab] = useState('profile');
@@ -39,6 +39,7 @@ const UserTabs = memo(({ tab, setTab, user, loading }) => {
    return (
       <div className="user-item">
          <MyTabs
+            user={user}
             tab={tab}
             setTab={setTab}
             key={user.uid}
@@ -63,11 +64,11 @@ const UserTabs = memo(({ tab, setTab, user, loading }) => {
    )
 })
 
-const MyTabs = memo(({ children, tab, setTab }) => {
+const MyTabs = memo(({ children, tab, setTab, user }) => {
 
    return (
-      <div className="my-tabs pt-3">
-         <nav className="d-none d-md-flex my-tabs-nav mb-3" role="tablist">
+      <div className="my-tabs" style={{ paddingTop: "12px" }}>
+         <nav className="d-none d-md-flex my-tabs-nav mb-1" role="tablist">
             {children.map(child => {
                const { title, label } = child.props;
                if (child.props.label === tab) {
@@ -109,6 +110,7 @@ const MyTabs = memo(({ children, tab, setTab }) => {
          {/* <TabsSelect options={children} tab={tab} handleChange={handleChange} /> */}
 
          <div className="my-tabs-content">
+            {user && (<div className="mb-1">{user.username}</div>)}
             {children.map(child => {
                if (child.props.label === tab) {
                   return (child.props.children);
@@ -142,6 +144,8 @@ const ProfileBase = ({ user, firebase }) => {
    const [error, setError] = useState(null);
    const [active, setActive] = useState(user.ACTIVE);
    const [alert, setAlert] = useState(false);
+   const [showPurgeAll, setShowPurgeAll] = useState(false);
+   const [showClearMessages, setShowClearMessages] = useState(false);
 
    useEffect(() => {
       firebase.active(user.uid)
@@ -181,52 +185,123 @@ const ProfileBase = ({ user, firebase }) => {
          .catch(error => setError(error));
    };
 
+   const handleShowClearMessages = () => {
+
+      setShowClearMessages(!showClearMessages);
+   };
+
+   const handleShowPurgeData = () => {
+      setShowPurgeAll(!showPurgeAll);
+   };
+
+   const purgeUserData = () => {
+      const promises = [
+         firebase.messages(user.uid).remove(),
+         firebase.workoutIds(user.uid).remove(),
+         firebase.workouts(user.uid).remove(),
+         firebase.weighIn(user.uid).remove(),
+         firebase.usersDiets(user.uid).remove(),
+         firebase.dietIds(user.uid).remove(),
+      ];
+
+      Promise.all(promises)
+         .then(
+            () => console.log("all removed")
+         )
+         .catch(error => {
+            if (error) {
+               console.log(error);
+            }
+         });
+
+      handleShowPurgeData();
+   }
+
+   const clearMessages = () => {
+      console.log("Clear Older Messages")
+      firebase.messages(user.uid).limitToLast(50).once("value", (snap) => {
+         const messagesObject = snap.val();
+         if (messagesObject) {
+            firebase.messages(user.uid).set(messagesObject);
+         }
+      })
+      handleShowClearMessages();
+   }
+
    const memberDate = user ? new Date(user.createdAt) : new Date();
    const memberDateString = memberDate.toLocaleDateString("en-US");
    const programDate = (user && user.programDate) ? new Date(user.programDate) : null;
    const programDateString = programDate ? programDate.toLocaleDateString("en-US") : "-";
 
    return (
-      <ListGroup className="mb-5">
-         <ListGroup.Item><strong>Username:</strong> {user.username}</ListGroup.Item>
-         <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
-         <ListGroup.Item><strong>Member Since:</strong> {memberDateString}</ListGroup.Item>
-         <ListGroup.Item><strong>Last Program:</strong> {programDateString}</ListGroup.Item>
-         <ListGroup.Item>
-            <Button
-               type="button"
-               variant={alert ? "success" : "primary"}
-               onClick={onSendPasswordResetEmail}
-            >
-               {alert ? "Password Reset Sent" : "Send Password Reset"}
-            </Button>
-         </ListGroup.Item>
-         <ListGroup.Item>
-            {active ? (
+      <>
+         <Modal handleClose={handleShowClearMessages} show={showClearMessages} heading={"Clear Old Messages"}>
+            <Button variant="danger" onClick={clearMessages}>Clear Messages</Button>
+         </Modal>
+
+         <Modal handleClose={handleShowPurgeData} show={showPurgeAll} heading={"Clear All User Data?"}>
+            <Button variant="danger" onClick={purgeUserData}>Clear Data</Button>
+         </Modal>
+
+         <ListGroup className="mb-5">
+            <ListGroup.Item><strong>Username:</strong> {user.username}</ListGroup.Item>
+            <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
+            <ListGroup.Item><strong>Member Since:</strong> {memberDateString}</ListGroup.Item>
+            <ListGroup.Item><strong>Last Program:</strong> {programDateString}</ListGroup.Item>
+            <ListGroup.Item>
                <Button
                   type="button"
-                  onClick={deactivateUser}
-                  variant="danger"
+                  variant={alert ? "success" : "primary"}
+                  onClick={onSendPasswordResetEmail}
                >
-                  Deactivate
+                  {alert ? "Password Reset Sent" : "Send Password Reset"}
                </Button>
-            ) : (
+            </ListGroup.Item>
+            <ListGroup.Item>
+               {active ? (
                   <Button
                      type="button"
-                     onClick={activateUser}
-                     variant="success"
+                     onClick={deactivateUser}
+                     variant="danger"
                   >
-                     Activate
+                     Deactivate
                   </Button>
+               ) : (
+                     <Button
+                        type="button"
+                        onClick={activateUser}
+                        variant="success"
+                     >
+                        Activate
+                     </Button>
+                  )
+               }
+            </ListGroup.Item>
+            <ListGroup.Item>
+               <Button
+                  type="button"
+                  variant="danger"
+                  onClick={handleShowClearMessages}
+               >
+                  Clear Messages
+            </Button>
+            </ListGroup.Item>
+            <ListGroup.Item>
+               <Button
+                  type="button"
+                  variant="danger"
+                  onClick={handleShowPurgeData}
+               >
+                  Clear Data
+            </Button>
+            </ListGroup.Item>
+            {
+               error && (
+                  <ListGroup.Item><Alert variant="warning">{error}</Alert></ListGroup.Item>
                )
             }
-         </ListGroup.Item>
-         {
-            error && (
-               <ListGroup.Item><Alert variant="warning">{error}</Alert></ListGroup.Item>
-            )
-         }
-      </ListGroup>
+         </ListGroup>
+      </>
    )
 }
 

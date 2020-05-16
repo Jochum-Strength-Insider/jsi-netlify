@@ -221,6 +221,7 @@ class Firebase {
    dietIds = (uid) => this.db.ref(`dietIds/${uid}`);
 
    // *** Weight Ins API ***
+
    weighIn = (uid) => this.db.ref(`weighIns/${uid}`);
 
    // *** Image Storage API ***

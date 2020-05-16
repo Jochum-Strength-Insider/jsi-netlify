@@ -16,7 +16,7 @@ const DietPage = () => {
          <Container fluid>
             <div className="app-top d-flex justify-content-center">
                <div className="contain-width">
-                  <h3>Diet Sheet</h3>
+                  {/* <h3>Diet Sheet</h3> */}
                   <Diet uid={authUser.uid} />
                </div>
             </div>

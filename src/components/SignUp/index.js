@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { PROGRAM } from '../../constants/defaultProgram';
 import { SignInLink } from '../SignIn';
+
+import {
+   AuthUserContext,
+} from '../Session';
 
 import moment from 'moment';
 import { Formik } from 'formik';
@@ -60,16 +64,20 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 const SignUpFormBase = ({firebase, history, handleClose}) => {
    const [error, setError] = useState(null);
    const timestamp = Number(moment().format("x"));
+   const adminAuthUser = useContext(AuthUserContext);
 
    const onSubmit = ( values, {resetForm}) => {
-      const { username, email, passwordOne } = values;
+      const { username, email, passwordOne, message } = values;
 
       firebase
          .doCreateUserWithEmailAndPassword(email, passwordOne)
          .then(({newUser, secondaryApp}) => {
             newUser.then(authUser => {
+
+               const { uid } = authUser.user;
+
                // console.log("authUser", authUser.user);
-               firebase.user(authUser.user.uid).set({
+               firebase.user(uid).set({
                   username,
                   email,
                   ADMIN: false,
@@ -86,10 +94,21 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                secondaryApp.auth().signOut();
                secondaryApp.delete();
 
-               return authUser.user.uid;
+               const text = message.trim();
+               if (text !== "") {
+                  const messageObject = {
+                     text,
+                     userId: adminAuthUser.uid,
+                     username: adminAuthUser.username,
+                     createdAt: timestamp,
+                  };
+
+                  return { uid, messageObject };
+               }
+
+               return { uid };
             })
-            .then(uid => {
-               // console.log("uid", uid);
+               .then(({ uid, messageObject }) => {
                const programData = PROGRAM(timestamp);
 
                firebase.workouts(uid).push(programData)
@@ -97,11 +116,17 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                      const key = snap.key;
                      firebase.workoutIds(uid).update({ [key]: { title: "Default", createdAt: timestamp, active: false } });
                   });
+
+               if(messageObject) {
+                  firebase.messages(uid).push(messageObject)
+               }
+
+               return uid;
             })
-            .then(() => {
+            .then((uid) => {
                resetForm({});
                handleClose();
-               // history.push(ROUTES.LANDING);
+               history.push(`${ROUTES.ADMIN}/${uid}`);
             })
             .catch(error => {
                if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
@@ -124,6 +149,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                   email: '',
                   passwordOne: '',
                   passwordTwo: '',
+                  message: '',
                }}
             >
                {({
@@ -136,7 +162,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                   errors,
                }) => (
                      <Form noValidate onSubmit={handleSubmit}>
-                        <Form.Group md="4" controlId="validationFormikUsername">
+                        <Form.Group  controlId="validationFormikUsername">
                            <Form.Label>Username</Form.Label>
                            <Form.Control
                               type="text"
@@ -151,7 +177,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                            </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group md="4" >
+                        <Form.Group  >
                            <Form.Label>Email</Form.Label>
                            <Form.Control
                               type="email"
@@ -165,7 +191,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                               {errors.email}
                            </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group md="4" controlId="validationFormikPasswordOne">
+                        <Form.Group  controlId="validationFormikPasswordOne">
                            <Form.Label>Password</Form.Label>
                            <Form.Control
                               type="password"
@@ -180,7 +206,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                            </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group md="4" >
+                        <Form.Group  >
                            <Form.Label>Confirm Password</Form.Label>
                            <Form.Control
                               type="password"
@@ -193,6 +219,18 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                            <Form.Control.Feedback type="invalid">
                               {errors.passwordTwo}
                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group >
+                           <Form.Label>Welcome Message</Form.Label>
+                           <Form.Control
+                              type="text"
+                              name="message"
+                              value={values.message}
+                              onChange={handleChange}
+                              as="textarea"
+                              rows="3"
+                           />
                         </Form.Group>
 
                         <hr></hr>
