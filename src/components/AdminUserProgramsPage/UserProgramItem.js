@@ -37,6 +37,7 @@ class ProgramItemBase extends Component {
             }
          ],
          showTitle: false,
+         showSave: false,
          error: null,
          ...props.location.state,
       };
@@ -118,6 +119,14 @@ class ProgramItemBase extends Component {
       this.setState({ showTitle: false });
    }
 
+   showSaveModal = () => {
+      this.setState({ showSave: true });
+   }
+
+   hideSaveModal = () => {
+      this.setState({ showSave: false });
+   }
+
    editTitle = (e) => {
       e.preventDefault();
       const title = this.titleRef.current.value.trim();
@@ -147,6 +156,94 @@ class ProgramItemBase extends Component {
          .child(phase)
          .set(phaseUpdate)
    }
+
+   quickSave = (e) => {
+      e.preventDefault();
+      const { program } = this.state;
+      const { title } = program;
+      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+
+      const programUpdate = { ...program };
+      const titleCopy = title + " copy";
+      programUpdate['title'] = titleCopy;
+      programUpdate['createdAt'] = timestamp;
+
+      this.props.firebase.quickSave().set(programUpdate)
+         .then((snap) => {
+            // const key = snap.key;
+            this.props.firebase.quickSaveId().set({ title: titleCopy, createdAt: timestamp });
+            this.hideSaveModal();
+         })
+         .catch(error => this.setState({ error }));
+   }
+
+   saveToPrograms = (e) => {
+      e.preventDefault();
+      const { program } = this.state;
+      const { title } = program;
+      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+
+      const programUpdate = { ...program };
+      const titleCopy = title + " copy";
+      programUpdate['title'] = titleCopy;
+      programUpdate['createdAt'] = timestamp;
+
+      this.props.firebase.programs().push(programUpdate)
+         .then((snap) => {
+            const key = snap.key;
+            this.props.firebase.programIds().update({ [key]: { title: titleCopy, createdAt: timestamp } });
+            this.hideSaveModal();
+         })
+         .catch(error => this.setState({ error }));
+   }
+
+
+   // handleCreateProgram = (e) => {
+   //    e.preventDefault();
+   //    const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+   //    const programData = PROGRAM(timestamp);
+   //    programData["title"] = this.state.programTitle;
+
+   //    console.log("creating new program");
+   //    this.props.firebase.programs().push(programData)
+   //       .then((snap) => {
+   //          const key = snap.key;
+   //          this.props.firebase.programIds().update({ [key]: { title: this.state.programTitle, createdAt: timestamp } });
+   //          this.handleClose();
+   //       })
+   //       .catch(error => this.setState({ error }));
+   // }
+
+   // handleSave = () => {
+   //    const { days, completed } = this.state;
+   //    const { phase } = this.props;
+
+   //    const daysListJSON = Object.keys(days).reduce((accumulator, key) => {
+   //       const { title, exercises, image } = days[key];
+   //       const day = {
+   //          image,
+   //          title,
+   //          exercises: JSON.stringify(exercises)
+   //       };
+
+   //       return (
+   //          { ...accumulator, [key]: day }
+   //       )
+   //    }, {});
+
+   //    const phaseUpdate = {
+   //       completed: completed,
+   //       ...daysListJSON
+   //    }
+
+   //    console.log("updating program");
+
+   //    this.props.onSave(phase, phaseUpdate)
+   //       .then(this.onAlert)
+   //       .catch(error => this.setState({ error }));
+   // }
+
+
 
    setActive = (wid) => () => {
       const { workoutids } = this.state;
@@ -190,12 +287,22 @@ class ProgramItemBase extends Component {
    }
 
    render() {
-      const { program, workoutids, loading, pid, uid, tasks, error, showTitle, username } = this.state;
+      const { program, workoutids, loading, pid, uid, tasks, error, showTitle, showSave, username } = this.state;
       const title = program ? program.title : "";
       const active = workoutids ? workoutids[pid].active : false;
 
       return (
          <>
+            <Modal handleClose={this.hideSaveModal} show={showSave} heading={"Save Program?"} >
+               <div>
+                  <div className="mb-2">Save Program?</div>
+                  <div className="d-flex justify-content-between">
+                     <Button variant="success" onClick={this.saveToPrograms}>Save To Programs</Button>
+                     <Button variant="success" onClick={this.quickSave}>Quick Save</Button>
+                  </div>
+               </div>
+            </Modal>
+
             <Modal handleClose={this.hideTitleModal} show={showTitle} heading={"Change Title?"} >
                <Form onSubmit={this.editTitle}>
                   <Form.Group>
@@ -217,11 +324,13 @@ class ProgramItemBase extends Component {
                <>
                   <span className="d-flex justify-content-between align-items-center mb-2">
                      <h3 className="program-title mb-0" onClick={this.showTitleModal}>{program.title}</h3>
-
-                     {!active
-                        ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(pid)} />
-                        : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(pid)} />
-                     }
+                     <div>
+                        {!active
+                           ? <HoverButton variant={"outline-warning"} text={"Inactive"} hoveredText={"Activate"} onClick={this.setActive(pid)} />
+                           : <HoverButton variant={"outline-success"} text={"Active"} hoveredText={"Deactivate"} onClick={this.setInactive(pid)} />
+                        }
+                        <Button className="ml-2" variant="outline-success" onClick={this.showSaveModal}>Save</Button>
+                     </div>
                   </span>
                   {username && (<Button variant="link" onClick={this.handleGoBack} className="mx-0 px-0 py-0 mb-3">{username}</Button>)}
 

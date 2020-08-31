@@ -325,8 +325,8 @@ class ExpandableTable extends React.Component {
                            <React.Fragment key={idx}>
 
                               <ListGroup.Item className="overrideBorder no-top-border" key={idx}>
-                                 <CustomToggle eventKey={idx} variant={"link"} size={"lg"} scroll={false}><Button onClick={() => this.resetCurrentCell(idx)} style={{ fontSize: "1.25rem" }} variant="link">{dayCapitalized}</Button></CustomToggle>
-                                 <Accordion.Collapse eventKey={idx}>
+                                 <CustomToggle eventKey={idx + 1} variant={"link"} size={"lg"} scroll={false}><Button onClick={() => this.resetCurrentCell(idx)} style={{ fontSize: "1.25rem" }} variant="link">{dayCapitalized}</Button></CustomToggle>
+                                 <Accordion.Collapse eventKey={idx + 1}>
                                     <>
                                        {/* Give an edit button that has edit title and delete? */}
                                        <span className="d-flex justify-content-between align-items-center pb-3">

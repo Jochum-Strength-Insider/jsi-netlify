@@ -194,6 +194,12 @@ class Firebase {
 
    workout = (uid, wid) => this.db.ref(`workouts/${uid}/${wid}`);
 
+   // *** quickSave API ***
+
+   quickSave = () => this.db.ref('quickSave');
+
+   quickSaveId = () => this.db.ref('quickSaveId');
+
    // *** Program API ***
 
    programs = () => this.db.ref('programs');

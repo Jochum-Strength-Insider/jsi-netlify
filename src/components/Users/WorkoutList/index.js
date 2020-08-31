@@ -34,6 +34,7 @@ class WorkoutListBase extends Component {
          removeKey: null,
          showRemove: false,
          error: null,
+         quickSave: null,
          ...props.location.state,
       };
    }
@@ -61,6 +62,35 @@ class WorkoutListBase extends Component {
             // this.props.history.push(`/admin-user-programs/${currentUserId}/${key}`);
          })
          .catch(error => this.setState({ error }));
+   }
+
+   handleCreateWorkoutFromQuickSave = (e) => {
+      e.preventDefault();
+
+      const currentUserId = this.props.uid;
+
+      this.props.firebase
+         .quickSave()
+         .once('value', snapshot => {
+            const quickSaveObject = snapshot.val()
+
+            if (quickSaveObject) {
+               const programUpdate = { ...quickSaveObject };
+               programUpdate["createdAt"] = this.timestamp;
+
+               console.log("creating new workout from quick save");
+
+               this.props.firebase.workouts(currentUserId).push(programUpdate)
+                  .then((snap) => {
+                     const key = snap.key;
+                     this.props.firebase.workoutIds(currentUserId).update({ [key]: { title: programUpdate.title, createdAt: programUpdate.createdAt, active: false } });
+                     this.props.firebase.user(currentUserId).update({ programDate: programUpdate.createdAt });
+                  })
+                  .catch(error => this.setState({ error }));
+            }
+         });
+
+
    }
 
    handleCreateNewWorkout = (e) => {
@@ -157,6 +187,21 @@ class WorkoutListBase extends Component {
          });
    }
 
+   fetchQuickSave = () => {
+      this.props.firebase
+         .quickSaveId()
+         .once('value', snapshot => {
+            const quickSaveObject = snapshot.val()
+
+            if (quickSaveObject) {
+               this.setState({
+                  quickSave: quickSaveObject,
+               });
+            }
+         });
+   }
+
+
    fetchUserIds = () => {
       this.setState({ loading: true });
 
@@ -187,6 +232,7 @@ class WorkoutListBase extends Component {
       // console.log("mount");
       this.fetchUserIds();
       this.fetchPrograms();
+      this.fetchQuickSave();
    }
 
    onRemoveWorkout = () => {
@@ -203,7 +249,7 @@ class WorkoutListBase extends Component {
    }
 
    render() {
-      const { user, loading, workoutids, show, programIds, error } = this.state;
+      const { user, loading, workoutids, show, programIds, error, quickSave } = this.state;
       const workoutidsArray = Object.keys(workoutids).reverse();
 
       return (
@@ -253,6 +299,20 @@ class WorkoutListBase extends Component {
                      </Form.Group>
                      <Button type="submit">Add From Template</Button>
                   </Form>
+                  {
+                     quickSave && (
+                        <>
+                           <hr></hr>
+                           <Form onSubmit={this.handleCreateWorkoutFromQuickSave}>
+                              <Form.Group>
+                                 <Form.Label>Quick Save Program</Form.Label>
+                                 <Form.Control type="text" placeholder={quickSave.title} readOnly />
+                              </Form.Group>
+                              <Button type="submit">Add From Quick Save</Button>
+                           </Form>
+                        </>
+                     )
+                  }
                </Modal>
 
                <ListGroup className="mb-5">
@@ -266,6 +326,7 @@ class WorkoutListBase extends Component {
                            Loading...
                         </ListGroup.Item>)
                   }
+
                   {
                      (workoutidsArray.length > 0)
                         ?

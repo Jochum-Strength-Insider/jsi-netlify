@@ -127,13 +127,13 @@ const PhaseTable = ({ days, phase, saveTracking }) => {
 
                   return (
                      <div key={daysIndex} className="user-program-day my-5">
-                        <CustomToggle eventKey={daysIndex}>
+                        <CustomToggle eventKey={daysIndex + 1}>
                            <img className="card-img-top" alt={"Exercise"} src={image} />
                            <div className="bg-purple card-body">
                               <h3 className="my-0 focus" tabIndex="0" role="button" style={{ color: "white" }}>{dayCapitalized}</h3>
                            </div>
                         </CustomToggle>
-                        <Accordion.Collapse eventKey={daysIndex} className="card-collapse">
+                        <Accordion.Collapse eventKey={daysIndex + 1} className="card-collapse">
                            <DayTable day={day} dayTitle={key} updateSaveTracking={updateSaveTracking} />
                         </Accordion.Collapse>
                      </div>

@@ -42,9 +42,10 @@ class UserListBase extends Component {
       super(props);
 
       const initialUsersList = this.props.usersList;
+      const initialActiveUsers = initialUsersList.filter((user) => user.ACTIVE === true);
 
       this.state = {
-         sortedUsers: initialUsersList,
+         usersList: initialActiveUsers,
          asc: true,
          filter: false,
          show: false,
@@ -54,28 +55,28 @@ class UserListBase extends Component {
    }
 
    sortUsersBy = (property) => () => {
-      const { asc } = this.state;
+      const { asc, usersList } = this.state;
       const fx = (a, b) => asc ? (a[property].toLowerCase() > b[property].toLowerCase() ? 1 : -1) : (a[property].toLowerCase() < b[property].toLowerCase() ? 1 : -1);
-      const sortedUsers = this.props.usersList.sort(fx);
-      this.setState(state => ({ sortedUsers: sortedUsers, asc: !state.asc }))
+      const sortedUsers = usersList.sort(fx);
+      this.setState(state => ({ usersList: sortedUsers, asc: !state.asc }))
    }
 
    sortUsersByProgramDate = () => {
-      const { asc } = this.state;
+      const { asc, usersList } = this.state;
       const fx = (a, b) => asc ? (a["programDate"] > b["programDate"] ? 1 : -1) : (a["programDate"] < b["programDate"] ? 1 : -1);
-      const sortedUsers = this.props.usersList.sort(fx);
-      this.setState(state => ({ sortedUsers: sortedUsers, asc: !state.asc }))
+      const sortedUsers = usersList.sort(fx);
+      this.setState(state => ({ usersList: sortedUsers, asc: !state.asc }))
    }
 
    filterUsers = () => {
       const { filter } = this.state;
       const fx = (user => user.ACTIVE === filter);
       const filteredUsers = this.props.usersList.filter(fx);
-      this.setState(state => ({ sortedUsers: filteredUsers, filter: !state.filter }))
+      this.setState(state => ({ usersList: filteredUsers, filter: !state.filter }))
    }
 
    showAll = () => {
-      this.setState({ sortedUsers: this.props.usersList });
+      this.setState({ usersList: this.props.usersList });
    }
 
    handleOpen = () => {
@@ -156,7 +157,7 @@ class UserListBase extends Component {
    }
 
    render() {
-      const { sortedUsers, loading, groupMessage } = this.state;
+      const { usersList, loading, groupMessage } = this.state;
       const sendable = Object.keys(groupMessage).length > 0;
       return (
          <>
@@ -183,7 +184,7 @@ class UserListBase extends Component {
                            <Dropdown.Item onClick={this.sortUsersBy("username")}>Username {this.state.asc ? "▴" : "▾"}</Dropdown.Item>
                            <Dropdown.Item onClick={this.sortUsersBy("email")}>Email {this.state.asc ? "▴" : "▾"}</Dropdown.Item>
                            <Dropdown.Item onClick={this.sortUsersByProgramDate}>Program Date {this.state.asc ? "▴" : "▾"}</Dropdown.Item>
-                           <Dropdown.Item onClick={this.filterUsers}>{this.state.filter ? "Inactive" : "Active"}</Dropdown.Item>
+                           <Dropdown.Item onClick={this.filterUsers}>{this.state.filter ? "Active" : "Inactive"}</Dropdown.Item>
                            <Dropdown.Item onClick={this.showAll}>All</Dropdown.Item>
                            <Dropdown.Divider />
                            {sendable && <Dropdown.Item onClick={this.handleOpenMessage}>Group Message</Dropdown.Item>}
@@ -195,7 +196,7 @@ class UserListBase extends Component {
                   <div className="users-list-contain">
                      {loading && <ListGroup.Item><Loading /></ListGroup.Item>}
                      {/* {dummyUsers.map(user => { */}
-                     {sortedUsers.map(user => {
+                     {usersList.map(user => {
                         return (
                            <UserSelect
                               key={user.uid}

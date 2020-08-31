@@ -15,6 +15,7 @@ import ChatRoom from '../ChatAdmin';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
+import Form from 'react-bootstrap/Form'
 import Modal from '../Modal';
 
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -144,8 +145,10 @@ const ProfileBase = ({ user, firebase }) => {
    const [error, setError] = useState(null);
    const [active, setActive] = useState(user.ACTIVE);
    const [alert, setAlert] = useState(false);
+   const [username, setUsername] = useState(user.username);
    const [showPurgeAll, setShowPurgeAll] = useState(false);
    const [showClearMessages, setShowClearMessages] = useState(false);
+   const [showName, setShowName] = useState(false);
 
    useEffect(() => {
       firebase.active(user.uid)
@@ -160,7 +163,7 @@ const ProfileBase = ({ user, firebase }) => {
          .then(() => {
             onAlert();
          })
-         .catch(error => setError(error));;
+         .catch(error => setError(error));
    };
 
    const onAlert = () => {
@@ -186,13 +189,31 @@ const ProfileBase = ({ user, firebase }) => {
    };
 
    const handleShowClearMessages = () => {
-
       setShowClearMessages(!showClearMessages);
    };
 
    const handleShowPurgeData = () => {
       setShowPurgeAll(!showPurgeAll);
    };
+
+   const handleShowUsername = () => {
+      setShowName(!showName);
+   };
+
+   const onChange = (e) => {
+      const { value } = e.target;
+      setUsername(value);
+   }
+
+   const editUsername = (e) => {
+      e.preventDefault();
+
+      firebase
+         .user(user.uid).update({ "username": username })
+         // .then(handleShowUsername)
+         .then(() => window.location.reload(false))
+         .catch(error => setError(error));
+   }
 
    const purgeUserData = () => {
       const promises = [
@@ -243,8 +264,31 @@ const ProfileBase = ({ user, firebase }) => {
             <Button variant="danger" onClick={purgeUserData}>Clear Data</Button>
          </Modal>
 
+         <Modal handleClose={handleShowUsername} show={showName} heading={"Edit Username?"} >
+            <Form onSubmit={editUsername}>
+               <Form.Group>
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                     type="text"
+                     value={username}
+                     onChange={onChange}
+                  />
+               </Form.Group>
+               <Button type="submit">Save</Button>
+            </Form>
+         </Modal>
+
          <ListGroup className="mb-5">
-            <ListGroup.Item><strong>Username:</strong> {user.username}</ListGroup.Item>
+            <ListGroup.Item className="d-flex justify-content-between align-items-center">
+               <div>
+                  {/* <strong>Username:</strong> {username} */}
+                  <strong>Username:</strong> {user.username}
+               </div>
+               <Button
+                  onClick={handleShowUsername}
+                  variant="outline-warning"
+               >Edit</Button>
+            </ListGroup.Item>
             <ListGroup.Item className="no-top-border"><strong>E-Mail:</strong> {user.email}</ListGroup.Item>
             <ListGroup.Item><strong>Member Since:</strong> {memberDateString}</ListGroup.Item>
             <ListGroup.Item><strong>Last Program:</strong> {programDateString}</ListGroup.Item>

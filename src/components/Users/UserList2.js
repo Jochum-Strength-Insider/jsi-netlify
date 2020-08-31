@@ -196,7 +196,7 @@ class UserListBase extends Component {
                         <div className="scrollListContain">
                            {loading && <ListGroup.Item><Loading /></ListGroup.Item>}
                            {sortedUsers.map(user => {
-                              console.log(user);
+                              // console.log(user);
                               // {dummyUsers.map(user => {
                               const date = user.programDate ? new Date(user.programDate).toLocaleDateString("en-US") : "-";
                               return (
