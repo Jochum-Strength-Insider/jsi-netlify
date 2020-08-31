@@ -157,20 +157,64 @@ class ProgramItemBase extends Component {
          .set(phaseUpdate)
    }
 
+   clearTracking = (program) => {
+      const instruction = program.instruction;
+
+      const phasesList = Object.keys(instruction);
+
+      // Reduce program object into days
+      const tablesList = phasesList.reduce((accumulator, key) => {
+         const { completed, ...table } = instruction[key];
+         const daysListArray = Object.keys(table);
+
+         // reduce days objects back into parsed JSON
+         const daysList = daysListArray.reduce((accumulator, key) => {
+
+            const { exercises, title, image } = table[key];
+
+            const exercisesUpdate = JSON.parse(exercises).map(exercise => {
+               const exerciseUpdate = { ...exercise };
+               exerciseUpdate['tracking'] = { "week 1": "", "week 2": "", "week 3": "" }
+               return exerciseUpdate;
+            });
+
+            const day = {
+               exercises: JSON.stringify(exercisesUpdate),
+               title,
+               image
+            }
+
+            return (
+               { ...accumulator, completed: completed, [key]: day }
+            )
+         }, {});
+
+         return (
+            { ...accumulator, [key]: daysList }
+         )
+      }, {});
+
+      return tablesList;
+   }
+
    quickSave = (e) => {
       e.preventDefault();
+
       const { program } = this.state;
       const { title } = program;
       const timestamp = this.props.firebase.serverValue.TIMESTAMP;
 
       const programUpdate = { ...program };
       const titleCopy = title + " copy";
+
+      const tablesList = this.clearTracking(programUpdate);
+
       programUpdate['title'] = titleCopy;
       programUpdate['createdAt'] = timestamp;
+      programUpdate['instruction'] = tablesList;
 
       this.props.firebase.quickSave().set(programUpdate)
          .then((snap) => {
-            // const key = snap.key;
             this.props.firebase.quickSaveId().set({ title: titleCopy, createdAt: timestamp });
             this.hideSaveModal();
          })
@@ -185,8 +229,12 @@ class ProgramItemBase extends Component {
 
       const programUpdate = { ...program };
       const titleCopy = title + " copy";
+
+      const tablesList = this.clearTracking(programUpdate);
+
       programUpdate['title'] = titleCopy;
       programUpdate['createdAt'] = timestamp;
+      programUpdate['instruction'] = tablesList;
 
       this.props.firebase.programs().push(programUpdate)
          .then((snap) => {
@@ -196,53 +244,6 @@ class ProgramItemBase extends Component {
          })
          .catch(error => this.setState({ error }));
    }
-
-
-   // handleCreateProgram = (e) => {
-   //    e.preventDefault();
-   //    const timestamp = this.props.firebase.serverValue.TIMESTAMP;
-   //    const programData = PROGRAM(timestamp);
-   //    programData["title"] = this.state.programTitle;
-
-   //    console.log("creating new program");
-   //    this.props.firebase.programs().push(programData)
-   //       .then((snap) => {
-   //          const key = snap.key;
-   //          this.props.firebase.programIds().update({ [key]: { title: this.state.programTitle, createdAt: timestamp } });
-   //          this.handleClose();
-   //       })
-   //       .catch(error => this.setState({ error }));
-   // }
-
-   // handleSave = () => {
-   //    const { days, completed } = this.state;
-   //    const { phase } = this.props;
-
-   //    const daysListJSON = Object.keys(days).reduce((accumulator, key) => {
-   //       const { title, exercises, image } = days[key];
-   //       const day = {
-   //          image,
-   //          title,
-   //          exercises: JSON.stringify(exercises)
-   //       };
-
-   //       return (
-   //          { ...accumulator, [key]: day }
-   //       )
-   //    }, {});
-
-   //    const phaseUpdate = {
-   //       completed: completed,
-   //       ...daysListJSON
-   //    }
-
-   //    console.log("updating program");
-
-   //    this.props.onSave(phase, phaseUpdate)
-   //       .then(this.onAlert)
-   //       .catch(error => this.setState({ error }));
-   // }
-
 
 
    setActive = (wid) => () => {
