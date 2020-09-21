@@ -71,15 +71,29 @@ const SignInFormBase = ({ firebase, history }) => {
 
       // console.log(email);
 
-      firebase.doSendSignInLinkToEmail(email)
-         .then(function () {
-            resetForm({});
-            setSent(true)
-            window.localStorage.setItem('emailForSignIn', email);
-         })
-         .catch(function (error) {
+      firebase.fetchSignInMethodsForEmail(email)
+         .then((res) => {
+            // console.log(res)
+            if (res.length > 0) {
+               firebase.doSendSignInLinkToEmail(email)
+                  .then(function () {
+                     resetForm({});
+                     setSent(true)
+                     setError(null)
+                     window.localStorage.setItem('emailForSignIn', email);
+                  })
+                  .catch(function (error) {
+                     setError(error)
+                  });
+
+            } else {
+               setError({ message: "Account does not exist. Please contact jochumstrength@gmail.com to become an Insider or for more information about Jochum Strength Insider." })
+            }
+
+         }).catch(function (error) {
             setError(error)
          });
+
    };
 
    return (
@@ -127,7 +141,7 @@ const SignInFormBase = ({ firebase, history }) => {
                      <Alert className="mt-3" variant="success">
                         Email sign in link sent! Please check your inbox. <br />
                         If this is your first time signing in please set up a new password on the account page after login.
-                  </Alert>}
+                     </Alert>}
                </Form>
             )}
       </Formik>

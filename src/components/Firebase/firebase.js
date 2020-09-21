@@ -78,6 +78,8 @@ class Firebase {
 
    doSignOut = () => this.auth.signOut();
 
+   fetchSignInMethodsForEmail = (email) => this.auth.fetchSignInMethodsForEmail(email);
+
    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
    // can you send this to a non current user?

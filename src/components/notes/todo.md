@@ -39,12 +39,4 @@ UPDATE DEPENDENCIES!!!
 
 * User search sort
 
-3. Copy/save programs from within a program: 'I'd love the ability to take a program I created for a user and then add that to the general list of programs to be able to use in the future. Along with this I'd love to be able to copy the current program on the sheet lets say it's "Logan 1" and create a copy that is "Logan 1 Copy" to make a "Logan 2" program.'
-
-'The remake of the programs is best explained in the fact that if I create Logan a program I'd like tp use that same program for let's say Fenske! Currently you can't do that, so the biggest thing is being able to copy a program from a user like mentioned above but also being able to send that program to another user! (So if I create Logan 1 I'd like to be able to copy that so it says Logan 1 - Copy or something so that the set up is very similar and I'd also like to be able to send Logan 1 to Fenske and then change it from there).'
-
-*  Add from copy. Add a copy to clipboard feature within the users program that lets jochum quickly copy the most recent saved program to a new user.
-
-* Add a save to programs list button. Save a program to the master programs list from within a users program.
-
 4. Programs folders: 'Finally with programs it would be awesome to create Folders so let's say all of my "back in action" programs phases 1 - 4 can be in a folder, reason for this being is the list of programs is going to get crazy long other wise!'
