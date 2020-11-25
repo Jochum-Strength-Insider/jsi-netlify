@@ -11,7 +11,7 @@ const SignUpPanel = () => (
     />
     <div className="sign-up-info-contain">
       <div className="sign-up-info">
-        <h2 className="sign-up-title text-center mt-5 pt-5">Jochum Strength Insider</h2>
+        <h2 className="sign-up-title text-center pt-4 mt-4">Jochum Strength Insider</h2>
         <p className="includes">Includes:</p>
         <ul>
           <li>New Program Every 3 Weeks</li>
@@ -23,7 +23,7 @@ const SignUpPanel = () => (
 
         <p className="info"><i>*This program will be automatically charged every three weeks until you decide to cancel. You are paying a subscription-based fee for access to Jochum Strength Content including programming, nutriton and advice*</i></p>
 
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center pb-4 mb-4">
           <a className="sign-up-button" href="/subscribe">Sign Up!</a>
         </div>
       </div>

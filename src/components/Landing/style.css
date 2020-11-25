@@ -228,12 +228,33 @@ height: 75px; */
   /* filter: invert(17%) sepia(6%) saturate(400%) hue-rotate(282deg) brightness(84%) contrast(88%); */
 }
 
-.sign-up-info-contain::-webkit-scrollbar {
+/* .sign-up-info-contain::-webkit-scrollbar,
+.sign-up-info::-webkit-scrollbar {
   width: 0px;
-  /* Remove scrollbar space */
   background: transparent;
-  /* Optional: just make scrollbar invisible */
+} */
+
+/* .sign-up-info-contain::-webkit-scrollbar,
+.sign-up-info::-webkit-scrollbar {
+  width: 6px;
 }
+
+.sign-up-info-contain::-webkit-scrollbar,
+.sign-up-info::-webkit-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--js-purple) rgba(255, 255, 255, 0);
+}
+
+.sign-up-info-contain::-webkit-scrollbar,
+.sign-up-info::-webkit-scrollbar {
+  background: rgba(255, 255, 255, 0);
+}
+
+.sign-up-info-contain::-webkit-scrollbar,
+.sign-up-info::-webkit-scrollbar {
+  background-color: var(--js-purple);
+  border-radius: 6px;
+} */
 
 .sign-up-info-contain {
   background-color: rgba(0, 0, 0, 0.482);
@@ -485,7 +506,6 @@ height: 75px; */
     display: flex;
     /* align-items: center; */
     justify-content: center;
-    overflow-y: scroll;
   }
 
   .sign-up-info {
