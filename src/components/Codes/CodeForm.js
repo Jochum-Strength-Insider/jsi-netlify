@@ -37,7 +37,7 @@ class CodeForm extends Component {
     const newCode = {
       "title": codeTitle,
       "subscriptionId": subscriptionId,
-      "distountCode": distountCode,
+      "distountCode": distountCode.toLowerCase(),
       "active": true,
       "price": price,
       "codeType": codeType
@@ -127,7 +127,7 @@ class CodeForm extends Component {
     return (
       <>
         {edit ? (<Form>
-          <Form.Group controlId="formExercie">
+          <Form.Group controlId="formExercise">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"

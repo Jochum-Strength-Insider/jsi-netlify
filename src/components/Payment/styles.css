@@ -1,0 +1,24 @@
+.tooltip-button {
+  display: inline-block;
+  vertical-align: top;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  text-decoration: none;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.tooltip-button::before {
+  content: "?"
+}
+
+.tooltip-div {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}

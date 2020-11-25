@@ -3,9 +3,15 @@ import React, { useState, useEffect } from 'react';
 import jochumJoin from "../../images/jochum-join.jpg";
 import PaymentButton from './button';
 import Spinner from 'react-bootstrap/Spinner';
+// import Collapse from 'react-bootstrap/Collapse';
+// import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+// import Tooltip from 'react-bootstrap/Tooltip';
+// import Navbar from 'react-bootstrap/Navbar';
+// import Container from 'react-bootstrap/Container';
 
 import { useLocation } from "react-router-dom";
 import { withFirebase } from '../Firebase';
+import './styles.css';
 
 import {
   Button,
@@ -23,12 +29,31 @@ import {
 // Add a negative reaction if the discount code didn't work
 // The Subscription Id field in create code shouldnt' have default text. Just a placeholder.
 
+// Mobile responive so the paypal button never goes off the bottom of the page.
+
+// Add this disclaimer "Discount code applies to first payment period only, after the initial period the cost of your program will revert back to regular price" or something along those lines.Right now it just looks like it's a constant discount.
+
+
+// Make the checkout a fixed footer on mobile?
+// const AppFooter = ({ children }) => {
+//   return (
+//     <div className="fixed-bottom">
+//       <Container>
+//         {children}
+//       </Container>
+//     </div>
+//   )
+// }
+
 const PromoCodeDiscount = ({ variant, isDisabled, giveDiscount }) => {
   const [promo, setPromo] = useState('');
+  const [open, setOpen] = useState(false);
 
   const onChange = (e) => {
     setPromo(e.target.value);
   }
+
+  const toggleOpen = () => setOpen(!open);
 
   const applyDiscount = (e) => {
     e.preventDefault();
@@ -41,7 +66,20 @@ const PromoCodeDiscount = ({ variant, isDisabled, giveDiscount }) => {
         <Row className="show-grid mb-3">
           <Col md={12}>
             <Form>
-              <FormLabel>Promo Code</FormLabel>{' '}
+              <FormLabel
+                onClick={toggleOpen}
+                aria-controls="example-collapse-text"
+                aria-expanded={open}
+              >Promo Code</FormLabel>{' '}
+              {/* <Button
+                className="promo-code-button px-0 my-0"
+                variant={"link"}
+                onClick={toggleOpen}
+              >
+                {!open ? `Apply ` : `Hide `}
+                promo code {!open ? `+` : `-`}
+              </Button>
+              <Collapse in={open}> */}
               <InputGroup>
                 <FormControl
                   aria-label="Recipient's username"
@@ -55,13 +93,14 @@ const PromoCodeDiscount = ({ variant, isDisabled, giveDiscount }) => {
                 <InputGroup.Append>
                   <Button
                     variant={variant}
-                    className="btn-round px-5"
+                    className="btn-round px-3"
                     type="submit"
                     disabled={isDisabled}
                     onClick={applyDiscount}
                   >Apply</Button>
                 </InputGroup.Append>
               </InputGroup>
+              {/* </Collapse> */}
             </Form>
           </Col>
         </Row>
@@ -209,12 +248,26 @@ const Payment = ({ codes, saveDetails, referral, discount, loading }) => {
 
             {/* <a className="sign-up-button" target="_blank" rel="noreferrer noopener" href="https://www.powr.io/apps/paypal-button/view?id=21034953&mode=page&transaction_id=4977048">Sign Up!</a> */}
 
+            {/* <AppFooter> */}
             {
               !paid &&
               <>
                 <div className="d-flex justify-content-between">
                   <h3>Total:</h3>
-                  <h3>${amount}</h3>
+                  <h3>
+                    ${amount}*
+                    {/* <OverlayTrigger
+                      placement="left"
+                      overlay={
+                        <Tooltip id={`tooltip`}>
+                          <p><i>This program will be automatically charged every three weeks until you decide to cancel.</i></p>
+                          {discountApplied && <><p><i>Discount code applies to first payment period only, after the initial period the cost of your program will revert back to regular price - $50.</i></p></>}
+                        </Tooltip>
+                      }
+                    >
+                      <div>${amount}*</div>
+                    </OverlayTrigger>*/}
+                  </h3>
                 </div>
 
                 {discountApplied && <div className='discount-code text-right'>{discountApplied}</div>}
@@ -248,11 +301,12 @@ const Payment = ({ codes, saveDetails, referral, discount, loading }) => {
                         aria-hidden="true"
                       />
                       {" "}Loading...
-                </Button>
+                      </Button>
                   }
                 </div>
               </>
             }
+            {/* </AppFooter> */}
           </div>
         </div>
       </div>
@@ -272,7 +326,8 @@ const InsiderDetails = () => (
     </ul>
     <p className="once">Once You Sign Up you will be emailed by Coach Jochum and the programming process will begin!</p>
 
-    <p className="info"><i>*This program will be automatically charged every three weeks until you decide to cancel. You are paying a subscription-based fee for access to Jochum Strength Content including programming, nutriton and advice*</i></p>
+    <p className="info mb-2"><i>* This program will be automatically charged every three weeks until you decide to cancel.</i></p>
+    <p className="info"><i>*Discount codes apply to first payment period only, after the initial period the cost of your program will revert back to regular price.</i></p>
   </>
 );
 
@@ -304,10 +359,14 @@ const PaymentPage = ({ firebase }) => {
 
         if (codesObject) {
           const codesList = Object.keys(codesObject);
-          const codesArray = codesList.map(key => ({
-            cid: key,
-            ...codesObject[key],
-          }));
+          const codesArray = codesList.map(key => {
+            const { distountCode, ...rest } = codesObject[key];
+            return {
+              cid: key,
+              distountCode: distountCode.toLowerCase(),
+              ...rest,
+            }
+          });
 
           // console.log(codesArray);
           setCodes(codesArray);
@@ -344,35 +403,5 @@ const PaymentPage = ({ firebase }) => {
     <Payment codes={codes} loading={loading} saveDetails={saveDetails} referral={URLReferralCode} discount={URLDiscountCode} />
   )
 };
-
-// .then((snap) => {
-//   const key = snap.key;
-//   this.props.firebase.codeDetail().update({ [key]: { title: titleCopy, createdAt: timestamp } });
-//   this.hideSaveModal();
-// })
-
-// const codes = {
-//   "codeId" : {
-//     "title" : "title",
-//     "discountCode" : "title",
-//     "subscriptionId" : "subscriptionId",
-//   }
-// };
-
-// const codeDetail = {
-//   "codeId" : {
-//     "title" : "title",
-//     "submissions" : [{
-//       "submissionId" : {
-//         'code_title': 'title',
-//         'create_time': "2020-11-24T22:51:12Z",
-//         "referral" : "referral",
-//         "discount" : "discountCode",
-//         "email_address" : 'email@email',
-//         "user" : "surname, given_name",
-//       }
-//     }]
-//   }
-// }
 
 export default withFirebase(PaymentPage);

@@ -96,7 +96,7 @@ const NavigationAuth = ({ authUser, onSelect }) => {
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <NavLink className="dropdown-item ignore-active" to={ROUTES.ACCOUNT} onClick={onSelect}>Account</NavLink>
-              {/* <NavLink className="dropdown-item ignore-active" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Subscribe</NavLink> */}
+              {/* <NavLink className="dropdown-item ignore-active" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Sign Up</NavLink> */}
               <Dropdown.Divider />
               <Dropdown.Item><SignOutButton /></Dropdown.Item>
             </Dropdown.Menu>
@@ -110,14 +110,14 @@ const NavigationAuth = ({ authUser, onSelect }) => {
 const NavigationNonAuth = ({ onSelect }) => (
   <>
     <Nav>
-      <NavLink className="d-none d-lg-block d-xl-block nav-link my-auto ml-2" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Subscribe</NavLink>
+      <NavLink className="d-none d-lg-block d-xl-block nav-link my-auto ml-2" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Sign Up</NavLink>
     </Nav>
 
     <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="ml-auto" onSelect={onSelect}>
         <NavLogin classes={"d-none d-sm-none d-md-none d-lg-inline-flex d-xl-inline-flex"} />
-        <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Subscribe</NavLink>
+        <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Sign Up</NavLink>
         <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SIGN_IN} onClick={onSelect}>Sign In</NavLink>
       </Nav>
     </Navbar.Collapse>
