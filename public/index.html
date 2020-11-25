@@ -2,26 +2,27 @@
 <html lang="en">
 
 <head>
-   <meta charset="utf-8" />
-   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-   <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <meta name="theme-color" content="#000000" />
-   <meta name="description" content="Jochum Strength Insider" />
-   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Jochum Strength Insider" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
-   <!-- React Bootstrap -->
-   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  <!-- React Bootstrap -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" /> -->
 
-   <!-- Raleway font -->
-   <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,900;1,400&display=swap" rel="stylesheet">
+  <!-- Raleway font -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,900;1,400&display=swap"
+    rel="stylesheet">
 
-   <!--
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-   <!--
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -30,36 +31,42 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-   <title>Jochum Strength Insider</title>
+  <title>Jochum Strength Insider</title>
 
-   <!-- Facebook Pixel Code -->
+  <!-- Facebook Pixel Code -->
 
-      <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1240022866164200');
-      fbq('track', 'PageView');
-      </script>
+    fbq('init', '1240022866164200');
+    fbq('track', 'PageView');
+  </script>
 
-      <noscript>
-      <img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1240022866164200&ev=PageView&noscript=1"
-      />
-      </noscript>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1240022866164200&ev=PageView&noscript=1" />
+  </noscript>
 
-      <!-- End Facebook Pixel Code -->
+  <!-- End Facebook Pixel Code -->
+
+  <!-- PayPal Button -->
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=AQn52x5FxiU2Ahbvx3nl3Q-VIkW91g-COiw9UG8xyFKbylJgsf-FhIScP_wAg-SssuqNBEg_ZkR6fX_N"></script>
 </head>
 
 <body>
-   <noscript>You need to enable JavaScript to run this app.</noscript>
-   <div id="root"></div>
-   <!--
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 

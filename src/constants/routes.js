@@ -28,5 +28,7 @@ export const WORKOUT_DETAILS = '/admin-user-programs/:id/:pid';
 export const PROGRAM_DETAILS = '/admin/:id/:pid';
 export const CREATEPROGRAM = '/create-program';
 export const CREATETASK = '/create-exercise';
+export const CREATECODE = '/create-code';
 export const CREATE_DETAILS = '/create-program/:pid';
 export const WELCOME = '/welcome';
+export const SUBSCRIBE = '/subscribe';

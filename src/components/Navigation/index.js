@@ -17,195 +17,170 @@ import Button from 'react-bootstrap/Button';
 
 import AdminUnreadMessages from '../AdminUnread';
 
-
-// eslint-disable-next-line
-const dummyMessages = [
-   {
-      createdAt: 1589315829256,
-      mid: "-M79ajroLCJgrXC4AEnk",
-      text: "test 1",
-      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
-      username: "speedy",
-   },
-   {
-      createdAt: 1589315829256,
-      mid: "-M79ajroLCJgrXC4AEnk",
-      text: "test 2",
-      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
-      username: "speedy",
-   },
-   {
-      createdAt: 1589315829256,
-      mid: "-M79ajroLCJgrXC4AEnk",
-      text: "test 3",
-      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
-      username: "speedy",
-   },
-   {
-      createdAt: 1589315829256,
-      mid: "-M79ajroLCJgrXC4AEnk",
-      text: "test 4",
-      userId: "8dimKnByEBR0Pc07MuI8OdcXsUq2",
-      username: "speedy",
-   },
-];
-
-// const logo = 'https://static.wixstatic.com/media/d44628_dd09c48b517b41fc9d04671db909b022~mv2.png/v1/fill/w_848,h_296,al_c,lg_1,q_85/jochum2%20white.webp';
 const style = { display: "flex", width: "100%", maxWidth: "1000px", flex: "1", justifyContent: "space-between", flexWrap: "wrap", };
 
 const Navigation = () => {
-   const authUser = useContext(AuthUserContext);
-   const [isExpanded, setIsExpanded] = useState(false);
+  const authUser = useContext(AuthUserContext);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-   const onSelect = () => setIsExpanded(false);
-   const onToggle = () => setIsExpanded(!isExpanded);
+  const onSelect = () => setIsExpanded(false);
+  const onToggle = () => setIsExpanded(!isExpanded);
 
-   return (
-      <Navbar className="navbar justify-content-center" variant="dark" bg="purple" fixed="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
-         <div style={style}>
-            <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
-               <img
-                  src={logo}
-                  width="120"
-                  height="40"
-                  className="d-inline-block align-top"
-                  alt="Jochum Strength"
-               />
-            </Navbar.Brand>
-            {authUser ? (<NavigationAuth onToggle={onToggle} onSelect={onSelect} isExpanded={isExpanded} authUser={authUser} />) : (<NavigationNonAuth onSelect={onSelect} />)}
-         </div>
-      </Navbar>
-   )
+  return (
+    <Navbar className="navbar justify-content-center" variant="dark" bg="purple" fixed="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
+      <div style={style}>
+        <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
+          <img
+            src={logo}
+            width="120"
+            height="40"
+            className="d-inline-block align-top"
+            alt="Jochum Strength"
+          />
+        </Navbar.Brand>
+        {authUser ? (<NavigationAuth onToggle={onToggle} onSelect={onSelect} isExpanded={isExpanded} authUser={authUser} />) : (<NavigationNonAuth onToggle={onToggle} onSelect={onSelect} isExpanded={isExpanded} />)}
+      </div>
+    </Navbar>
+  )
 };
 
 const NavigationAuth = ({ authUser, onSelect }) => {
+  return (
+    <>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto" onSelect={onSelect}>
+          <NavLink className="nav-link" to={ROUTES.USERPROGRAM} onClick={onSelect}>Program</NavLink>
 
-   return (
-      <>
-         <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
-         <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto" onSelect={onSelect}>
-               <NavLink className="nav-link" to={ROUTES.USERPROGRAM} onClick={onSelect}>Program</NavLink>
+          {authUser.ACTIVE && (
+            <>
+              <NavLink className="nav-link" to={ROUTES.WEIGHIN} onClick={onSelect}>Weight</NavLink>
+              <NavLink className="nav-link" to={ROUTES.DIET} onClick={onSelect}>Diet</NavLink>
+              <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>
+                Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
+                <span className="sr-only">unread messages</span>
+              </NavLink>
+            </>
+          )}
 
-               {authUser.ACTIVE && (
-                  <>
-                     <NavLink className="nav-link" to={ROUTES.WEIGHIN} onClick={onSelect}>Weight</NavLink>
-                     <NavLink className="nav-link" to={ROUTES.DIET} onClick={onSelect}>Diet</NavLink>
-                     <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>
-                        Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
-                        <span className="sr-only">unread messages</span>
-                     </NavLink>
-                  </>
-               )}
-
-               {authUser.ADMIN && (
-                  <>
-                     <Nav>
-                        <Dropdown >
-                           <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
-                              Admin
+          {authUser.ADMIN && (
+            <>
+              <Nav>
+                <Dropdown >
+                  <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
+                    Admin
                            </Dropdown.Toggle>
-                           <Dropdown.Menu>
-                              <NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN} onClick={onSelect}>Users</NavLink>
-                              <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATEPROGRAM} onClick={onSelect}>Programs</NavLink>
-                              <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATETASK} onClick={onSelect}>Exercises</NavLink>
-                              {/* <Dropdown.Item onClick={onSelect}><NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN}>Users</NavLink></Dropdown.Item>
+                  <Dropdown.Menu>
+                    <NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN} onClick={onSelect}>Users</NavLink>
+                    <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATEPROGRAM} onClick={onSelect}>Programs</NavLink>
+                    <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATETASK} onClick={onSelect}>Exercises</NavLink>
+                    <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATECODE} onClick={onSelect}>Codes</NavLink>
+                    {/* <Dropdown.Item onClick={onSelect}><NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN}>Users</NavLink></Dropdown.Item>
                               <Dropdown.Item onClick={onSelect} href={ROUTES.CREATEPROGRAM}>Programs</Dropdown.Item>
                               <Dropdown.Item onClick={onSelect} href={ROUTES.CREATETASK}>Exercises</Dropdown.Item> */}
-                           </Dropdown.Menu>
-                        </Dropdown>
-                     </Nav>
-                  </>
-               )}
-            </Nav>
-
-            <Nav>
-               {
-                  authUser.ADMIN && <AdminUnreadMessages />
-               }
-
-               <Dropdown alignRight>
-                  <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
-                     {authUser.username}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                     <NavLink className="dropdown-item ignore-active" to={ROUTES.ACCOUNT} onClick={onSelect}>Account</NavLink>
-                     <Dropdown.Divider />
-                     <Dropdown.Item><SignOutButton /></Dropdown.Item>
                   </Dropdown.Menu>
-               </Dropdown>
-            </Nav>
-         </Navbar.Collapse>
-      </>
-   )
+                </Dropdown>
+              </Nav>
+            </>
+          )}
+        </Nav>
+
+        <Nav>
+          {
+            authUser.ADMIN && <AdminUnreadMessages />
+          }
+
+          <Dropdown alignRight>
+            <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
+              {authUser.username}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <NavLink className="dropdown-item ignore-active" to={ROUTES.ACCOUNT} onClick={onSelect}>Account</NavLink>
+              {/* <NavLink className="dropdown-item ignore-active" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Subscribe</NavLink> */}
+              <Dropdown.Divider />
+              <Dropdown.Item><SignOutButton /></Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Nav>
+      </Navbar.Collapse>
+    </>
+  )
 };
 
 const NavigationNonAuth = ({ onSelect }) => (
-   <>
+  <>
+    <Nav>
+      <NavLink className="d-none d-lg-block d-xl-block nav-link my-auto ml-2" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Subscribe</NavLink>
+    </Nav>
+
+    <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
+    <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="ml-auto" onSelect={onSelect}>
-         <NavLogin classes={"d-none d-sm-none d-md-none d-lg-inline-flex d-xl-inline-flex"} />
-         <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SIGN_IN} onClick={onSelect}>Sign In</NavLink>
+        <NavLogin classes={"d-none d-sm-none d-md-none d-lg-inline-flex d-xl-inline-flex"} />
+        <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SUBSCRIBE} onClick={onSelect}>Subscribe</NavLink>
+        <NavLink className="d-lg-none d-xl-none nav-link my-auto" to={ROUTES.SIGN_IN} onClick={onSelect}>Sign In</NavLink>
       </Nav>
-   </>
+    </Navbar.Collapse>
+  </>
 );
 
 
 const NavLoginFormBase = ({ firebase, history, classes }) => {
-   const emailRef = React.createRef();
-   const passwordRef = React.createRef();
-   const [error, setError] = useState(null);
+  const emailRef = React.createRef();
+  const passwordRef = React.createRef();
+  const [error, setError] = useState(null);
 
-   const onSubmit = (e) => {
-      e.preventDefault();
-      const email = emailRef.current.value;
-      const password = passwordRef.current.value;
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
 
-      if (email !== "" && password !== "") {
-         firebase
-            .doSignInWithEmailAndPassword(email, password)
-            .then(() => {
-               setError(null);
-               history.push(ROUTES.USERPROGRAM);
-            })
-            .catch(error => {
-               setError(error);
-               history.push(ROUTES.SIGN_IN);
-            });
-      }
-   };
+    if (email !== "" && password !== "") {
+      firebase
+        .doSignInWithEmailAndPassword(email, password)
+        .then(() => {
+          setError(null);
+          history.push(ROUTES.USERPROGRAM);
+        })
+        .catch(error => {
+          setError(error);
+          history.push(ROUTES.SIGN_IN);
+        });
+    }
+  };
 
-   return (
-      <Form className={classes} inline noValidate onSubmit={onSubmit}>
-         <Form.Group className="ml-2">
-            <Form.Control
-               size="sm"
-               required
-               type="email"
-               name="email"
-               placeholder="Email Address"
-               ref={emailRef}
-            />
-         </Form.Group>
-         <Form.Group >
-            <Form.Control
-               size="sm"
-               required
-               className="ml-2"
-               type="password"
-               name="password"
-               ref={passwordRef}
-               placeholder="Password"
-            />
-         </Form.Group >
-         <Button
-            size="sm"
-            className="ml-2"
-            variant={!error ? "outline-light" : "warning"}
-            type="submit">
-            Sign In
-         </Button>
-      </Form>
-   )
+  return (
+    <Form className={classes} inline noValidate onSubmit={onSubmit}>
+      <Form.Group className="ml-2">
+        <Form.Control
+          size="sm"
+          required
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          ref={emailRef}
+        />
+      </Form.Group>
+      <Form.Group >
+        <Form.Control
+          size="sm"
+          required
+          className="ml-2"
+          type="password"
+          name="password"
+          ref={passwordRef}
+          placeholder="Password"
+        />
+      </Form.Group >
+      <Button
+        size="sm"
+        className="ml-2"
+        variant={!error ? "outline-light" : "warning"}
+        type="submit">
+        Sign In
+      </Button>
+    </Form>
+  )
 };
 
 const NavLogin = withRouter(withFirebase(NavLoginFormBase));

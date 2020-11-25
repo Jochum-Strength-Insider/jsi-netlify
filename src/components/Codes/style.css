@@ -1,0 +1,4 @@
+.list-group-bordered {
+   border: 1px solid white;
+   border-radius: .25rem;
+}
