@@ -20,6 +20,8 @@ import {
 // auto add discount through url
 // Reorganize
 // Create a more consistent checkout flow pattern
+// Add a negative reaction if the discount code didn't work
+// The Subscription Id field in create code shouldnt' have default text. Just a placeholder.
 
 const PromoCodeDiscount = ({ variant, isDisabled, giveDiscount }) => {
   const [promo, setPromo] = useState('');
