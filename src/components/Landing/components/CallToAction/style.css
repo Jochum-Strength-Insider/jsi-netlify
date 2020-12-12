@@ -1,0 +1,23 @@
+.section-b {
+  background: -webkit-gradient(linear, right top, left bottom, from(#76c4e2), to(#8176b5));
+  background: linear-gradient(to bottom left, #2e2228, #84556e);
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  padding: 3rem 0;
+  overflow: hidden;
+}
+
+.section-b h3 {
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+.section-b p {
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+  margin-bottom: 2rem;
+
+}

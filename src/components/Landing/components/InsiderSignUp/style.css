@@ -1,0 +1,226 @@
+/* signUp Section */
+
+.section-title {
+  margin-bottom: 3rem;
+}
+
+.section-title h2 {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+}
+
+.section-title h2::after {
+  position: absolute;
+  content: "";
+  background: linear-gradient(to right, #a76884 0%, #e4bcce 100%);
+  height: 4px;
+  width: 60px;
+  bottom: 0;
+  margin-left: -30px;
+  left: 50%;
+}
+
+.section-title p {
+  font-size: 18px;
+}
+
+#signUp {
+  padding: 100px 0;
+  background: #f6f6f6;
+}
+
+#signUp h2 {
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+  font-weight: 800;
+  font-size: 36px;
+  color: #f6f6f6;
+}
+
+#signUp h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f6f6f6;
+}
+
+
+#signUp i.fa,
+#signUp i.fas {
+  font-size: 2rem;
+  /* margin-bottom: 20px; */
+  transition: all 0.5s;
+  color: #fff;
+  /* width: 100px; */
+  /* height: 100px; */
+  padding: 30px 0;
+  /* border-radius: 50%; */
+  /* background: linear-gradient(to right, #a76884 0%, #e4bcce 100%); */
+  /* box-shadow: 10px 10px 10px rgba(0, 0, 0, .05); */
+}
+
+#signUp p {
+  color: #777;
+}
+
+
+/* Small devices (landscape phones, 576px and under) */
+@media (max-width: 576px) {
+  .section-title {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and under) */
+@media (max-width: 768px) {}
+
+/* Large devices (desktops, 992px and under) */
+@media (max-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and under) */
+@media (max-width: 1200px) {}
+
+.landing-sign-up h1,
+.landing-sign-up h2,
+.landing-sign-up h3 {
+  font-family: 'Raleway', sans-serif;
+}
+
+.learn-more-button {
+  /* margin-top: 1rem; */
+  font-size: 1.25rem;
+  border: 4px solid white;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.146);
+  padding: 10px 20px;
+  text-align: center;
+  transition:
+    border 500ms ease-out,
+    color 0.5s ease-out,
+    background-color 500ms ease-out;
+}
+
+.learn-more-button:hover {
+  text-decoration: none;
+  border: 4px solid white;
+  color: var(--js-purple-light);
+  background-color: white;
+}
+
+.landing-sign-up {
+  min-height: calc(100vh - 66px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background-color: rgb(0 0 0 / 0%);
+}
+
+.landing-sign-up-img {
+  position: absolute;
+  height: calc(100vh - 66px);
+  min-height: 525px;
+  width: auto;
+  overflow: hidden;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  object-fit: cover;
+
+  /* background-image: url(/static/media/carousel6.01796eeb.jpg); */
+  filter: invert(25%) sepia(10%) saturate(500%) hue-rotate(282deg) brightness(70%) contrast(95%);
+}
+
+.landing-sign-up-wrapper {
+  display: flex;
+  flex: 1;
+  /* flex-direction: column; */
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.landing-sign-up-content-wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.landing-sign-up-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.landing-sign-up-title {
+  font-size: 3rem;
+  line-height: 1.25;
+  text-align: center;
+  font-weight: 800;
+}
+
+.landing-sign-up-caption {
+  font-size: calc(1.25rem - 1px);
+  margin-bottom: calc(2rem - 2px);
+  font-size: 2rem;
+  text-align: center;
+  max-width: 640px;
+  margin-bottom: 0px;
+}
+
+.landing-sign-up-footer {
+  width: 100%;
+  position: relative;
+  margin-top: auto;
+  padding-bottom: calc(2rem - 2px);
+  text-align: center;
+  display: block;
+}
+
+.landing-sign-up-caption {
+  font-size: calc(1.25rem - 1px);
+  margin-bottom: calc(2rem - 2px);
+  font-size: 1.5rem;
+  text-align: center;
+  max-width: 480px;
+  margin-bottom: 1rem;
+}
+
+.landing-sign-up-for {
+  max-width: 420px;
+}
+
+/* Need to add media queries */
+
+/* Small devices (landscape phones, 576px and under) */
+@media (max-width: 576px) {
+  .landing-sign-up-title {
+    font-size: 2rem;
+    line-height: 1.25;
+    text-align: center;
+    font-weight: 800;
+  }
+
+  .landing-sign-up-list li {
+    font-size: 1rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and under) */
+@media (max-width: 768px) {}
+
+/* Large devices (desktops, 992px and under) */
+@media (max-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and under) */
+@media (max-width: 1200px) {}

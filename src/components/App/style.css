@@ -1,111 +1,114 @@
 :root {
-   --circle-size: min(25vw, 15rem);
-   --js-purple: #412a34;
-   --js-purple-light: #a76884;
-   --js-gray: rgb(26, 26, 26);
+  --circle-size: min(25vw, 15rem);
+  --js-purple: #412a34;
+  --js-purple-light: #a76884;
+  --js-gray: rgb(26, 26, 26);
 }
 
 /* font-family: 'Raleway', Arial, sans-serif; weights: regular, italic, 900 */
 body {
-   color: white;
-   font-family: 'Raleway', Arial, sans-serif;
-   /* background-color: rgb(244, 239, 244); */
-   background: radial-gradient(var(--js-purple), var(--js-gray));
-   margin-top: 66px;
-   /* min-height: -webkit-fill-available; */
+  color: white;
+  font-family: 'Raleway', Arial, sans-serif;
+  /* background-color: rgb(244, 239, 244); */
+  background: radial-gradient(var(--js-purple), var(--js-gray));
+  margin-top: 66px;
+  /* min-height: -webkit-fill-available; */
 }
 
 body::-webkit-scrollbar {
-   width: 0px;
-   /* Remove scrollbar space */
-   background: transparent;
-   /* Optional: just make scrollbar invisible */
+  width: 0px;
+  /* Remove scrollbar space */
+  background: transparent;
+  /* Optional: just make scrollbar invisible */
 }
 
 .app-top {
-   padding-top: 1rem;
+  padding-top: 1rem;
 }
 
 .contain {
-   min-height: calc(100vh - 66px);
+  min-height: calc(100vh - 66px);
 }
 
 .contain-width {
-   width: 100%;
-   max-width: 1000px;
-   /* flex: 1; */
+  width: 100%;
+  max-width: 1000px;
+  /* flex: 1; */
 }
 
 
 .tab-content {
-   color: black;
+  color: black;
 }
 
 .list-group {
-   color: black;
-   /* border: 1px solid white;
+  color: black;
+  /* border: 1px solid white;
    border-radius: .25rem; */
 }
 
 .no-border {
-   border: none;
+  border: none;
 }
 
 .rounded {
-   border-radius: 0.25rem;
+  border-radius: 0.25rem;
 }
 
 .modal-content {
-   color: black;
+  color: black;
 }
 
 .card {
-   color: black;
+  color: black;
 }
 
+.navbar.on-top {
+  z-index: 9999;
+}
 
 .navbar {
-   box-shadow: 0 10px 10px -5px rgba(0, 0, 0, .2);
+  box-shadow: 0 10px 10px -5px rgba(0, 0, 0, .2);
 }
 
 .nav-link:focus {
-   outline: -webkit-focus-ring-color auto 5px;
+  outline: -webkit-focus-ring-color auto 5px;
 }
 
 .bg-purple {
-   background-color: var(--js-purple);
+  background-color: var(--js-purple);
 }
 
 .bg-purple-light {
-   background-color: var(--js-purple-light);
+  background-color: var(--js-purple-light);
 }
 
 .bg-gray {
-   background-color: var(--js-gray);
-   color: white;
+  background-color: var(--js-gray);
+  color: white;
 }
 
 .bg-black {
-   background-color: black;
+  background-color: black;
 }
 
 .bg-clear {
-   background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .color-black {
-   color: black !important;
+  color: black !important;
 }
 
 .dropdown-item.ignore-active {
-   color: #212529;
-   text-decoration: none;
-   background-color: transparent;
+  color: #212529;
+  text-decoration: none;
+  background-color: transparent;
 }
 
 .bg-gray-light {
-   background-color: rgb(55, 55, 55);
-   color: white;
+  background-color: rgb(55, 55, 55);
+  color: white;
 }
 
 /* responsive text */
@@ -119,64 +122,64 @@ body::-webkit-scrollbar {
 
 .data-grid-control,
 .data-grid-control input {
-   background-color: rgba(173, 216, 230, 0);
-   border: none;
-   width: 100%;
+  background-color: rgba(173, 216, 230, 0);
+  border: none;
+  width: 100%;
 }
 
 table .vertical-align-center {
-   vertical-align: middle;
+  vertical-align: middle;
 }
 
 .program-title {
-   cursor: pointer;
-   opacity: 1;
-   transition: opacity 100ms ease-in;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 100ms ease-in;
 }
 
 .program-title:hover {
-   opacity: 0.7;
+  opacity: 0.7;
 }
 
 @media (max-width: 576px) {
 
-   h1,
-   h2,
-   h3,
-   .h1,
-   .h2,
-   .h3 {
-      font-size: 1.5rem;
-   }
+  h1,
+  h2,
+  h3,
+  .h1,
+  .h2,
+  .h3 {
+    font-size: 1.5rem;
+  }
 
-   h4,
-   h5,
-   h6,
-   .h4,
-   .h5,
-   .h6 {
-      font-size: 1rem;
-   }
+  h4,
+  h5,
+  h6,
+  .h4,
+  .h5,
+  .h6 {
+    font-size: 1rem;
+  }
 
-   body {
-      font-size: 0.75rem;
-   }
+  body {
+    font-size: 0.75rem;
+  }
 
-   a {
-      font-size: 1rem;
-   }
+  a {
+    font-size: 1rem;
+  }
 
-   .sm-block {
-      width: 100%;
-      display: block;
-   }
+  .sm-block {
+    width: 100%;
+    display: block;
+  }
 
-   .sm-hide {
-      display: none;
-   }
+  .sm-hide {
+    display: none;
+  }
 
-   .app-container {
-      padding-top: 0.5rem;
-   }
+  .app-container {
+    padding-top: 0.5rem;
+  }
 
 }

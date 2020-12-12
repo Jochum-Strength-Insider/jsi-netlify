@@ -1,0 +1,97 @@
+.dedicated {
+  display: flex;
+  min-height: 90vh;
+  padding-top: 80px;
+  padding-right: 5%;
+  padding-left: 5%;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  /* background-image: url("/public/img/jochum-join.jpg"); */
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.dedicated_block {
+  display: flex;
+  max-width: 800px;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  -webkit-box-align: start;
+  align-items: flex-start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+}
+
+.dedicated_block,
+.h-trusted_slider-block {
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+}
+
+.dedicated_block,
+.h-trusted_slider {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+}
+
+.dedicated_title,
+.h-cta_title {
+  margin-top: 0;
+  font-family: Lora, sans-serif;
+}
+
+.dedicated_title {
+  color: #fff;
+  font-size: 50px;
+  line-height: 130%;
+  font-weight: 400;
+}
+
+.app-store-button-big,
+.deals2,
+.dedicated,
+.header,
+.play-store-button-big {
+  background-size: cover;
+}
+
+.dedicated,
+.h-cta_block.horizontal {
+  display: flex;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+}
+
+.dedicated,
+.h-cta {
+  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+}
+
+.dedicated_container {
+  width: 100%;
+  max-width: 1140px;
+}
+
+.dedicated_body {
+  max-width: 580px;
+  margin-bottom: 40px;
+  color: #fff;
+  font-size: 24px;
+  line-height: 130%;
+  font-weight: 300;
+}

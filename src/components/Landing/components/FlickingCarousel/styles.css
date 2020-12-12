@@ -1,0 +1,114 @@
+.flicking {
+  width: 100%;
+  height: auto;
+  margin: 0px auto;
+  border-radius: 5px;
+  cursor: grab;
+}
+
+.flicking:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.flicking-img {
+  position: relative;
+  z-index: 1;
+}
+
+.carousel-control-prev {
+  left: 0;
+}
+
+.carousel-control-next {
+  right: 0;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 8888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  color: #fff;
+  text-align: center;
+  opacity: .5;
+  transition: opacity .15s ease;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+}
+
+.img-container {
+  width: auto;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.carousel-img {
+  width: auto;
+  height: 100%;
+  align-self: flex-start;
+}
+
+.transformation-title {
+  margin-bottom: 3rem;
+}
+
+.transformation-title h2 {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+}
+
+.transformation-title h2::after {
+  position: absolute;
+  content: "";
+  background: linear-gradient(to right, #a76884 0%, #e4bcce 100%);
+  height: 4px;
+  width: 60px;
+  bottom: 0;
+  margin-left: -30px;
+  left: 50%;
+}
+
+#transformation {
+  padding: 100px 0;
+  background: #f6f6f6;
+}
+
+#transformation h2 {
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+  font-weight: 800;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Small devices (landscape phones, 576px and under) */
+@media (max-width: 576px) {
+  .transformation-title {
+    margin-bottom: 2rem;
+  }
+
+  #transformation h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and under) */
+@media (max-width: 768px) {}
+
+/* Large devices (desktops, 992px and under) */
+@media (max-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and under) */
+@media (max-width: 1200px) {}

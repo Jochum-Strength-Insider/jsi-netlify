@@ -27,7 +27,7 @@ const Navigation = () => {
   const onToggle = () => setIsExpanded(!isExpanded);
 
   return (
-    <Navbar className="navbar justify-content-center" variant="dark" bg="purple" fixed="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
+    <Navbar className="navbar justify-content-center on-top" variant="dark" bg="purple" fixed="top" expand="md" expanded={isExpanded} onToggle={onToggle}>
       <div style={style}>
         <Navbar.Brand href={authUser ? ROUTES.USERPROGRAM : ROUTES.LANDING}>
           <img

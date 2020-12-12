@@ -1,0 +1,51 @@
+.program-section {
+  padding: 7rem 2rem;
+  margin: 0;
+  background: linear-gradient(to right, rgb(0, 0, 0) 0%, rgb(133, 86, 111) 100%);
+  max-width: 100%;
+}
+
+.program-section-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.program-section-title {
+  font-weight: 800;
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.program-section-caption {
+  max-width: 400px;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.program-section-container {
+  /* max-width: 325px; */
+  margin: 0 auto;
+}
+
+/* Need to add media queries */
+
+/* Small devices (landscape phones, 576px and under) */
+@media (max-width: 576px) {}
+
+/* Medium devices (tablets, 768px and under) */
+@media (max-width: 768px) {
+  .program-section {
+    flex-direction: column-reverse;
+  }
+
+  .program-section-img {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Large devices (desktops, 992px and under) */
+@media (max-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and under) */
+@media (max-width: 1200px) {}
