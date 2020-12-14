@@ -131,7 +131,7 @@ const featuresData = [
   {
     "icon": "fas fa-dumbbell",
     "title": "Programs",
-    "text": "Individualzized programs, utilizing 100's of exercises, that fit your goals."
+    "text": "Individualized programs, utilizing 100's of exercises, that fit your goals."
   },
   {
     "icon": "fas fa-weight",
