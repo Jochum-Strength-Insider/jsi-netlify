@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
 import logo from "../../images/logo.png";
 
-import { withRouter, NavLink } from 'react-router-dom';
+import './style.css';
+
+import { withRouter, NavLink, Link } from 'react-router-dom';
 
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -16,6 +18,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import AdminUnreadMessages from '../AdminUnread';
+import MessageIcon from './MessageIcon';
 
 const style = { display: "flex", width: "100%", maxWidth: "1000px", flex: "1", justifyContent: "space-between", flexWrap: "wrap", };
 
@@ -47,7 +50,15 @@ const Navigation = () => {
 const NavigationAuth = ({ authUser, onSelect }) => {
   return (
     <>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
+      <div className="d-flex">
+        <Link
+          to={ROUTES.MESSAGES}
+          className="d-flex justify-content-center align-items-center mr-3 px-2"
+        >
+          {authUser.emailVerified && <MessageIcon uid={authUser.uid} />}
+        </Link>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" label="Navbar menu toggle" />
+      </div>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto" onSelect={onSelect}>
           <NavLink className="nav-link" to={ROUTES.USERPROGRAM} onClick={onSelect}>Program</NavLink>
@@ -56,10 +67,7 @@ const NavigationAuth = ({ authUser, onSelect }) => {
             <>
               <NavLink className="nav-link" to={ROUTES.WEIGHIN} onClick={onSelect}>Weight</NavLink>
               <NavLink className="nav-link" to={ROUTES.DIET} onClick={onSelect}>Diet</NavLink>
-              <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>
-                Messages {authUser.unread && <span style={{ color: "red" }}>•</span>}
-                <span className="sr-only">unread messages</span>
-              </NavLink>
+              <NavLink className="nav-link" to={ROUTES.MESSAGES} onClick={onSelect}>Messages</NavLink>
             </>
           )}
 
@@ -69,15 +77,12 @@ const NavigationAuth = ({ authUser, onSelect }) => {
                 <Dropdown >
                   <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
                     Admin
-                           </Dropdown.Toggle>
+                  </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN} onClick={onSelect}>Users</NavLink>
                     <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATEPROGRAM} onClick={onSelect}>Programs</NavLink>
                     <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATETASK} onClick={onSelect}>Exercises</NavLink>
                     <NavLink className="dropdown-item ignore-active" to={ROUTES.CREATECODE} onClick={onSelect}>Codes</NavLink>
-                    {/* <Dropdown.Item onClick={onSelect}><NavLink className="dropdown-item ignore-active" to={ROUTES.ADMIN}>Users</NavLink></Dropdown.Item>
-                              <Dropdown.Item onClick={onSelect} href={ROUTES.CREATEPROGRAM}>Programs</Dropdown.Item>
-                              <Dropdown.Item onClick={onSelect} href={ROUTES.CREATETASK}>Exercises</Dropdown.Item> */}
                   </Dropdown.Menu>
                 </Dropdown>
               </Nav>
@@ -86,10 +91,7 @@ const NavigationAuth = ({ authUser, onSelect }) => {
         </Nav>
 
         <Nav>
-          {
-            authUser.ADMIN && <AdminUnreadMessages />
-          }
-
+          {authUser.ADMIN && <AdminUnreadMessages />}
           <Dropdown alignRight>
             <Dropdown.Toggle className='nav-link' variant="link" id="dropdown-basic">
               {authUser.username}
@@ -123,7 +125,6 @@ const NavigationNonAuth = ({ onSelect }) => (
     </Navbar.Collapse>
   </>
 );
-
 
 const NavLoginFormBase = ({ firebase, history, classes }) => {
   const emailRef = React.createRef();
@@ -180,7 +181,7 @@ const NavLoginFormBase = ({ firebase, history, classes }) => {
         Sign In
       </Button>
     </Form>
-  )
+  );
 };
 
 const NavLogin = withRouter(withFirebase(NavLoginFormBase));

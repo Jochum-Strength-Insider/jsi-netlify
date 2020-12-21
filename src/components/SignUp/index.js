@@ -84,8 +84,7 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                   ACTIVE: true,
                   createdAt: timestamp,
                   programDate: null,
-                  adminUnread: false,
-                  unread: false,
+                  unread: null,
                });
 
                const currentUser = secondaryApp.auth().currentUser;
@@ -102,10 +101,8 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                      username: adminAuthUser.username,
                      createdAt: timestamp,
                   };
-
                   return { uid, messageObject };
                }
-
                return { uid };
             })
                .then(({ uid, messageObject }) => {
@@ -118,8 +115,9 @@ const SignUpFormBase = ({firebase, history, handleClose}) => {
                   });
 
                if(messageObject) {
+                  firebase.user(uid).child("unread").push(messageObject)
                   firebase.messages(uid).push(messageObject)
-               }
+                }
 
                return uid;
             })

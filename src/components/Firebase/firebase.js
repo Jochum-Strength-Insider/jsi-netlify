@@ -145,7 +145,7 @@ class Firebase {
 
   // *** Status / Online *** //
 
-  status = (uid) => this.db.ref(`status/${uid}`);
+  // status = (uid) => this.db.ref(`status/${uid}`);
 
   // connect = (uid) => this.db.ref(`status/${uid}`).update({ online: true });
 
@@ -184,7 +184,6 @@ class Firebase {
   adminUnreadMessage = mid => this.db.ref(`adminUnread/${mid}`);
 
   currentlyMessaging = () => this.db.ref(`currentlyMessaging`);
-
 
   // *** User Unread API ***
 

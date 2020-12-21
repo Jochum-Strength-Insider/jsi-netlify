@@ -30,6 +30,7 @@ class AdminChatBase extends Component {
       limit: 15,
       firstDate: null,
       lastDate: null,
+      currentlyMessaging: null,
     }
   }
 
@@ -68,13 +69,24 @@ class AdminChatBase extends Component {
             mid: key,
           }));
 
-          // console.log(messageList);
-          // this.props.firebase.user(this.props.roomId).child("unread").update({ unread: null });
+          this.props.firebase.user(this.props.roomId).update({ unread: null });
           this.setState({ messages: messageList, loading: false, lastDate: messageList[0].createdAt });
         } else {
           this.setState({ messages: [], loading: false })
         }
       })
+  }
+
+  onListenToCurrentlyMessaging = () => {
+    this.props.firebase.currentlyMessaging().on("value", (snapshot) => {
+      const currentlyObject = snapshot.val();
+      if (currentlyObject) {
+        const { uid } = currentlyObject
+        this.setState({ currentlyMessaging: uid })
+      } else {
+        this.setState({ currentlyMessaging: null })
+      }
+    })
   }
 
   onCreateMessage = (authUser, message) => {
@@ -89,12 +101,18 @@ class AdminChatBase extends Component {
       };
 
       this.props.firebase.messages(this.props.roomId).push(messageObject)
-      // .then((snap) => {
-      //    const key = snap.key;
-      //    this.props.firebase.adminUnread().update({ [key]: messageObject });
-      // });
+        .then((snap) => {
+          if (this.state.currentlyMessaging !== this.props.roomId) {
+            const key = snap.key;
+            this.props.firebase.adminUnreadMessages().update({ [key]: messageObject });
+          }
+        })
+        .catch(error => {
+          if (error) {
+            console.log(error);
+          }
+        });
 
-      this.props.firebase.user(this.props.roomId).child("unread").push(messageObject);
       this.setState({ scroll: true });
     }
   }
@@ -129,43 +147,23 @@ class AdminChatBase extends Component {
   //    document.documentElement.style.setProperty('--vh', `${vh}px`);
   // }
 
-  setCurrentlyMessaging = () => {
-    this.props.firebase.info().on('value', (snapshot) => {
-      const infoObject = snapshot.val();
-      if (infoObject === false) {
-        return;
-      };
-
-      const userStatusDatabaseRef = this.props.firebase.currentlyMessaging();
-
-      userStatusDatabaseRef
-        .onDisconnect()
-        .set({})
-        .then(() => {
-          userStatusDatabaseRef.set({ uid: this.props.roomId })
-        })
-    })
-  }
-
   componentDidMount() {
     // console.log("mount");
     // this.setVerticalHeight();
-
     this.props.firebase.messages(this.props.roomId).off();
+    // this.onListenToCurrentlyMessaging();
     this.onListenForMessages();
-    this.setCurrentlyMessaging();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.scroll === true) {
+    if (this.state.scroll === true && this.state.currentlyMessaging === prevState.currentlyMessaging) {
       this.scrollToBottom();
     }
   }
 
   componentWillUnmount() {
+    this.props.firebase.currentlyMessaging().off();
     this.props.firebase.messages(this.props.roomId).off();
-    this.props.firebase.info().off();
-    this.props.firebase.currentlyMessaging().remove();
   }
 
   render() {
@@ -178,7 +176,7 @@ class AdminChatBase extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div>
+          <div className="messages">
             <Container ref={this.scrollContain} className="messageContainer" fluid>
 
               {loading && <div>Loading ...</div>}
@@ -198,7 +196,6 @@ class AdminChatBase extends Component {
             </Container>
 
             <SubmitForm onCreateMessage={this.onCreateMessage} />
-
           </div>
         )}
       </AuthUserContext.Consumer>

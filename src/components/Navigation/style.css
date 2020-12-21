@@ -1,0 +1,31 @@
+.user-unread {
+  position: relative;
+  /* display: inline-block; */
+  background-color: rgb(0, 0, 0, 0);
+  border: none;
+  color: white;
+}
+
+.user-unread .badge {
+  position: absolute;
+  background-color: var(--js-purple-light);
+  /* top: 8px;
+  right: 0; */
+  /* top: -4px;
+  right: -10px; */
+  top: -1px;
+  right: -6px;
+  border-radius: 50px;
+  color: white;
+}
+
+
+.user-unread-icon {
+  fill: rgb(255, 255, 255, 0.5);
+  transition: fill 150ms;
+}
+
+.user-unread-icon:hover,
+.user-unread:focus .user-unread-icon {
+  fill: rgb(255, 255, 255, 0.75);
+}
