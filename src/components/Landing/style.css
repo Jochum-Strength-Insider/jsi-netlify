@@ -28,8 +28,7 @@ html {
 }
 
 .info {
-  font-size: .75rem;
-  max-width: 500px;
+  max-width: 750px;
 }
 
 .signUpButton {
@@ -635,10 +634,6 @@ height: 75px; */
     color: var(--js-purple-light);
     background-color: white;
   } */
-
-  .info {
-    font-size: .5rem;
-  }
 
   .onlineTitle {
     font-size: 2.5rem;

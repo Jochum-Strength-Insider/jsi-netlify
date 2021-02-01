@@ -20,37 +20,37 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 const schema = yup.object({
-   email: yup.string().email()
-      .required('Required'),
-   password: yup.string().required("Required")
+  email: yup.string().email()
+    .required('Required'),
+  password: yup.string().required("Required")
 });
 
 const style = {
-   maxWidth: "600px",
-   minWidth: "300px",
-   width: "75%",
+  maxWidth: "600px",
+  minWidth: "300px",
+  width: "75%",
 }
 
 const SignInPage = () => (
-   <>
-      <Container className="app-top">
-         <Row>
-            <Col className="d-flex justify-content-center align-items-center">
-               <div style={style}>
-                  <h1 className="text-center">Sign In</h1>
-                  {/* <SignUpLink /> */}
+  <>
+    <Container className="app-top">
+      <Row>
+        <Col className="d-flex justify-content-center align-items-center">
+          <div style={style}>
+            <h1 className="text-center">Sign In</h1>
+            {/* <SignUpLink /> */}
 
-                  <SignInForm />
+            <SignInForm />
 
-                  {/* <SignInGoogle /> */}
-                  {/* <SignInFacebook /> */}
-                  {/* <SignInTwitter /> */}
-               </div>
-            </Col>
+            {/* <SignInGoogle /> */}
+            {/* <SignInFacebook /> */}
+            {/* <SignInTwitter /> */}
+          </div>
+        </Col>
 
-         </Row>
-      </Container>
-   </>
+      </Row>
+    </Container>
+  </>
 );
 
 // const ERROR_CODE_ACCOUNT_EXISTS =
@@ -64,89 +64,89 @@ const SignInPage = () => (
 // `;
 
 const SignInFormBase = ({ firebase, history }) => {
-   const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
 
-   const onSubmit = (values, { resetForm }) => {
-      const { email, password } = values;
+  const onSubmit = (values, { resetForm }) => {
+    const { email, password } = values;
 
-      firebase
-         .doSignInWithEmailAndPassword(email, password)
-         .then(() => {
-            setError(null);
-            resetForm({});
-            history.push(ROUTES.USERPROGRAM);
-         })
-         .catch(error => {
-            setError(error);
-         });
-   };
+    firebase
+      .doSignInWithEmailAndPassword(email, password)
+      .then(() => {
+        setError(null);
+        resetForm({});
+        history.push(ROUTES.USERPROGRAM);
+      })
+      .catch(error => {
+        setError(error);
+      });
+  };
 
-   return (
+  return (
 
-      <Formik
-         validationSchema={schema}
-         onSubmit={onSubmit}
-         initialValues={{
-            email: '',
-            password: '',
-         }}
-      >
-         {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            touched,
-            isValid,
-            errors,
-         }) => (
-               <Form className="w-100" noValidate onSubmit={handleSubmit}>
-                  <Form.Group md="4" controlId="validationFormikUsername">
-                     <Form.Label>Email</Form.Label>
-                     <Form.Control
-                        type="email"
-                        name="email"
-                        placeholder="Email Address"
-                        value={values.email}
-                        onChange={handleChange}
-                        isInvalid={!!errors.email}
-                     />
-                     <Form.Control.Feedback type="invalid">
-                        {errors.email}
-                     </Form.Control.Feedback>
-                  </Form.Group>
+    <Formik
+      validationSchema={schema}
+      onSubmit={onSubmit}
+      initialValues={{
+        email: '',
+        password: '',
+      }}
+    >
+      {({
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        values,
+        touched,
+        isValid,
+        errors,
+      }) => (
+        <Form className="w-100" noValidate onSubmit={handleSubmit}>
+          <Form.Group md="4" controlId="validationFormikUsername">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={values.email}
+              onChange={handleChange}
+              isInvalid={!!errors.email}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-                  <Form.Group md="4" >
-                     <Form.Label>Password</Form.Label>
-                     <Form.Control
-                        type="password"
-                        name="password"
-                        value={values.password}
-                        onChange={handleChange}
-                        isInvalid={!!errors.password}
-                        placeholder="Password"
-                     />
-                     <Form.Control.Feedback type="invalid">
-                        {errors.password}
-                     </Form.Control.Feedback>
-                  </Form.Group>
+          <Form.Group md="4" >
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              isInvalid={!!errors.password}
+              placeholder="Password"
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-                  <div className="d-flex justify-content-between">
-                     <PasswordForgetLink />
-                     <EmailSignInLink />
-                  </div>
+          <div className="d-flex justify-content-between">
+            <PasswordForgetLink />
+            <EmailSignInLink />
+          </div>
 
-                  <hr></hr>
+          <hr></hr>
 
-                  <Button block variant="primary" type="submit">
-                     Sign In
+          <Button block variant="primary" type="submit">
+            Sign In
                      </Button>
 
-                  {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
-               </Form>
-            )}
-      </Formik>
-   );
+          {error && <Alert className="mt-3" variant="warning">{error.message}</Alert>}
+        </Form>
+      )}
+    </Formik>
+  );
 }
 
 // eslint-disable-next-line
@@ -197,9 +197,9 @@ const SignInFormBase = ({ firebase, history }) => {
 // }
 
 const SignInLink = ({ color }) => (
-   <p style={{ color: color }}>
-      Already have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-   </p>
+  <p style={{ color: color }}>
+    Already have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+  </p>
 );
 
 // class SignInFacebookBase extends Component {
@@ -295,8 +295,8 @@ const SignInLink = ({ color }) => (
 // }
 
 const SignInForm = compose(
-   withRouter,
-   withFirebase,
+  withRouter,
+  withFirebase,
 )(SignInFormBase);
 
 // const SignInGoogle = compose(

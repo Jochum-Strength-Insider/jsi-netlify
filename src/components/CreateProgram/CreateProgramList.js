@@ -19,172 +19,172 @@ import Col from 'react-bootstrap/Col';
 
 
 class UserItemBase extends Component {
-   constructor(props) {
-      super(props);
+  constructor(props) {
+    super(props);
 
-      this.state = {
-         loading: false,
-         programTitle: "New Program",
-         programIds: [],
-         show: false,
-         showRemove: false,
-         removeKey: 0,
-         error: null,
-         ...props.location.state,
-      };
-   }
+    this.state = {
+      loading: false,
+      programTitle: "New Program",
+      programIds: [],
+      show: false,
+      showRemove: false,
+      removeKey: 0,
+      error: null,
+      ...props.location.state,
+    };
+  }
 
-   handleCreateProgram = (e) => {
-      e.preventDefault();
-      const timestamp = this.props.firebase.serverValue.TIMESTAMP;
-      const programData = PROGRAM(timestamp);
-      programData["title"] = this.state.programTitle;
+  handleCreateProgram = (e) => {
+    e.preventDefault();
+    const timestamp = this.props.firebase.serverValue.TIMESTAMP;
+    const programData = PROGRAM(timestamp);
+    programData["title"] = this.state.programTitle;
 
-      console.log("creating new program");
-      this.props.firebase.programs().push(programData)
-         .then((snap) => {
-            const key = snap.key;
-            this.props.firebase.programIds().update({ [key]: { title: this.state.programTitle, createdAt: timestamp } });
-            this.handleClose();
-         })
-         .catch(error => this.setState({ error }));
-   }
+    console.log("creating new program");
+    this.props.firebase.programs().push(programData)
+      .then((snap) => {
+        const key = snap.key;
+        this.props.firebase.programIds().update({ [key]: { title: this.state.programTitle, createdAt: timestamp } });
+        this.handleClose();
+      })
+      .catch(error => this.setState({ error }));
+  }
 
-   onRemoveProgram = () => {
-      const pid = this.state.removeKey;
-      this.props.firebase.programId(pid).remove();
-      this.props.firebase.program(pid).remove();
-      this.handleRemoveClose();
-   };
+  onRemoveProgram = () => {
+    const pid = this.state.removeKey;
+    this.props.firebase.programId(pid).remove();
+    this.props.firebase.program(pid).remove();
+    this.handleRemoveClose();
+  };
 
-   handleTitleChange = (e) => {
-      const { value } = e.target;
-      this.setState({ programTitle: value })
-   }
+  handleTitleChange = (e) => {
+    const { value } = e.target;
+    this.setState({ programTitle: value })
+  }
 
-   handleClose = () => {
-      this.setState({ show: false })
-   }
+  handleClose = () => {
+    this.setState({ show: false })
+  }
 
-   handleOpen = () => {
-      this.setState({ show: true })
-   }
+  handleOpen = () => {
+    this.setState({ show: true })
+  }
 
-   handleRemoveClose = () => {
-      this.setState({ removeKey: null, showRemove: false })
-   }
+  handleRemoveClose = () => {
+    this.setState({ removeKey: null, showRemove: false })
+  }
 
-   setRemoveKey = (key) => {
-      this.setState({ showRemove: true, removeKey: key })
-   }
+  setRemoveKey = (key) => {
+    this.setState({ showRemove: true, removeKey: key })
+  }
 
-   componentDidMount() {
-      this.setState({ loading: true });
+  componentDidMount() {
+    this.setState({ loading: true });
 
-      this.props.firebase
-         .programIds()
-         .on('value', snapshot => {
-            const programIdsObject = snapshot.val();
+    this.props.firebase
+      .programIds()
+      .on('value', snapshot => {
+        const programIdsObject = snapshot.val();
 
-            if (programIdsObject) {
-               this.setState({
-                  programIds: programIdsObject,
-                  loading: false,
-               });
-            } else {
-               this.setState({
-                  programIds: [],
-                  loading: false,
-               });
-            }
-         });
-   }
+        if (programIdsObject) {
+          this.setState({
+            programIds: programIdsObject,
+            loading: false,
+          });
+        } else {
+          this.setState({
+            programIds: [],
+            loading: false,
+          });
+        }
+      });
+  }
 
-   componentWillUnmount() {
-      this.props.firebase.programs().off();
-      this.props.firebase.programIds().off();
-   }
+  componentWillUnmount() {
+    this.props.firebase.programs().off();
+    this.props.firebase.programIds().off();
+  }
 
-   render() {
-      const { loading, programIds, error } = this.state;
-      const idsArray = Object.keys(programIds).reverse();
+  render() {
+    const { loading, programIds, error } = this.state;
+    const idsArray = Object.keys(programIds).reverse();
 
-      return (
-         <>
-            <Modal handleClose={this.handleClose} show={this.state.show} heading={"Create New Program"}>
+    return (
+      <>
+        <Modal handleClose={this.handleClose} show={this.state.show} heading={"Create New Program"}>
 
-               <Form onSubmit={this.handleCreateProgram}>
-                  <Form.Group>
-                     <Form.Label>Program Title</Form.Label>
-                     <Form.Control
-                        type="text"
-                        name="programTitle"
-                        value={this.state.programTitle}
-                        onChange={this.handleTitleChange}
-                     />
-                  </Form.Group>
-                  <Button type="submit" >Add Program</Button>
-                  {error && <Alert variant="warning">{error.message}</Alert>}
-               </Form>
-            </Modal>
+          <Form onSubmit={this.handleCreateProgram}>
+            <Form.Group>
+              <Form.Label>Program Title</Form.Label>
+              <Form.Control
+                type="text"
+                name="programTitle"
+                value={this.state.programTitle}
+                onChange={this.handleTitleChange}
+              />
+            </Form.Group>
+            <Button type="submit" >Add Program</Button>
+            {error && <Alert variant="warning">{error.message}</Alert>}
+          </Form>
+        </Modal>
 
-            <Modal handleClose={this.handleRemoveClose} show={this.state.showRemove} heading={"Remove Program?"}>
-               <Form className="d-flex justify-content-between align-items-center">
-                  <Button variant="outline-danger" onClick={this.onRemoveProgram}>Remove</Button>
-                  <Button variant="primary" onClick={this.handleRemoveClose}>Cancel</Button>
-               </Form>
-            </Modal>
+        <Modal handleClose={this.handleRemoveClose} show={this.state.showRemove} heading={"Remove Program?"}>
+          <Form className="d-flex justify-content-between align-items-center">
+            <Button variant="outline-danger" onClick={this.onRemoveProgram}>Remove</Button>
+            <Button variant="primary" onClick={this.handleRemoveClose}>Cancel</Button>
+          </Form>
+        </Modal>
 
-            <div className="d-flex justify-content-center mb-5">
-               <div className="contain-width">
-                  <h3>Programs</h3>
-                  <ListGroup>
-                     <ListGroup.Item>
-                        <Button onClick={this.handleOpen} block>Add Program</Button>
-                     </ListGroup.Item>
+        <div className="d-flex justify-content-center mb-5">
+          <div className="contain-width">
+            <h3>Programs</h3>
+            <ListGroup>
+              <ListGroup.Item>
+                <Button onClick={this.handleOpen} block>Add Program</Button>
+              </ListGroup.Item>
 
-                     {
-                        idsArray.map(key => {
-                           const date = new Date(programIds[key].createdAt);
-                           const dateString = date.toLocaleDateString("en-US");
+              {
+                idsArray.map(key => {
+                  const date = new Date(programIds[key].createdAt);
+                  const dateString = date.toLocaleDateString("en-US");
 
-                           return (
-                              <ListGroup.Item key={key}>
-                                 <>
-                                    <Row>
-                                       <Col xs={12} md={5} className="d-flex align-items-center">
-                                          <strong> Title: </strong>
-                                          <a href={`${ROUTES.CREATEPROGRAM}/${key}`}>
-                                             {programIds[key].title}
-                                          </a>
-                                       </Col>
-                                       <Col xs={12} md={5} className="d-flex align-items-center">
-                                          <strong>Date: </strong> {dateString}
-                                       </Col>
-                                       <Col xs={12} className="d-block d-md-none"><hr /></Col>
-                                       <Col xs={12} md={2} className="d-flex justify-content-end" >
-                                          <Button variant="outline-danger"
-                                             type="button"
-                                             onClick={() => this.setRemoveKey(key)}
-                                          >
-                                             Delete
+                  return (
+                    <ListGroup.Item key={key}>
+                      <>
+                        <Row>
+                          <Col xs={12} md={5} className="d-flex align-items-center">
+                            <strong> Title: </strong>
+                            <a href={`${ROUTES.CREATEPROGRAM}/${key}`}>
+                              {programIds[key].title}
+                            </a>
+                          </Col>
+                          <Col xs={12} md={5} className="d-flex align-items-center">
+                            <strong>Date: </strong> {dateString}
+                          </Col>
+                          <Col xs={12} className="d-block d-md-none"><hr /></Col>
+                          <Col xs={12} md={2} className="d-flex justify-content-end" >
+                            <Button variant="outline-danger"
+                              type="button"
+                              onClick={() => this.setRemoveKey(key)}
+                            >
+                              Delete
                                              </Button>
-                                       </Col>
-                                    </Row>
-                                 </>
-                              </ListGroup.Item>
-                           )
-                        }
-                        )
-                     }
-                     {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
-                     {idsArray.length === 0 && <ListGroup.Item>No Programs ...</ListGroup.Item>}
-                  </ListGroup>
-               </div>
-            </div>
-         </>
-      );
-   }
+                          </Col>
+                        </Row>
+                      </>
+                    </ListGroup.Item>
+                  )
+                }
+                )
+              }
+              {loading && <ListGroup.Item>Loading ...</ListGroup.Item>}
+              {idsArray.length === 0 && <ListGroup.Item>No Programs ...</ListGroup.Item>}
+            </ListGroup>
+          </div>
+        </div>
+      </>
+    );
+  }
 }
 
 // const UserItem = withRouter(withFirebase(UserItemBase));

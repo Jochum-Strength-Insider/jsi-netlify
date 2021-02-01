@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
-// import Container from 'react-bootstrap/Container';
 import jochumJoin from "../../images/jochum-join.jpg";
 import PaymentButton from './button';
 import Spinner from 'react-bootstrap/Spinner';
-// import Collapse from 'react-bootstrap/Collapse';
-// import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-// import Tooltip from 'react-bootstrap/Tooltip';
-// import Navbar from 'react-bootstrap/Navbar';
-// import Container from 'react-bootstrap/Container';
 
 import { useLocation } from "react-router-dom";
 import { withFirebase } from '../Firebase';
@@ -70,6 +64,7 @@ const PromoCodeDiscount = ({ variant, isDisabled, giveDiscount }) => {
                 onClick={toggleOpen}
                 aria-controls="example-collapse-text"
                 aria-expanded={open}
+                className='sr-only sr-only-focusable'
               >Promo Code</FormLabel>{' '}
               {/* <Button
                 className="promo-code-button px-0 my-0"
@@ -164,6 +159,7 @@ const Payment = ({ codes, saveDetails, referral, discount, loading }) => {
   };
 
   const onSubscribe = (data, actions) => {
+    console.log("planId", planId);
     return actions.subscription.create({
       'plan_id': planId,
     });

@@ -5,15 +5,6 @@ import 'firebase/storage';
 
 const app = firebase;
 
-// const prodConfig = {
-//    apiKey: process.env.REACT_APP_PROD_API_KEY,
-//    authDomain: process.env.REACT_APP_PROD_AUTH_DOMAIN,
-//    databaseURL: process.env.REACT_APP_PROD_DATABASE_URL,
-//    projectId: process.env.REACT_APP_PROD_PROJECT_ID,
-//    storageBucket: process.env.REACT_APP_PROD_STORAGE_BUCKET,
-//    messagingSenderId: process.env.REACT_APP_PROD_MESSAGING_SENDER_ID,
-// };
-
 const prodConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -53,9 +44,6 @@ class Firebase {
   // *** Auth API ***
 
   doCreateUserWithEmailAndPassword = (email, password) => {
-    // this.auth.createUserWithEmailAndPassword(email, password)
-    // console.log(email, password);
-
     const secondaryApp = firebase.initializeApp(config, "Secondary");
     const newUser = secondaryApp.auth().createUserWithEmailAndPassword(email, password)
 
@@ -63,6 +51,8 @@ class Firebase {
       resolve({ newUser, secondaryApp });
     });
   };
+
+  doTestCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password)
 
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
@@ -98,8 +88,6 @@ class Firebase {
 
   doSendSignInLinkToEmail = (email) => {
     const actionCodeSettings = {
-      // make this a .env
-      // url: 'http://localhost:3000/email-signin',
       url: process.env.REACT_APP_EMAIL_SIGN_IN_REDIRECT || process.env.REACT_APP_DEV_EMAIL_SIGN_IN_REDIRECT,
       handleCodeInApp: true,
     };

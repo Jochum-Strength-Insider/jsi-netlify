@@ -26,7 +26,7 @@ const InsiderSignUp = () => {
         <div className="landing-sign-up-content-wrapper col-md-12 col-12">
           <div className="landing-sign-up-content">
             <h2 className="landing-sign-up-title text-center pt-4 mt-4 ">Jochum Strength Insider</h2>
-            <p className="landing-sign-up-caption d-none d-sm-block">Our Online Training Platform For People To Looking To Level Up Their Lives!</p>
+            <p className="landing-sign-up-caption d-none d-sm-block">Our Online Training Platform For People Looking To Level Up Their Lives!</p>
             <ul className="fa-ul landing-sign-up-list">
               <li><span className="fa-li"><i className="fas fa-check"></i></span>Programs That Fit Your Goals</li>
               <li><span className="fa-li"><i className="fas fa-check"></i></span>Jochum Strength Elite Diet Guideline Ebook</li>

@@ -1,0 +1,64 @@
+/* .dots-contain {
+  display: flex;
+  width: 100%;
+
+  position: relative;
+} */
+
+.custom-dots.progressbar {
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  /* display: block; */
+  /* position: relative; */
+  /* z-index: 5; */
+}
+.custom-dots.progressbar li {
+  list-style-type: none;
+  width: 33%;
+  float: left;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  color: #7d7d7d;
+  font-family: 'Raleway', Arial, Helvetica, sans-serif;
+}
+.custom-dots.progressbar li:before {
+  width: 30px;
+  height: 30px;
+  content: counter(step);
+  counter-increment: step;
+  line-height: 24px;
+  border: 2px solid #7d7d7d;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+}
+.custom-dots.progressbar li:after {
+  width: 80%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  background-color: #7d7d7d;
+  top: 15px;
+  left: -41%;
+}
+.custom-dots.progressbar li:first-child:after {
+  content: none;
+}
+.custom-dots.progressbar li.active {
+  color: green;
+}
+.custom-dots.progressbar li.active:before {
+  border-color: #55b776;
+}
+.custom-dots.progressbar li.active + li:after {
+  background-color: #55b776;
+}
