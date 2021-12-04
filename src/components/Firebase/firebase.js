@@ -1,9 +1,8 @@
-import firebase from 'firebase/app';
-import 'firebase/database'; // If using Firebase database
-import 'firebase/auth';
-import 'firebase/storage';
-
-const app = firebase;
+import firebase from 'firebase/compat/app';
+import { initializeApp } from "firebase/app";
+import { getDatabase, set, onValue, get, ref, query, limitToLast, orderByChild, equalTo } from 'firebase/database';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 const prodConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -25,56 +24,43 @@ const devConfig = {
 
 const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 
+const app = initializeApp(config);
+
 class Firebase {
   constructor() {
-    // console.log(config);
-    app.initializeApp(config);
+    console.log("Firebase config: ", config);
 
-    this.serverValue = app.database.ServerValue;
-    this.emailAuthProvider = app.auth.EmailAuthProvider;
-    this.auth = app.auth();
-    this.db = app.database();
-    this.storage = app.storage();
-
-    // this.googleProvider = new app.auth.GoogleAuthProvider();
-    // this.facebookProvider = new app.auth.FacebookAuthProvider();
-    // this.twitterProvider = new app.auth.TwitterAuthProvider();
+    this.auth = getAuth();
+    this.db = getDatabase(app);
+    this.storage = getStorage(app);
   }
 
   // *** Auth API ***
 
   doCreateUserWithEmailAndPassword = (email, password) => {
     const secondaryApp = firebase.initializeApp(config, "Secondary");
-    const newUser = secondaryApp.auth().createUserWithEmailAndPassword(email, password)
+    const secondaryAuth = getAuth(secondaryApp);
+    const newUser = createUserWithEmailAndPassword(secondaryAuth, email, password)
 
     return new Promise(function (resolve, reject) {
       resolve({ newUser, secondaryApp });
     });
   };
 
-  doTestCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password)
-
+  doTestCreateUserWithEmailAndPassword = (email, password) => createUserWithEmailAndPassword(this.auth, email, password)
+    
   doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
-
-  // doSignInWithGoogle = () =>
-  //    this.auth.signInWithPopup(this.googleProvider);
-
-  // doSignInWithFacebook = () =>
-  //    this.auth.signInWithPopup(this.facebookProvider);
-
-  // doSignInWithTwitter = () =>
-  //    this.auth.signInWithPopup(this.twitterProvider);
+    signInWithEmailAndPassword(this.auth, email, password);
 
   doSignOut = () => this.auth.signOut();
 
   fetchSignInMethodsForEmail = (email) => this.auth.fetchSignInMethodsForEmail(email);
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doPasswordReset = email => sendPasswordResetEmail(this.auth, email);
 
   // can you send this to a non current user?
   doSendEmailVerification = () =>
-    this.auth.currentUser.sendEmailVerification({
+    sendEmailVerification(this.auth.currentUser).then({
       url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT || process.env.REACT_APP_DEV_CONFIRMATION_EMAIL_REDIRECT,
     });
 
@@ -84,7 +70,7 @@ class Firebase {
     });
 
   doPasswordUpdate = password =>
-    this.auth.currentUser.updatePassword(password);
+    updatePassword(this.auth.currentUser, password);
 
   doSendSignInLinkToEmail = (email) => {
     const actionCodeSettings = {
@@ -103,11 +89,11 @@ class Firebase {
 
   // *** Merge Auth and DB User API *** //
 
+  // FB update onAuthStateChanged
   onAuthUserListener = (next, fallback) =>
-    this.auth.onAuthStateChanged(authUser => {
+    onAuthStateChanged(this.auth, (authUser) => {
       if (authUser) {
-        this.user(authUser.uid)
-          .once('value')
+        get(this.user(authUser.uid))
           .then(snapshot => {
             const dbUser = snapshot.val();
 
@@ -129,7 +115,7 @@ class Firebase {
 
   // *** Info / Connected *** //
 
-  info = () => this.db.ref(".info/connected");
+  info = () => ref(this.db, ".info/connected");
 
   // *** Status / Online *** //
 
@@ -141,83 +127,85 @@ class Firebase {
 
   // *** User API ***
 
-  user = uid => this.db.ref(`users/${uid}`);
+  user = uid => ref(this.db, `users/${uid}`);
 
-  users = () => this.db.ref('users');
+  users = () => ref(this.db, 'users');
 
   // *** Activate User API ***
 
-  active = (uid) => this.db.ref(`users/${uid}`).child("ACTIVE");
+  active = (uid) => ref(this.db, `users/${uid}`).child("ACTIVE");
 
-  activate = (uid) => this.db.ref(`users/${uid}`).update({ ACTIVE: true });
+  activate = (uid) => ref(this.db, `users/${uid}`).update({ ACTIVE: true });
 
-  deactivate = (uid) => this.db.ref(`users/${uid}`).update({ ACTIVE: false });
+  deactivate = (uid) => ref(this.db, `users/${uid}`).update({ ACTIVE: false });
 
   // *** WorkoutIds API ***
 
-  workoutIds = uid => this.db.ref(`workoutids/${uid}`);
+  workoutIds = uid => ref(this.db, `workoutids/${uid}`);
 
-  workoutId = (uid, wid) => this.db.ref(`workoutids/${uid}/${wid}`);
+  activeWorkoutIds = uid => query(this.workoutIds(uid), orderByChild('active'), equalTo(true),limitToLast(1));
+
+  workoutId = (uid, wid) => ref(this.db, `workoutids/${uid}/${wid}`);
 
   // *** Message API ***
 
-  message = (uid, mid) => this.db.ref(`messages/${uid}/${mid}`);
+  message = (uid, mid) => ref(this.db, `messages/${uid}/${mid}`);
 
-  messages = uid => this.db.ref(`messages/${uid}`);
+  messages = uid => ref(this.db, `messages/${uid}`);
 
   // *** Admin Unread API ***
 
-  adminUnreadMessages = () => this.db.ref(`adminUnread`);
+  adminUnreadMessages = () => ref(this.db, `adminUnread`);
 
-  adminUnreadMessage = mid => this.db.ref(`adminUnread/${mid}`);
+  adminUnreadMessage = mid => ref(this.db, `adminUnread/${mid}`);
 
-  currentlyMessaging = () => this.db.ref(`currentlyMessaging`);
+  currentlyMessaging = () => ref(this.db, `currentlyMessaging`);
 
   // *** User Unread API ***
 
-  unreadMessages = uid => this.db.ref(`unread/${uid}`);
+  unreadMessages = uid => ref(this.db, `unread/${uid}`);
 
   // *** Workout API ***
 
-  workouts = (uid) => this.db.ref(`workouts/${uid}`);
+  workouts = (uid) => ref(this.db, `workouts/${uid}`);
 
-  workout = (uid, wid) => this.db.ref(`workouts/${uid}/${wid}`);
+  workout = (uid, wid) => ref(this.db, `workouts/${uid}/${wid}`);
 
   // *** quickSave API ***
 
-  quickSave = () => this.db.ref('quickSave');
+  quickSave = () => ref(this.db, 'quickSave');
 
-  quickSaveId = () => this.db.ref('quickSaveId');
+  quickSaveId = () => ref(this.db, 'quickSaveId');
 
   // *** Program API ***
 
-  programs = () => this.db.ref('programs');
+  programs = () => ref(this.db, 'programs');
 
-  program = (pid) => this.db.ref(`programs/${pid}`);
+  program = (pid) => ref(this.db, `programs/${pid}`);
 
-  programIds = () => this.db.ref('programIds');
+  programIds = () => ref(this.db, 'programIds');
 
-  programId = (pid) => this.db.ref(`programIds/${pid}`);
+  programId = (pid) => ref(this.db, `programIds/${pid}`);
 
   // *** Task API ***
 
-  tasks = () => this.db.ref('tasks');
+  tasks = () => ref(this.db, 'tasks');
 
-  task = (tid) => this.db.ref(`tasks/${tid}`);
+  task = (tid) => ref(this.db, `tasks/${tid}`);
 
   // *** Diet API ***
 
-  usersDiets = (uid) => this.db.ref(`diets/${uid}`);
+  usersDiets = (uid) => ref(this.db, `diets/${uid}`);
 
-  usersDiet = (uid, did) => this.db.ref(`diets/${uid}/${did}`);
+  usersDiet = (uid, did) => ref(this.db, `diets/${uid}/${did}`);
 
   // *** Diet IDS API ***
 
-  dietIds = (uid) => this.db.ref(`dietIds/${uid}`);
+  dietIds = (uid) => ref(this.db, `dietIds/${uid}`);
 
   // *** Weight Ins API ***
 
-  weighIn = (uid) => this.db.ref(`weighIns/${uid}`);
+  weighIn = (uid) => ref(this.db, `weighIns/${uid}`);
 
   // *** Image Storage API ***
 
@@ -231,27 +219,27 @@ class Firebase {
 
   // *** Referral API ***
 
-  referrals = () => this.db.ref('referrals');
+  referrals = () => ref(this.db, 'referrals');
 
-  refferal = (rid) => this.db.ref(`referrals/${rid}`);
+  refferal = (rid) => ref(this.db, `referrals/${rid}`);
 
   // *** Discounts API ***
 
-  discounts = () => this.db.ref('discounts');
+  discounts = () => ref(this.db, 'discounts');
 
-  discount = (did) => this.db.ref(`discounts/${did}`);
+  discount = (did) => ref(this.db, `discounts/${did}`);
 
   // *** Codes API ***
 
-  codes = () => this.db.ref('codes');
+  codes = () => ref(this.db, 'codes');
 
-  code = (cid) => this.db.ref(`codes/${cid}`);
+  code = (cid) => ref(this.db, `codes/${cid}`);
 
   // *** Code Detail API ***
 
-  codeDetails = () => this.db.ref('codeDetails');
+  codeDetails = () => ref(this.db, 'codeDetails');
 
-  codeDetail = (cid) => this.db.ref(`codeDetails/${cid}`);
+  codeDetail = (cid) => ref(this.db, `codeDetails/${cid}`);
 
 }
 

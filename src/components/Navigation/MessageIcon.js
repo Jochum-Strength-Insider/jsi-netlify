@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { onValue, child } from "firebase/database";
 
 import { withFirebase } from '../Firebase';
 
@@ -7,23 +8,21 @@ import Badge from 'react-bootstrap/Badge';
 const MessageIconBase = ({ firebase, uid }) => {
   const [unread, setUnread] = useState([]);
   useEffect(() => {
-    const unreadQuery = firebase.user(uid).child("unread");
-    unreadQuery.on('value', snapshot => {
+    const unreadQueryRef = child(firebase.user(uid), 'undread');
+    onValue(unreadQueryRef, (snapshot) => {
       const unreadObject = snapshot.val();
-      if (unreadObject) {
-        const unreadList = Object.keys(unreadObject).reverse().map(key => ({
-          ...unreadObject[key],
-          mid: key,
-        }));
-
-        // console.log("unreadList", unreadList);
-        setUnread(unreadList);
-      } else {
-        setUnread([])
-      }
+        if (unreadObject) {
+          const unreadList = Object.keys(unreadObject).reverse().map(key => ({
+            ...unreadObject[key],
+            mid: key,
+          }));
+          setUnread(unreadList);
+        } else {
+          setUnread([])
+        }
     });
     return () => {
-      unreadQuery.off();
+      unreadQueryRef.off();
     };
   }, [firebase, uid]);
 

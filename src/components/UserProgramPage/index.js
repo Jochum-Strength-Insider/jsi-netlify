@@ -1,4 +1,5 @@
 import React, { Component, useContext } from 'react';
+import { onValue } from "firebase/database";
 import { compose } from 'recompose';
 
 import Container from 'react-bootstrap/Container'
@@ -82,38 +83,36 @@ class ManageUserTablesBase extends Component {
    }
 
    componentDidMount() {
-      this.props.firebase
-         .workoutIds(this.props.authUser.uid)
-         .orderByChild("active")
-         .equalTo(true)
-         .limitToLast(1)
-         .once("value", (snap) => {
+      const activeWorkoutsRef = this.props.firebase.activeWorkoutIds(this.props.authUser.uid);
+      onValue(activeWorkoutsRef, (snap) => {
             const idObject = snap.val();
             if (idObject) {
                const key = Object.keys(idObject)[0];
                this.setState({ key: key });
-               this.props.firebase.workout(this.props.authUser.uid, key)
-                  .once("value", snapshot => {
-                     const workoutObject = snapshot.val();
-                     if (workoutObject) {
-                        localStorage.setItem('program', JSON.stringify(workoutObject));
-                        this.setState({ program: workoutObject })
-                     } else {
-                        localStorage.removeItem('program');
-                        this.setState({ program: null })
-                     }
-                  });
+
+               const workoutRef = this.props.firebase.workout(this.props.authUser.uid, key);
+               onValue(workoutRef, (snapshot) => {
+                  const workoutObject = snapshot.val();
+                  if (workoutObject) {
+                     localStorage.setItem('program', JSON.stringify(workoutObject));
+                     this.setState({ program: workoutObject })
+                  } else {
+                     localStorage.removeItem('program');
+                     this.setState({ program: null })
+                  }
+               });
             } else {
                localStorage.removeItem('program');
                this.setState({ program: null, key: "" })
             }
-         }).catch(error => this.setState({ error }));
+       });
+
    }
 
    componentWillUnmount() {
       this.props.firebase.workout(this.props.authUser.uid, this.state.key).off();
       this.props.firebase.workouts(this.props.authUser.uid).off();
-      this.props.firebase.workoutIds(this.props.authUser.uid).off();
+      this.props.firebase.activeWorkoutIds(this.props.authUser.uid).off();
    }
 
    render() {
