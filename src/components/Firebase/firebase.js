@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import { initializeApp } from "firebase/app";
-import { getDatabase, set, onValue, get, ref, query, limitToLast, orderByChild, equalTo } from 'firebase/database';
+import { getDatabase, get, ref, query, limitToLast, orderByChild, equalTo } from 'firebase/database';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
