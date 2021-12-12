@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 
 import { withAuthorization, withEmailVerification } from '../Session';
 
-
 class HomePage extends Component {
 
    render() {
