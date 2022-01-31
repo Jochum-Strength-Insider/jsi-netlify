@@ -22,7 +22,7 @@ const MessageIconBase = ({ firebase, uid }) => {
         }
     });
     return () => {
-      unreadQueryRef.off();
+      // unreadQueryRef.off();
     };
   }, [firebase, uid]);
 

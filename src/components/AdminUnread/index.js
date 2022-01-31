@@ -3,12 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 
 import './style.css';
-// import useClickOutside from '../../hooks/useClickOutside';
-
 
 import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
+import { onValue, child, update, set } from "firebase/database";
 import * as ROUTES from '../../constants/routes';
 
 import Button from 'react-bootstrap/Button';
@@ -19,56 +18,59 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 
 const AdminUnreadMessagesBase = ({ firebase }) => {
-  // const [hovered, setHovered] = useState(false);
-  // const [clicked, setClicked] = useState(false);
   const [unread, setUnread] = useState([]);
   const [show, setShow] = useState(false);
 
   const menuRef = useRef(null);
   const containerRef = useRef(null);
 
-  // const onClickOutside = () => {
-  //    setShow(false);
-  //    console.log("clicked outside")
-  // }
-
-  // useClickOutside(menuRef, onClickOutside);
-
   const onRemoveMessage = mid => {
-    return firebase.adminUnreadMessage(mid).remove();
+    return update(firebase.adminUnreadMessages(), { [mid]: null });
   };
 
   const handleClick = (event) => {
     setShow(!show);
-    // setTarget(event.target);
   };
 
   const clearUnread = () => {
-    firebase.adminUnreadMessages().remove();
+    set(firebase.adminUnreadMessages(), null);
   }
 
+  // useEffect(() => {
+  //   firebase.adminUnreadMessages().on('value', snapshot => {
+  //     const unreadObject = snapshot.val();
+  //     if (unreadObject) {
+  //       const unreadList = Object.keys(unreadObject).reverse().map(key => ({
+  //         ...unreadObject[key],
+  //         mid: key,
+  //       }));
+  //       setUnread(unreadList);
+  //     } else {
+  //       setUnread([])
+  //     }
+  //   });
+
+  //   return () => {
+  //     firebase.users().off();
+  //     firebase.adminUnreadMessages().off();
+  //   };
+  // }, [firebase]);
+
+  // firebase update
   useEffect(() => {
-    // firebase.adminUnreadMessages().limitToLast(10).on('value', snapshot => {
-    firebase.adminUnreadMessages().on('value', snapshot => {
+    onValue(firebase.adminUnreadMessages(), (snapshot) => {
       const unreadObject = snapshot.val();
-      if (unreadObject) {
-        const unreadList = Object.keys(unreadObject).reverse().map(key => ({
-          ...unreadObject[key],
-          mid: key,
-        }));
-
-        // console.log("unreadList", unreadList);
-        setUnread(unreadList);
-      } else {
-        setUnread([])
-        // console.log("no unread messages");
-      }
+        if (unreadObject) {
+          const unreadList = Object.keys(unreadObject).reverse().map(key => ({
+            ...unreadObject[key],
+            mid: key,
+          }));
+          setUnread(unreadList);
+        } else {
+          setUnread([])
+        }
     });
-
-    return () => {
-      firebase.users().off();
-      firebase.adminUnreadMessages().off();
-    };
+    // return () => firebase.adminUnreadMessages().off();
   }, [firebase]);
 
   return (
@@ -78,8 +80,6 @@ const AdminUnreadMessagesBase = ({ firebase }) => {
         show={show}
         target={containerRef.current}
         className="admin-unread"
-        // trigger="click"
-        // key={"bottom"}
         placement={"bottom"}
       >
         <UpdatingPopover>
@@ -123,7 +123,7 @@ const MessagePopover = ({ message, onRemoveMessage, messageId }) => {
 
   const handleClose = () => {
     onRemoveMessage(messageId)
-      .catch(error => console.log("error"));
+      // .catch(error => console.log("error"));
   };
 
 
@@ -132,7 +132,6 @@ const MessagePopover = ({ message, onRemoveMessage, messageId }) => {
   const text = message.text.length > 100 ? `${message.text.substring(0, 100)}...` : message.text;
 
   return (
-    // <Toast onClose={handleClose} show={true} delay={3000} autohide>
     <ListGroup.Item >
       <div className="toast-header">
         <strong className="mr-auto"><Link
@@ -158,7 +157,6 @@ const MessagePopover = ({ message, onRemoveMessage, messageId }) => {
 const UpdatingPopover = React.forwardRef(
   ({ popper, children, show: _, ...props }, ref) => {
     useEffect(() => {
-      // console.log('updating!');
       popper.scheduleUpdate();
     }, [children, popper]);
 
