@@ -8,9 +8,6 @@
 
 .messageContainer {
    flex: 1 1 0;
-   /* min-height: 40vh; */
-   /* max-height: calc(100vh - 240px); */
-   /* height: calc(100vh - 240px); */
    overflow-y: scroll;
    overscroll-behavior: contain;
    background-color: white;
@@ -71,12 +68,10 @@
 }
 
 .chat-form {
-   /* min-height: 60px; */
    display: flex;
    width: 100%;
    height: auto;
    margin-top: 16px;
-   /* border: 1px solid #ced4da; */
    background-color: white;
    border-radius: 500px;
 }
@@ -88,26 +83,17 @@
    /* Optional: just make scrollbar invisible */
 }
 
-/* .chat-form-corner {} */
-
 .chat-form-input {
    flex-grow: 9;
    flex-basis: 0;
    margin-left: 31px;
    margin-top: 1px;
    margin-bottom: 1px;
-   /* padding-left: 30px; */
    padding-top: 6px;
    padding-bottom: 6px;
-   /* padding-top: 10px; */
-   /* line-height: 10px; */
    overflow: auto;
-
-   /* border-top-left-radius: 500px; */
-   /* border-bottom-left-radius: 500px; */
    border: none;
    resize: none;
-   /* outline: none; */
    max-height: 58px;
    font-size: 1rem;
 }
@@ -123,22 +109,3 @@
    border-top-left-radius: 0px;
    border-bottom-left-radius: 0px;
 }
-
-/* .chat-form .input-group .form-control {
-   padding-left: 10px;
-   border-top-left-radius: 500px;
-   border-bottom-left-radius: 500px;
-} */
-
-/* .chat-form input.form-control {
-   padding-left: 100px;
-   margin-left: 10px;
-} */
-
-/* .input-group-append .btn {
-   background-color: white;
-   border-radius: 500px;
-   color: #007BFF;
-   border: 1px solid #ced4da;
-   border-left: 0px;
-} */

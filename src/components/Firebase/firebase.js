@@ -93,6 +93,7 @@ class Firebase {
   onAuthUserListener = (next, fallback) =>
     onAuthStateChanged(this.auth, (authUser) => {
       if (authUser) {
+        // here
         get(this.user(authUser.uid))
           .then(snapshot => {
             const dbUser = snapshot.val();
@@ -143,7 +144,7 @@ class Firebase {
 
   workoutIds = uid => ref(this.db, `workoutids/${uid}`);
 
-  activeWorkoutIds = uid => query(this.workoutIds(uid), orderByChild('active'), equalTo(true),limitToLast(1));
+  activeWorkoutIds = uid => query(this.workoutIds(uid), orderByChild('active'), equalTo(true), limitToLast(1));
 
   workoutId = (uid, wid) => ref(this.db, `workoutids/${uid}/${wid}`);
 
