@@ -7,7 +7,7 @@ import './style.css';
 import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
-import { onValue, child, update, set } from "firebase/database";
+import { onValue, update, set } from "firebase/database";
 import * as ROUTES from '../../constants/routes';
 
 import Button from 'react-bootstrap/Button';
