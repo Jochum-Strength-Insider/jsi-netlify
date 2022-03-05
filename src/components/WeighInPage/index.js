@@ -12,10 +12,6 @@ const WeighInPage = () => {
 
    const authUser = useContext(AuthUserContext);
 
-   // if (!authUser.ACTIVE) { <ListGroup.Item>Member Since: {dateString}</ListGroup.Item>
-   //    return null;
-   // }
-
    return (
       <Container fluid>
          <div className="app-top">

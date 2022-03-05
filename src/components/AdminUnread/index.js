@@ -7,7 +7,8 @@ import './style.css';
 import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
-import { onValue, child, update, set } from "firebase/database";
+import { onValue, update, set } from "firebase/database";
+
 import * as ROUTES from '../../constants/routes';
 
 import Button from 'react-bootstrap/Button';
@@ -35,26 +36,6 @@ const AdminUnreadMessagesBase = ({ firebase }) => {
   const clearUnread = () => {
     set(firebase.adminUnreadMessages(), null);
   }
-
-  // useEffect(() => {
-  //   firebase.adminUnreadMessages().on('value', snapshot => {
-  //     const unreadObject = snapshot.val();
-  //     if (unreadObject) {
-  //       const unreadList = Object.keys(unreadObject).reverse().map(key => ({
-  //         ...unreadObject[key],
-  //         mid: key,
-  //       }));
-  //       setUnread(unreadList);
-  //     } else {
-  //       setUnread([])
-  //     }
-  //   });
-
-  //   return () => {
-  //     firebase.users().off();
-  //     firebase.adminUnreadMessages().off();
-  //   };
-  // }, [firebase]);
 
   // firebase update
   useEffect(() => {

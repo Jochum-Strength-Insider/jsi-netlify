@@ -53,6 +53,7 @@ const ManageUserTablesBase = ({ authUser, firebase }) => {
     JSON.parse(localStorage.getItem("program")) || null
   );
   const [activeKey, setActiveKey] = useState(null);
+  // eslint-disable-next-line
   const [error, setError] = useState(null);
 
   const dateString = program
